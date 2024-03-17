@@ -13,9 +13,9 @@ const {
 
 menuItemRouter.post('/create', addmenuItem);
 menuItemRouter.get('/menuItems', getAllmenuItems);
-menuItemRouter.get('/menuItem/:id ', getOnemenuItem);
-menuItemRouter.patch('/menuItemUpdate/:id ', updatemenuItem);
-menuItemRouter.delete('/deletemenuItem/:id ', deletemenuItem);
+menuItemRouter.get('/menuItem/:id', getOnemenuItem);
+menuItemRouter.patch('/menuItemUpdate/:id', updatemenuItem);
+menuItemRouter.delete('/deletemenuItem/:id', deletemenuItem);
 
 
 module.exports = menuItemRouter;

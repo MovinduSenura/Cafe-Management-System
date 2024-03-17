@@ -16,7 +16,7 @@ const addmenuItem = async (req, res) => {
             menuItemAvailability: menuItemAvailability,
         }
 
-        const newmenuItemObj = new menuItemModel(newmenuItemData);
+        const newmenuItemObj = new menuItemModel(newmenuItem);
         await newmenuItemObj.save();
 
         return res.status(200).send({
