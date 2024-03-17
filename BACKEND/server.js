@@ -12,6 +12,10 @@ app.use(express.json());
 app.use(bodyParser.json());
 app.use(cors());
 
+//routes
+const stockRouter = require('./routes/stock.routes');
+app.use('/stock/', stockRouter);
+
 const PORT = process.env.PORT || 8070;
 
 app.listen(PORT, () =>{
