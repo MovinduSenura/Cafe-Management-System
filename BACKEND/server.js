@@ -13,6 +13,8 @@ app.use(express.json());
 app.use(bodyParser.json());
 app.use(cors());
 
+const FeedbackRouter = require('./routes/feedback.routes');
+app.use('/api/',FeedbackRouter);
 const PORT = process.env.PORT || 8070;
 
 app.listen(PORT, () =>{
