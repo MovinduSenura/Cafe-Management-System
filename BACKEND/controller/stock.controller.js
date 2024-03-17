@@ -17,7 +17,7 @@ const addItem = async (req, res) => {
         await newItemObj.save();
 
         return res.status(200).send({
-            status: false,
+            status: true,
             message: "✨ :: Data saved successfully!"
         })
 

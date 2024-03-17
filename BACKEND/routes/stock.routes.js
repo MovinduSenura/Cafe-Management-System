@@ -11,7 +11,7 @@ const {
 
 StockRouter.post('/create', addItem);
 StockRouter.get('/items', getAllItems);
-StockRouter.get('/item', getOneItem);
+StockRouter.get('/itemOne/:id', getOneItem);
 StockRouter.patch('/itemUpdate/:id', updateItem);
 StockRouter.delete('/itemDelete/:id', deleteItem);
 
