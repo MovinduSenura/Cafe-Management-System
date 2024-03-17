@@ -12,7 +12,7 @@ const {
 
 CustomerRouter.post('/create', addCustomer);
 CustomerRouter.get('/customers', getAllCustomers);
-CustomerRouter.get('/customer:id', getOneCustomer);
+CustomerRouter.get('/customer/:id', getOneCustomer);
 CustomerRouter.patch('/customerUpdate/:id', updateCustomer);
 CustomerRouter.delete('/deleteCustomer/:id', deleteCustomer);
 

@@ -90,7 +90,7 @@ const updateCustomer = async (req,res) => {
 
     try{
          //id allagnne params.id data allagnne body eken
-        const customerId = req.get.params.id;
+        const customerId = req.params.id;
         const {customerFullName, customerEmail, customerContactNo, customerNIC, customerGender, customerAddress, customerLoyaltyPoints} = req.body;
     
         const customerData = {
