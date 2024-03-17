@@ -8,10 +8,10 @@ const{
     deleteFeedback,
 } = require("../controller/feedback.controller");
 
-FeedbackRouter.post('/api/create', addFeedback);
-FeedbackRouter.get('/api/feedbacks', getAllFeedbacks);
-FeedbackRouter.get('/api/feedback', getOneFeedback);
-FeedbackRouter.patch('/api/feedbackUpdate/:id', updateFeedback);
-FeedbackRouter.delete('/api/feedbackDelete/:id', deleteFeedback);
+FeedbackRouter.post('/create', addFeedback);
+FeedbackRouter.get('/feedbacks', getAllFeedbacks);
+FeedbackRouter.get('/feedback', getOneFeedback);
+FeedbackRouter.patch('/feedbackUpdate/:id', updateFeedback);
+FeedbackRouter.delete('/feedbackDelete/:id', deleteFeedback);
 
 module.exports = FeedbackRouter;
