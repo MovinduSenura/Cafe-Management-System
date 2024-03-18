@@ -1,0 +1,50 @@
+.PaymentformContainer h1{
+    text-align: center;
+}
+
+.PaymentmyForm {
+    max-width: 400px;
+    margin: 0 auto;
+  }
+  
+  .PaymentmyForm label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .PaymentmyForm input,
+  .PaymentmyForm textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .PaymentmyForm button {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .PaymentmyForm button:hover {
+    background-color: #45a049;
+  }
+
+  .formBootstrap{
+    width: 500px;
+    background-color: none;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 40px;
+    border: 1px dashed #ccc;
+    border-radius: 10px;
+    padding: 20px;
+  }
+
+  .formBootstrap h1{
+    text-align: center;
+  }
