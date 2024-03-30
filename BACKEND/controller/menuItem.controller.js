@@ -47,7 +47,7 @@ const getAllmenuItems = async (req, res) => {
         })
 
     }catch(err){
-        return res.statue(500).send({
+        return res.status(500).send({
             status: false,
             message: err.message,
         })

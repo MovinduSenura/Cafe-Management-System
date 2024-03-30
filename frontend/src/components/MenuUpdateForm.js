@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from 'axios';
+import { useParams, useNavigate } from "react-router-dom";
 
 //importing CSS files
 import './MenuCreateForm.css'
 
-const MenuCreateForm = () => {
+const MenuUpdateForm = () => {
 
     const [menuItemImage, setmenuItemImage] = useState('');
     const [menuItemName, setmenuItemName] = useState('');
@@ -13,12 +14,44 @@ const MenuCreateForm = () => {
     const [menuItemPrice, setmenuItemPrice] = useState('');
     const [menuItemAvailability, setmenuItemAvailability] = useState('');
 
-    const sendData = (e) => {
+    //using useParams we catching id from URL and assign it to id const
+    const { id } = useParams();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+
+        const getOneData = async () => {
+            try{
+
+                await axios.get(`http://localhost:8000/menu/menuItem/${id}`)
+                .then((res) => {
+                    setmenuItemImage(res.data.MenuItem.menuItemImage);
+                    setmenuItemName(res.data.MenuItem.menuItemName);
+                    setmenuItemDescription(res.data.MenuItem.menuItemDescription);
+                    setmenuItemCategory(res.data.MenuItem.menuItemCategory);
+                    setmenuItemPrice(res.data.MenuItem.menuItemPrice);
+                    setmenuItemAvailability(res.data.MenuItem.menuItemAvailability);
+                    console.log("✨ :: Item fetched successfully!");
+                })
+                .catch((err) => {
+                    console.log("☠️ :: Error on API URL : " + err.message);
+                })
+
+            }catch (err){
+                console.log("☠️ :: getOneData function failed! ERROR : " + err.message);
+            }
+        }
+
+        getOneData();
+
+    }, [id])
+
+    const updateData = (e) => {
         e.preventDefault();
 
         try{
 
-            let newmenuItem = {
+            let updatemenuItem = {
                 menuItemImage: menuItemImage,
                 menuItemName: menuItemName,
                 menuItemDescription: menuItemDescription,
@@ -27,23 +60,16 @@ const MenuCreateForm = () => {
                 menuItemAvailability: menuItemAvailability,
             }
 
-            axios.post('http://localhost:8000/menu/create', newmenuItem)
+            axios.patch(`http://localhost:8000/menu/menuItemUpdate/${id}`, updatemenuItem)
             .then((res) => {
                 alert(res.data.message);
                 console.log(res.data.status);
                 console.log(res.data.message);
+                navigate('/')
             })
             .catch((err) => {
                 console.log("☠️ :: Error on API URL or newmenuItem object : " + err.message)
             })
-
-            //set State back to first state
-            setmenuItemImage('');
-            setmenuItemName('');
-            setmenuItemDescription('');
-            setmenuItemCategory('');
-            setmenuItemPrice('');
-            setmenuItemAvailability('');
 
         }catch(err){
             console.log("☠️ :: sendData Function failed ERROR : " + err.message);
@@ -55,8 +81,8 @@ const MenuCreateForm = () => {
         <div className="menucreateFormContainer">
 
             <div className="menuformBootstrap">
-                <h2>New Item Form</h2>
-                <form onSubmit={sendData}>
+                <h2>Update Form</h2>
+                <form onSubmit={updateData}>
                     <div className="form-group mb-3">
                         <label for="menuItemImage">Image:</label>
                         <input type="text" className="form-control" id="menuItemImage" placeholder="Enter menuItemImage" autoComplete="off" onChange={(e) => setmenuItemImage(e.target.value)} value={menuItemImage}/>
@@ -86,7 +112,7 @@ const MenuCreateForm = () => {
                         <input type="text" className="form-control" id="menuItemAvailability" placeholder="Mention Availability (Yes/No)" autoComplete="off" onChange={(e) => setmenuItemAvailability(e.target.value)} value={menuItemAvailability}/>
                     </div>
                     <div className="submitbtndiv">
-                    <button type="submit" className="btn btn-primary submitbtn">Submit</button>
+                    <button type="submit" className="btn btn-primary submitbtn">Update</button>
                     </div>
                 </form>
             </div>
@@ -97,4 +123,4 @@ const MenuCreateForm = () => {
 
 };
 
-export default MenuCreateForm;
+export default MenuUpdateForm;

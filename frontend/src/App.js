@@ -1,6 +1,8 @@
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 
 import MenuCreateForm from './components/MenuCreateForm';
+import MenuAllItems from './components/MenuAllItems';
+import MenuUpdateForm from './components/MenuUpdateForm';
 
 function App() {
   return (
@@ -10,7 +12,9 @@ function App() {
 
         <Routes>
 
-          <Route path = '/' element = {<MenuCreateForm />} />
+          <Route path = '/menucreateform' element = {<MenuCreateForm />} />
+          <Route path = '/' element = {<MenuAllItems />} />
+          <Route path = '/menuupdateform/:id' element = {<MenuUpdateForm />} />
 
         </Routes>
       

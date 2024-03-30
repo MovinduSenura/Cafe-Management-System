@@ -22,7 +22,7 @@ const menuItemSchema = new mongoose.Schema({
         trim: true,
     },
     menuItemPrice: {
-        type: String,
+        type: Number,
         required: true,
         trim: true,
     },
