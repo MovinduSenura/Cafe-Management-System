@@ -1,6 +1,8 @@
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 
 import PaymentCreateForm from './components/PaymentCreateForm';
+import PaymentAll from './components/PaymentAll';
+import PaymentUpdateForm from './components/PaymentUpdateForm';
 
 function App() {
   return (
@@ -8,7 +10,9 @@ function App() {
       <BrowserRouter>
       <Routes>
 
-          <Route path='/' element={<PaymentCreateForm/>}/>
+          <Route path='/create' element={<PaymentCreateForm/>}/>
+          <Route path='/' element={<PaymentAll/>}/>
+          <Route path='/update/:id' element={<PaymentUpdateForm/>}/>
 
       </Routes>
       </BrowserRouter>

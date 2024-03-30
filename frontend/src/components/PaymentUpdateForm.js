@@ -1,32 +1,62 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from 'axios';
+import { useParams, useNavigate } from "react-router-dom";
 //import CSS files
 import './PaymentCreateForm.css'
 
-const PaymentCreateForm = () => {
+const PaymentUpdateForm = () => {
 
     const [orderID, setorderID] = useState('');
     const [promotionID, setpromotionID] = useState('');
     const [amount, setamount] = useState('');
     const [date, setdate] = useState('');
 
-    const sendData = (e) => {
+    //using useParams we catching id from URL and assign it to id const
+    const { id } = useParams();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        
+        const getOneData = async () => {
+            try{
+
+                await axios.get(`http://localhost:8000/payment/getOne/${id}`)
+                .then((res) => {
+                    setorderID(res.data.payment.orderID);
+                    setpromotionID(res.data.payment.promotionID);
+                    setamount(res.data.payment.amount);
+                    setdate(res.data.payment.date); 
+                    console.log("🌟 :: Payment details fetched successfully!");
+
+                }).catch((err) => {
+                    console.log("💀 :: Error on API URL : "+err.message);
+                })
+
+            }catch(err){
+                    console.log("💀 :: getOneData function failed! ERROR : "+err.message);
+            }
+        }
+
+        getOneData();
+    },[id])
+
+    const updateData = (e) => {
         e.preventDefault();
 
         try{
-            let newPaymentData = {
+            let updatePayment = {
                 orderID: orderID,
                 promotionID: promotionID,
                 amount: amount,
                 date: date,
             }
 
-            axios.post('http://localhost:8000/payment/create',newPaymentData)
+            axios.patch(`http://localhost:8000/payment/updatePayment/${id}`,updatePayment)
             .then((res) => {
                 alert(res.data.message);
                 console.log(res.data.status);
                 console.log(res.data.message);
-                window.location.href=`/`;
+                navigate('/')
             })
             .catch((err) => {
                 console.log("💀 :: Error on API URL or newPaymentData object : "+err.message);
@@ -46,8 +76,8 @@ const PaymentCreateForm = () => {
 
         <div className="PaymentformContainer">
             <div className="formBootstrap">
-                <h1>Add Payment</h1>
-                <form onSubmit={sendData}>
+                <h1>Update Payment</h1>
+                <form onSubmit={updateData}>
             <div className="form-group mb-3">
                 <label for="orderID">Order ID: </label>
                 <input type="text" className="form-control" id="orderID" placeholder="orderID" autoComplete="off" onChange={
@@ -74,14 +104,14 @@ const PaymentCreateForm = () => {
             </div>
             <div className="form-group mb-3">
                 <label for="date">Date: </label>
-                <input type="date" className="form-control" id="date" onChange={
+                <input type="date" className="form-control" id="date"onChange={
                         (e) => {
                             setdate(e.target.value) 
                         }
                         } value={date}/>
             </div>
             <div className="submitbtndiv">
-            <button type="submit" className="btn btn-primary">Submit</button>
+            <button type="submit" className="btn btn-primary">Update</button>
             </div>
             </form>
             </div>
@@ -93,4 +123,4 @@ const PaymentCreateForm = () => {
     ) 
 };
 
-export default PaymentCreateForm;
+export default PaymentUpdateForm;
