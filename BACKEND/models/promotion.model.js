@@ -5,7 +5,6 @@ const promotionSchema = new mongoose.Schema({
         type: String,
         required: true,
         trim: true,
-    
     },
     promotionValues:{
         type: String,
@@ -17,8 +16,6 @@ const promotionSchema = new mongoose.Schema({
         required: true,
         trim: true,
     },
-    
-    
     promotionItempic:{
         type: String,
         required: true,

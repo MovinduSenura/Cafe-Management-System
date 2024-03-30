@@ -16,6 +16,7 @@ const addpromotion = async (req, res) => {
         }
 
         const newpromotionobj = new promotionModel(newpromotionData);
+        await newpromotionobj.save();
         await res.status(200).send({
             status: true,
             message:"✨ :: Data saved successfuly!"
@@ -91,7 +92,7 @@ const addpromotion = async (req, res) => {
             }
             const updatepromotionobj = await promotionModel.findByIdAndUpdate(promotionID,promotionData);
 
-            return  res.status(500).send({
+            return  res.status(200).send({
                 status: true,
                 message: "✨:: promotion Updated!",
 
@@ -116,7 +117,7 @@ const addpromotion = async (req, res) => {
             const promotionID= req.params.id;
             const delpromotion = await promotionModel.findByIdAndDelete(promotionID);
 
-            return res.status(500).send({
+            return res.status(200).send({
                 status: true,
                 message: "✨:: promotion Delete!",
         })
