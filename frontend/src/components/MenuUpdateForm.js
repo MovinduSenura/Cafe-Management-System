@@ -68,11 +68,11 @@ const MenuUpdateForm = () => {
                 navigate('/')
             })
             .catch((err) => {
-                console.log("☠️ :: Error on API URL or newmenuItem object : " + err.message)
+                console.log("☠️ :: Error on API URL or updatemenuItem object : " + err.message)
             })
 
         }catch(err){
-            console.log("☠️ :: sendData Function failed ERROR : " + err.message);
+            console.log("☠️ :: updateData Function failed ERROR : " + err.message);
         }
     }
 
