@@ -1,9 +1,23 @@
 const mongoose = require('mongoose');
 
 const feedbackSchema = new mongoose.Schema({
-
-    Rating:{
-        type: Number,
+    Name:{
+        type: String,
+        required: true,
+        trim:true,
+    },
+    Email:{
+        type: String,
+        required: true,
+        trim:true,
+    },
+    DayVisited:{
+        type: String,
+        required: true,
+        trim:true,
+    },
+    TimeVisited:{
+        type: String,
         required: true,
         trim:true,
     },

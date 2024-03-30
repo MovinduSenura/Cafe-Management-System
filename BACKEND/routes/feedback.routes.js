@@ -10,7 +10,7 @@ const{
 
 FeedbackRouter.post('/create', addFeedback);
 FeedbackRouter.get('/feedbacks', getAllFeedbacks);
-FeedbackRouter.get('/feedback', getOneFeedback);
+FeedbackRouter.get('/feedback/:id', getOneFeedback);
 FeedbackRouter.patch('/feedbackUpdate/:id', updateFeedback);
 FeedbackRouter.delete('/feedbackDelete/:id', deleteFeedback);
 

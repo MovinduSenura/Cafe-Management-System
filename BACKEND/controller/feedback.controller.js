@@ -1,12 +1,16 @@
+
 const FeedbackModel = require("../models/feedback.model");
 
 const addFeedback = async(req,res) => {
     try{
-        const {Rating,Comment} = req.body;
+        const {Name,Email,DayVisited,TimeVisited,Comment} = req.body;
 
         const newFeedbackData = {
            
-            Rating: Rating,
+            Name:Name,
+            Email:Email,
+            DayVisited:DayVisited,
+            TimeVisited:TimeVisited,
             Comment: Comment,
         }
         const newFeedbackObj = new FeedbackModel(newFeedbackData);
@@ -63,10 +67,13 @@ const getOneFeedback = async(req,res)=>{
 const updateFeedback = async(req,res)=>{
     try{
         const feedbackID = req.params.id;
-        const{ Rating,Comment }=req.body; 
+        const{Name,Email,DayVisited,TimeVisited,Comment}=req.body; 
 
         const feedbackData = {
-            Rating:Rating,
+            Name:Name,
+            Email:Email,
+            DayVisited:DayVisited,
+            TimeVisited:TimeVisited,
             Comment:Comment,
         }
         const updateFeedbackObj = await FeedbackModel.findByIdAndUpdate(feedbackID,feedbackData);
