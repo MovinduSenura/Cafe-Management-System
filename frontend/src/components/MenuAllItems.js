@@ -66,7 +66,7 @@ const MenuAllItems = () => {
         <div>
             
             <div className = "tablecontainer">
-                <div className="addbtndiv"><Link to='/menucreateform'><button type="button" className="btn btn-secondary btn-lg AddItemBtn"><b>Add item</b></button></Link></div>
+                <div className="addbtndiv"><Link to='/menucreateform'><button type="button" className="btn btn-secondary btn-lg AddItemBtn">Add item</button></Link></div>
             <div className="tablediv">
 
             <ToastContainer/>
@@ -93,13 +93,17 @@ const MenuAllItems = () => {
                             <td>{menuitems.menuItemDescription}</td>
                             <td>{menuitems.menuItemCategory}</td>
                             <td>{menuitems.menuItemPrice}</td>
-                            <td>{menuitems.menuItemAvailability}</td>                                 
+                            <td>{menuitems.menuItemAvailability}</td>
                             <td>
-                                <div className="EditDeleteBTNs">
-                                    <Link to={`/menuupdateform/${menuitems._id}`}><button type="button" className="btn btn-success">Edit</button></Link>&nbsp;&nbsp;
-                                    <button type="button" className="btn btn-danger" onClick={() => handleDelete(menuitems._id)}>Delete</button>
-                                </div> 
-                            </td>                           
+                                <table className="EditDeleteBTNs">
+                                    <tbody>
+                                        <tr>
+                                            <td><Link to={`/menuupdateform/${menuitems._id}`}><button type="button" className="btn btn-success">Edit</button></Link></td>&nbsp;&nbsp;
+                                            <td><button type="button" className="btn btn-danger" onClick={() => handleDelete(menuitems._id)}>Delete</button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
                         </tr>
                     ))}
 
