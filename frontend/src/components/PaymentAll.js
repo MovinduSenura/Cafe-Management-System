@@ -75,7 +75,7 @@ export const PaymentAll = () => {
                     <th scope="col">PromotionID</th>
                     <th scope="col">Amount</th>
                     <th scope="col">Date</th>
-                    <th scope="col">Operations</th>
+                    <th scope="col" className='op'>Operations</th>
                     
                     </tr>
                 </thead>
@@ -87,8 +87,21 @@ export const PaymentAll = () => {
                     <td>{payments.promotionID}</td>
                     <td>{payments.amount}</td>
                     <td>{payments.date}</td>
-                    <td><Link to={`/update/${payments._id}`}><button type="button" class="btn btn-success">Edit</button></Link>&nbsp;&nbsp;
-                    <button type="button" class="btn btn-danger" onClick={() => handleDelete(payments._id)}>Delete</button></td>
+                    <td>
+                      <table className='EditDeleteBTNs'>
+                        <tbody>
+                          <tr>
+                            <td>
+                              <Link to={`/update/${payments._id}`}><button type="button" className="btn btn-success">Edit</button></Link>&nbsp;
+                            </td>
+                            <td>
+                              <button type="button" className="btn btn-danger" onClick={() => handleDelete(payments._id)}>Delete</button>
+                            </td>
+                          </tr>
+                        </tbody>
+                        
+                      </table>
+                    </td>
                     
                     </tr>
 
