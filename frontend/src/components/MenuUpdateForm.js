@@ -105,7 +105,7 @@ const MenuUpdateForm = () => {
                     </div>
                     <div className="form-group mb-3">
                         <label for="menuItemPrice">Price(Rs):</label>
-                        <input type="number" className="form-control" id="menuItemPrice" placeholder="Enter Price" autoComplete="off" onChange={(e) => setmenuItemPrice(e.target.value)} value={menuItemPrice}/>
+                        <input type="number" className="form-control" id="menuItemPrice" placeholder="Enter Price" autoComplete="off" min={0} onChange={(e) => setmenuItemPrice(e.target.value)} value={menuItemPrice}/>
                     </div>
                     <div className="form-group mb-3">
                         <label for="menuItemAvailability">Availability:</label>
