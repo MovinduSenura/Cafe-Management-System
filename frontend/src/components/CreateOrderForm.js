@@ -59,7 +59,7 @@ const CreateOrderForm = () => {
     </div>
 
     <div class="form-group mb3">
-    <label for="Order_amount">Full-Amount</label>
+    <label for="Order_amount">Full-Amount (Rs)</label>
         <input type="number" class="form-control" id="AmountExample"  placeholder="Choose the amount" onChange={(e)=>setOrderPrice(e.target.value)} value={OrderPrice}  />
     </div>
 
