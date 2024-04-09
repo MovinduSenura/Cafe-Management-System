@@ -14,7 +14,7 @@ const OrdersAll = () => {
     const getAllOrders = async () => {
       try {
         await axios
-          .get("http://localhost:8090/order/allOrders")
+          .get("http://localhost:8000/order/allOrders")
           .then((res) => {
             setOrdersAll(res.data.AllOrders);
           })
@@ -36,7 +36,7 @@ const OrdersAll = () => {
       const confirmed = window.confirm('Are you sure you want to delete this order?');
 
       if(confirmed){
-        await axios.delete(`http://localhost:8090/order/delete/${id}`)
+        await axios.delete(`http://localhost:8000/order/delete/${id}`)
         .then((res) => {
           alert(res.data.message);
           console.log(res.data.message);

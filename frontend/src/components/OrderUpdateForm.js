@@ -21,7 +21,7 @@ const OrderUpdateForm = () => {
     const getOneData = async () => {
       try {
         await axios
-          .get(`http://localhost:8090/order/oneOrder/${id}`)
+          .get(`http://localhost:8000/order/oneOrder/${id}`)
           .then((res) => {
             setOrderName(res.data.order.OrderName);
             setOrderQuantity(res.data.order.OrderQuantity);
@@ -53,12 +53,12 @@ const OrderUpdateForm = () => {
       };
 
       axios
-        .patch(`http://localhost:8090/order/Update/${id}`, updateOrderItem)
+        .patch(`http://localhost:8000/order/Update/${id}`, updateOrderItem)
         .then((res) => {
           alert(res.data.message);
           console.log(res.data.status);
           console.log(res.data.message);
-          navigate("/");
+          navigate("/OrdersAll");
         })
         .catch((err) => {
           console.log(

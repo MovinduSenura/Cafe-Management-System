@@ -1,0 +1,63 @@
+/* Home - Contact Us sector */
+.thirdSectorHome{
+    /* background-color: red; */
+    height: 60vh;
+    width: 100%;
+    font-family: 'Poppins';
+}
+
+.thirdSecOverlay{
+    /* background-color: rgba(0, 0, 0, 0.7); */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.thirdSectorAlignDiv{
+    /* background-color: rgb(0, 68, 255); */
+    /* width: 1400px; */
+    padding: 10px;
+}
+
+.widthContiner{
+    width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.ContactTextContainer{
+    /* background-color: yellow; */
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.ContactTextContainer h1{
+    font-weight: 600;
+}
+
+.ContactContent{
+    display: grid;
+    grid-template-columns: auto auto auto;
+    gap: 20px;
+    text-align: center;
+}
+
+.ContactContent p{
+    margin-top: 30px;
+}
+
+.ContactContent h5{
+    margin-top: 10px;
+}
+
+.contactCard{
+    background-color: #efa57b; /* For browsers that do not support gradients */
+    background-image: linear-gradient(to right, #F4A177 , #D8B88F);
+    border-radius: 5px;
+    padding: 50px 10px;
+}
