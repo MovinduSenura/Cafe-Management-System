@@ -3,8 +3,7 @@ const mongoose = require('mongoose');
 const menuItemSchema = new mongoose.Schema({
     menuItemImage: {
         type: String,
-        required: true,
-        trim: true,
+        // required: true,
     },
     menuItemName: {
         type: String,

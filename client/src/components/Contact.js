@@ -15,17 +15,17 @@ const Contact = () => {
                     </div>
                     <div className="ContactContent">
                         <div className="contactCard">
-                            <img src={Mail} />
+                            <img src={Mail} alt="Mail" />
                             <h5>Email Us</h5>
                             <p>cafeespressoelegance@gmail.com</p>
                         </div>
                         <div className="contactCard">
-                            <img src={Phone} />
+                            <img src={Phone} alt="Phone" />
                             <h5>Call Us</h5>
                             <p>+94 77 7314 087</p>
                         </div>
                         <div className="contactCard">
-                            <img src={Feedback} />
+                            <img src={Feedback} alt="Feedback" />
                             <h5>Provide Feedback</h5>
                             <p>Click Here to Login</p>
                         </div>

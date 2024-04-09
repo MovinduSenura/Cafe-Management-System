@@ -7,15 +7,16 @@ const {
     getOnemenuItem,
     updatemenuItem,
     deletemenuItem,
-    
-
 } = require("../controller/menuItem.controller");
 
-menuItemRouter.post('/create', addmenuItem);
-menuItemRouter.get('/menuItems', getAllmenuItems);
-menuItemRouter.get('/menuItem/:id', getOnemenuItem);
-menuItemRouter.patch('/menuItemUpdate/:id', updatemenuItem);
-menuItemRouter.delete('/deletemenuItem/:id', deletemenuItem);
+const menuAllRoutes = (upload) => {
+    menuItemRouter.post('/create', upload.single("menuItemImage"), addmenuItem);
+    menuItemRouter.get('/menuItems', getAllmenuItems);
+    menuItemRouter.get('/menuItem/:id', getOnemenuItem);
+    menuItemRouter.patch('/menuItemUpdate/:id', upload.single("menuItemImage"), updatemenuItem);
+    menuItemRouter.delete('/deletemenuItem/:id', deletemenuItem);
 
+    return menuItemRouter
+}
 
-module.exports = menuItemRouter;
+module.exports = menuAllRoutes;

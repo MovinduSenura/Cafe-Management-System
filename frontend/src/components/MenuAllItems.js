@@ -88,7 +88,14 @@ const MenuAllItems = () => {
                     {MenuAllItems.map((menuitems, index) => (
                         <tr key={menuitems._id}>
                             <th scope="row">{index + 1}</th>
-                            <td>{menuitems.menuItemImage}</td>
+                            <td>
+                                <img 
+                                    src={require(`../uploads/${menuitems.menuItemImage}`)}
+                                    width={30}
+                                    height={40}
+                                    alt="menuItemImage" 
+                                />
+                            </td>
                             <td>{menuitems.menuItemName}</td>
                             <td>{menuitems.menuItemDescription}</td>
                             <td>{menuitems.menuItemCategory}</td>

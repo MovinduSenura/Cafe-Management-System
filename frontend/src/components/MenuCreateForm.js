@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import axios from 'axios';
 
 //importing CSS files
@@ -6,7 +6,8 @@ import './MenuCreateForm.css'
 
 const MenuCreateForm = () => {
 
-    const [menuItemImage, setmenuItemImage] = useState('');
+    // const [menuItemImage, setmenuItemImage] = useState('');
+    const fileInputRef = useRef(null); // Create a ref for file input
     const [menuItemName, setmenuItemName] = useState('');
     const [menuItemDescription, setmenuItemDescription] = useState('');
     const [menuItemCategory, setmenuItemCategory] = useState('');
@@ -16,18 +17,29 @@ const MenuCreateForm = () => {
     const sendData = (e) => {
         e.preventDefault();
 
+        const menuformdata = new FormData(); // Create menuformdata object to append data
+        // menuformdata.append('menuItemImage', menuItemImage);
+        menuformdata.append('menuItemImage', fileInputRef.current.files[0]); // Retrieve file from file input ref
+        menuformdata.append('menuItemName', menuItemName);
+        menuformdata.append('menuItemDescription', menuItemDescription);
+        menuformdata.append('menuItemCategory', menuItemCategory);
+        menuformdata.append('menuItemPrice', menuItemPrice);
+        menuformdata.append('menuItemAvailability', menuItemAvailability);
+        
+        
+
         try{
 
-            let newmenuItem = {
-                menuItemImage: menuItemImage,
-                menuItemName: menuItemName,
-                menuItemDescription: menuItemDescription,
-                menuItemCategory: menuItemCategory,
-                menuItemPrice: menuItemPrice,
-                menuItemAvailability: menuItemAvailability,
-            }
+            // let newmenuItem = {
+            //     menuItemImage: menuItemImage,
+            //     menuItemName: menuItemName,
+            //     menuItemDescription: menuItemDescription,
+            //     menuItemCategory: menuItemCategory,
+            //     menuItemPrice: menuItemPrice,
+            //     menuItemAvailability: menuItemAvailability,
+            // }
 
-            axios.post('http://localhost:8000/menu/create', newmenuItem)
+            axios.post('http://localhost:8000/menu/create', menuformdata, {headers: {'Content-Type': 'multipart/form-data'}})
             .then((res) => {
                 alert(res.data.message);
                 console.log(res.data.status);
@@ -38,7 +50,10 @@ const MenuCreateForm = () => {
             })
 
             //set State back to first state
-            setmenuItemImage('');
+            // setmenuItemImage('');
+
+            // Clear file input by replacing it with a new one
+            fileInputRef.current.value = '';
             setmenuItemName('');
             setmenuItemDescription('');
             setmenuItemCategory('');
@@ -59,7 +74,8 @@ const MenuCreateForm = () => {
                 <form onSubmit={sendData}>
                     <div className="form-group mb-3">
                         <label for="menuItemImage">Image:</label>
-                        <input type="text" className="form-control" id="menuItemImage" placeholder="Enter menuItemImage" autoComplete="off" onChange={(e) => setmenuItemImage(e.target.value)} value={menuItemImage}/>
+                        {/* <input type="file" accept="image/*" className="form-control" id="menuItemImage" placeholder="Enter menuItemImage" autoComplete="off" onChange={(e) => setmenuItemImage(e.target.files[0])}/> */}
+                        <input type="file" accept="image/*" className="form-control" id="menuItemImage" placeholder="Enter menuItemImage" autoComplete="off" ref={fileInputRef} required/>
                     </div>
                     <div className="form-group mb-3">
                         <label for="menuItemName">Item Name:</label>

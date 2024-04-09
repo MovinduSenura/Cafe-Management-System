@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import axios from 'axios';
 import { useParams, useNavigate } from "react-router-dom";
 
@@ -7,7 +7,9 @@ import './MenuCreateForm.css'
 
 const MenuUpdateForm = () => {
 
-    const [menuItemImage, setmenuItemImage] = useState('');
+    // const [menuItemImage, setmenuItemImage] = useState('');
+    const fileInputRef = useRef(null); // Create a ref for file input
+    const [uploadedFileName, setUploadedFileName] = useState(''); // State to store uploaded file name
     const [menuItemName, setmenuItemName] = useState('');
     const [menuItemDescription, setmenuItemDescription] = useState('');
     const [menuItemCategory, setmenuItemCategory] = useState('');
@@ -25,7 +27,7 @@ const MenuUpdateForm = () => {
 
                 await axios.get(`http://localhost:8000/menu/menuItem/${id}`)
                 .then((res) => {
-                    setmenuItemImage(res.data.MenuItem.menuItemImage);
+                    setUploadedFileName(res.data.MenuItem.menuItemImage);
                     setmenuItemName(res.data.MenuItem.menuItemName);
                     setmenuItemDescription(res.data.MenuItem.menuItemDescription);
                     setmenuItemCategory(res.data.MenuItem.menuItemCategory);
@@ -51,21 +53,30 @@ const MenuUpdateForm = () => {
 
         try{
 
-            let updatemenuItem = {
-                menuItemImage: menuItemImage,
-                menuItemName: menuItemName,
-                menuItemDescription: menuItemDescription,
-                menuItemCategory: menuItemCategory,
-                menuItemPrice: menuItemPrice,
-                menuItemAvailability: menuItemAvailability,
-            }
+            const updateformdata = new FormData(); // Create updateformdata object to append data
+            // menuformdata.append('menuItemImage', menuItemImage);
+            updateformdata.append('menuItemImage', fileInputRef.current.files[0]); // Retrieve file from file input ref
+            updateformdata.append('menuItemName', menuItemName);
+            updateformdata.append('menuItemDescription', menuItemDescription);
+            updateformdata.append('menuItemCategory', menuItemCategory);
+            updateformdata.append('menuItemPrice', menuItemPrice);
+            updateformdata.append('menuItemAvailability', menuItemAvailability);
 
-            axios.patch(`http://localhost:8000/menu/menuItemUpdate/${id}`, updatemenuItem)
+            // let updatemenuItem = {
+            //     menuItemImage: menuItemImage,
+            //     menuItemName: menuItemName,
+            //     menuItemDescription: menuItemDescription,
+            //     menuItemCategory: menuItemCategory,
+            //     menuItemPrice: menuItemPrice,
+            //     menuItemAvailability: menuItemAvailability,
+            // }
+
+            axios.patch(`http://localhost:8000/menu/menuItemUpdate/${id}`, updateformdata)
             .then((res) => {
                 alert(res.data.message);
                 console.log(res.data.status);
                 console.log(res.data.message);
-                navigate('/')
+                navigate('/menuallitems')
             })
             .catch((err) => {
                 console.log("☠️ :: Error on API URL or updatemenuItem object : " + err.message)
@@ -85,7 +96,9 @@ const MenuUpdateForm = () => {
                 <form onSubmit={updateData}>
                     <div className="form-group mb-3">
                         <label for="menuItemImage">Image:</label>
-                        <input type="text" className="form-control" id="menuItemImage" placeholder="Enter menuItemImage" autoComplete="off" onChange={(e) => setmenuItemImage(e.target.value)} value={menuItemImage}/>
+                        <input type="file" accept="image/*" className="form-control" id="menuItemImage" placeholder="Enter menuItemImage" autoComplete="off" ref={fileInputRef}/>
+                        {/* Display uploaded file name  */}
+                        {uploadedFileName && <p>Uploaded File: {uploadedFileName}</p>} 
                     </div>
                     <div className="form-group mb-3">
                         <label for="menuItemName">Item Name:</label>

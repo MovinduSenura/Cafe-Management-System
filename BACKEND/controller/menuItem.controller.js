@@ -5,7 +5,9 @@ const addmenuItem = async (req, res) => {
 
     try{
 
-        const {menuItemImage, menuItemName, menuItemDescription, menuItemCategory, menuItemPrice, menuItemAvailability } = req.body;
+        const {menuItemName, menuItemDescription, menuItemCategory, menuItemPrice, menuItemAvailability } = req.body;
+
+        const menuItemImage = req.file.filename; //Extract the filename from the uploaded file
 
         const newmenuItem = {
             menuItemImage: menuItemImage,
@@ -85,15 +87,20 @@ const updatemenuItem = async (req, res) => {
     try{
 
     const menuItemID = req.params.id;
-    const {menuItemImage, menuItemName, menuItemDescription, menuItemCategory, menuItemPrice, menuItemAvailability } = req.body;
+    const {menuItemName, menuItemDescription, menuItemCategory, menuItemPrice, menuItemAvailability } = req.body;
 
     const existingmenuItem = {
-        menuItemImage: menuItemImage,
+        // menuItemImage: menuItemImage,
         menuItemName: menuItemName,
         menuItemDescription: menuItemDescription,
         menuItemCategory: menuItemCategory,
         menuItemPrice: menuItemPrice,
         menuItemAvailability: menuItemAvailability,
+    }
+
+    // Check if file exists in the request then only send image with itemData object
+    if (req.file) {
+        existingmenuItem.menuItemImage = req.file.filename; // Extract the filename from the uploaded file
     }
 
     const updatemenuItemObj = await menuItemModel.findByIdAndUpdate(menuItemID, existingmenuItem);

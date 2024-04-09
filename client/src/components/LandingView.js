@@ -8,7 +8,7 @@ const LandingView = () => {
         <div className="firstSecOverlay">
             <div className="firstSectorAlignDiv">
                 <div className="logoContainer">
-                    <img src={Logo} />
+                    <img src={Logo} alt="Espresso Elegance Logo" />
                 </div>
                 <div className="InfoContainer">
                     <h1>Elegance in Every Espresso</h1>

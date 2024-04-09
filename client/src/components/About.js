@@ -11,9 +11,9 @@ const About = () => {
             <div className="secondSectorAlignDiv">
                 <div className="widthContiner">
                     <div className="AboutTextContainer">
-                        <img src={AboutUSDeco1} />
+                        <img src={AboutUSDeco1} alt="About Us Deco 1" />
                         <h1>About Us</h1>
-                        <img src={AboutUSDeco2} />
+                        <img src={AboutUSDeco2} alt="About Us Deco 2" />
                     </div>
                     <div className="aboutSpanText">
                         <p>Welcome to Espresso Elegance, where the classy appeal of Marine Drive, Colombo, combines with the enchanting aroma of freshly made coffee and pastries.</p>
@@ -27,7 +27,7 @@ const About = () => {
                             With a commitment to freshness and quality ingrained in our ethos, every cup of coffee and each pastry served reflects Thilan's passion for excellence.<br/> <br/>
                             Join us at Espresso Elegance and experience the vision of Thilan Manamperi come to life, where every sip and every bite is a testament to our dedication to perfection.
                         </p>
-                        <img src={AboutUSImage} className="column" />
+                        <img src={AboutUSImage} className="column" alt="About Us" />
                     </div>
                 </div>
             </div>
