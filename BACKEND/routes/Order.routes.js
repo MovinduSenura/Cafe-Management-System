@@ -7,12 +7,13 @@ const {
   getOneOrder,
   updateOrder,
   deleteOrder,
+  
 } = require("../controller/Order.controller");
 
-OrderRouter.post("/order/create", addOrder);
-OrderRouter.get("/order/orders", getAllOrders);
-OrderRouter.get("/order/:id" , getOneOrder);
-OrderRouter.patch("/order/:id", updateOrder);
-OrderRouter.delete("/order/:id", deleteOrder);
+OrderRouter.post("/create", addOrder);
+OrderRouter.get("/allOrders", getAllOrders);
+OrderRouter.get("/oneOrder/:id" , getOneOrder);
+OrderRouter.patch("/Update/:id", updateOrder);
+OrderRouter.delete("/delete/:id", deleteOrder);
 
 module.exports = OrderRouter;

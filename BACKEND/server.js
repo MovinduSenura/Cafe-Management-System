@@ -15,7 +15,7 @@ app.use(cors());
 const OrderRouter = require('./routes/Order.routes');
 
 //api middleware 
-app.use("/api/", OrderRouter);
+app.use("/order/", OrderRouter);
 
 const PORT = process.env.PORT || 8070;
 app.listen(PORT, () =>{
