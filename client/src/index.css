@@ -1,0 +1,207 @@
+/* google font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;800&family=VT323&display=swap');
+
+/* layout */
+:root {
+  --primary: #1aac83;
+  --error: #e7195a;
+}
+body {
+  background: #f1f1f1;
+  margin: 0;
+  font-family: "Poppins";
+}
+
+
+/* HEADER */
+
+.header {
+  background: #161616;
+  height: 76px;
+  position: fixed;
+  width: 100%;
+  z-index: 1;
+  top: 0;
+  /* max-height: 76px; */
+}
+.header .headercontainer {
+  /* background-color: green; */
+  max-width: 1400px;
+  height: inherit;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.header .headercontainer h2{
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+  /* margin-left: 60px; */
+}
+.header a {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.headerbtndiv{
+  width: fit-content;
+  padding: 0 40px;
+  height: 100%;
+  /* margin: 0; */
+  /* background-color: red; */
+  display: flex;
+  align-items: center;
+}
+
+.headerbtndiv:hover{
+  background-color: #AB845B!important;
+  color: #161616;
+}
+
+/* .headerbtndiv:active{
+  background-color: #AB845B!important;
+} */
+
+.headerbtndiv p{
+  text-align: center;
+  margin: 0;
+}
+
+.pages{
+  /* max-width: 1400px; */
+  /* padding: 20px; */
+  margin: 0 auto;
+}
+
+
+
+/* NavBar */
+nav {
+  display: flex;
+  align-items: center;
+  height: inherit;
+  /* height: 76px; */
+  /* background-color: aqua; */
+}
+
+nav a {
+  margin-left: 10px;
+}
+
+nav .navbtncontainer{
+  display: grid;
+  grid-template-columns: auto auto auto auto auto;
+  /* background-color: blue; */
+  height: inherit;
+}
+
+
+/* FOOTER */
+
+footer {
+  background-color: #161616;
+  color: #fff;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.foot{
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+  /* align-items: center; */
+  /* text-align: center; */
+}
+
+.footerContent{
+  background-color: none;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Style for the logo image */
+.footerContent img {
+  width: 180px;
+  margin-right: 150px;
+}
+
+.footerBlocksContainer{
+  background-color: none;
+  display: grid;
+  grid-template-columns: auto auto auto;
+  gap: 100px;
+  text-align: center;
+  right: 0;
+}
+
+/* .block1{
+  text-align: center;
+  margin-left: 380px;
+  margin-top: 20px;
+}
+
+.block2{
+  text-align: center;
+  margin-top: 20px;
+  margin-left: 210px;
+  
+}
+
+.block3{
+  text-align: center;
+  margin-top: 20px;
+  margin-left: 210px;
+} */
+
+.socialmediaicons{
+  /* align-items: center; */
+  text-align: center;
+  margin-right: -10px;
+}
+
+/* Style for the address and open hours sections */
+h3 {
+  font-size: 1.2rem;
+  margin-top: 25px;
+  margin-bottom: 25px;
+
+}
+
+p {
+  font-size: 0.9rem;
+  margin-bottom: 5px;
+}
+
+/* Style for social media icons */
+a {
+  color: #fff;
+  text-decoration: none;
+  margin-right: 10px;
+}
+
+.copyright{
+  text-align: center;
+}
+
+.copyright p{
+  font-size: 0.7rem;
+  margin: 0;
+}
+
+.copyright small{
+  font-size: 0.6rem;
+  margin: 0;
+}
+
+.copyrighthr{
+  /* height: 12px; */
+  background-color: #ffffff!important;
+}
+
+.daedra{
+  color: #AB845B;
+  font-weight: 600;
+}
