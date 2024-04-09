@@ -5,6 +5,7 @@ import MenuAllItems from './components/MenuAllItems';
 import MenuUpdateForm from './components/MenuUpdateForm';
 import NavBar from './components/NavBar';
 import Footer from './components/Footer';
+import Home from './pages/Home';
 
 function App() {
   return (
@@ -19,8 +20,9 @@ function App() {
         <Routes>
 
           <Route path = '/menucreateform' element = {<MenuCreateForm />} />
-          <Route path = '/' element = {<MenuAllItems />} />
+          <Route path = '/menuallitems' element = {<MenuAllItems />} />
           <Route path = '/menuupdateform/:id' element = {<MenuUpdateForm />} />
+          <Route path = '/' element = {<Home />} />
 
         </Routes>
 

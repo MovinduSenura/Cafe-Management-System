@@ -18,6 +18,10 @@ body {
 .header {
   background: #161616;
   height: 76px;
+  position: fixed;
+  width: 100%;
+  z-index: 1;
+  top: 0;
   /* max-height: 76px; */
 }
 .header .headercontainer {
@@ -66,8 +70,8 @@ body {
 }
 
 .pages{
-  max-width: 1400px;
-  padding: 20px;
+  /* max-width: 1400px; */
+  /* padding: 20px; */
   margin: 0 auto;
 }
 
@@ -88,7 +92,7 @@ nav a {
 
 nav .navbtncontainer{
   display: grid;
-  grid-template-columns: auto auto auto auto;
+  grid-template-columns: auto auto auto auto auto;
   /* background-color: blue; */
   height: inherit;
 }

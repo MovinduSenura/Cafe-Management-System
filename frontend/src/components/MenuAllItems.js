@@ -63,7 +63,7 @@ const MenuAllItems = () => {
     }
 
     return(
-        <div>
+        <div className="menualldiv">
             
             <div className = "tablecontainer">
                 <div className="addbtndiv"><Link to='/menucreateform'><button type="button" className="btn btn-secondary btn-lg AddItemBtn">Add item</button></Link></div>

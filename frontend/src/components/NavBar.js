@@ -12,24 +12,24 @@ const NavBar = () => {
 
     <div className='header'>
         <div className="headercontainer">
-            <Link to='/'>
+            <a href='/'>
                 <h2>ESSPRESSO ELEGANCE</h2>
-            </Link>
+            </a>
             <nav>
               <div className='navbtncontainer'>
-                <Link to="/menucreateform">
+                <a href="/#landingview">
                   <div className='headerbtndiv' onClick={() => handleOptionClick('option 1')}
                   style={{backgroundColor: selectedOption === 'option 1' ? '#AB845B' : '#161616'}}>
                     <p>Home</p>
                   </div>
-                </Link>
-                <Link to="/">
+                </a>
+                <a href="/#about">
                   <div className='headerbtndiv' onClick={() => handleOptionClick('option 2')}
                   style={{backgroundColor: selectedOption === 'option 2' ? '#AB845B' : '#161616'}}>
                     <p>About</p>
                   </div>
-                </Link>
-                <Link to="/">
+                </a>
+                <Link to="/menuallitems">
                   <div className='headerbtndiv' onClick={() => handleOptionClick('option 3')}
                   style={{backgroundColor: selectedOption === 'option 3' ? '#AB845B' : '#161616'}}>
                   <p>Menu</p>
@@ -41,6 +41,12 @@ const NavBar = () => {
                   <p>Promotions</p>
                   </div>
                 </Link>
+                <a href="/#contact">
+                  <div className='headerbtndiv' onClick={() => handleOptionClick('option 5')}
+                  style={{backgroundColor: selectedOption === 'option 5' ? '#AB845B' : '#161616'}}>
+                  <p>Contact</p>
+                  </div>
+                </a>
               </div>
             </nav>
         </div>
