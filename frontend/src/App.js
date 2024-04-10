@@ -1,23 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import {BrowserRouter, Routes, Route} from 'react-router-dom'
+import CustomerCreateForm from "./components/CustomerCreateForm";
+import CustomerAll from "./components/CustomerAll";
+import CustomerUpdateForm from './components/CustomerUpdateForm';
+import CustomerOneManager from './components/CustomerOneManager'
+import CustomerOneCashier from './components/CustomerOneCashier'
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+
+      <BrowserRouter>
+      <Routes>
+      //function in the createform.js
+      <Route path='/customerCreate'element ={<CustomerCreateForm/>}/>
+      <Route path='/customersall' element={<CustomerAll/>}/>
+      <Route path='/customerUpdate/:id' element ={<CustomerUpdateForm/>}/>
+      <Route path='/customerView/:id' element ={<CustomerOneManager/>}/>
+      <Route path='/customerView2/:id' element ={<CustomerOneCashier/>}/>
+
+      </Routes>
+      </BrowserRouter>
+      
     </div>
   );
 }

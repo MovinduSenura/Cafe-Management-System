@@ -46,7 +46,7 @@ const getAllCustomers = async (req, res) => {
 
     try{
         const allCustomers = await customerModel.find();
-//Allcustomers red eka hrha anek eke thyena data front end ekt ywnw.
+//Allcustomers red eka hrha anek eke thyena data front end ekt ywnw. e ynne array ekk wdyta
         return res.status(200).send({
             status: true,
             message: "⭐ All customers are fetched!",
@@ -86,6 +86,34 @@ const getOneCustomer = async(req,res) => {
 
 }
 
+//get- serach particular customer
+const searchCustomer = async (req, res) => {
+
+    try{
+
+        const CustomerNIC = req.query.customerNIC;
+        // Using a regular expression to match partial game names
+        //regex- ghna akurata match wena eka enw
+        const customer = await customerModel.find({ customerNIC: { $regex: CustomerNIC, $options: 'i' } }); //the $regex operator in MongoDB is used to perform a regular expression search for partial matches of the game name. The i option is used to perform a case-insensitive search.
+                                            //customerNIC == CustomerNIC samanada kyl blnw 
+
+        return res.status(200).send({
+            status: true,
+            message: "✨ :: Project Searched and fetched!",
+            customerSearch : customer
+        })
+
+    }catch(err){
+
+        return res.status(500).send({
+            status: false,
+            message: err.message
+        });
+
+    }
+
+}
+
 const updateCustomer = async (req,res) => {
 
     try{
@@ -105,7 +133,7 @@ const updateCustomer = async (req,res) => {
 
         const updateCustomerObj = await customerModel.findByIdAndUpdate(customerId, customerData);
 
-        return res.status(500).send({
+        return res.status(200).send({
         status: true,
         message: "Customer updated⭐"
         })
@@ -150,4 +178,5 @@ module.exports = {
     getOneCustomer,
     updateCustomer,
     deleteCustomer,
+    searchCustomer,
 }
