@@ -81,6 +81,33 @@ const getOnemenuItem = async (req, res) => {
 }
 
 
+//Get search particular item
+const searchmenuItem = async (req, res) => {
+
+    try{
+
+        const menuItemName = req.query.menuItemName;
+        // Using a regular expression to match partial game names
+        const menuItem = await menuItemModel.find({ menuItemName: { $regex: `^${menuItemName}`, $options: 'i' } }); //the $regex operator in MongoDB is used to perform a regular expression search for partial matches of the game name. The i option is used to perform a case-insensitive search.
+
+        return res.status(200).send({
+            status: true,
+            message: "✨ :: Item Searched and fetched!",
+            searchedmenuItem: menuItem
+        })
+
+    }catch(err){
+
+        return res.status(500).send({
+            status: false,
+            message: err.message
+        });
+
+    }
+
+}
+
+
 //Update item details router controller
 const updatemenuItem = async (req, res) => {
     
@@ -144,6 +171,7 @@ module.exports = {
     addmenuItem,
     getAllmenuItems,
     getOnemenuItem,
+    searchmenuItem,
     updatemenuItem,
     deletemenuItem,
 }

@@ -9,6 +9,7 @@ import OrderUpdateForm from './components/OrderUpdateForm';
 
 import NavBar from './components/NavBar';
 import Footer from './components/Footer';
+import SideNavPanel from './components/SideNavPanel';
 
 function App() {
   return (
@@ -17,6 +18,8 @@ function App() {
       <BrowserRouter>
 
       <NavBar/>
+
+      <SideNavPanel/>
 
       <div className='pages'>
 
