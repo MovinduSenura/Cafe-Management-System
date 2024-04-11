@@ -15,6 +15,10 @@ import CustomerOneManager from './components/CustomerOneManager'
 import CustomerOneCashier from './components/CustomerOneCashier'
 
 
+import PromotionCreateForm from './components/PromotionCreateForm';
+import AllPromotions from './components/AllPromotions';
+import UpdatePromotionForm from './components/UpdatePromotionForm';
+
 import NavBar from './components/NavBar';
 import Footer from './components/Footer';
 import SideNavPanel from './components/SideNavPanel';
@@ -45,7 +49,11 @@ function App() {
             <Route path='/customerUpdate/:id' element={<CustomerUpdateForm />} />
             <Route path='/customerView/:id' element={<CustomerOneManager />} />
             <Route path='/customerView2/:id' element={<CustomerOneCashier />} />
-
+             
+            <Route path='/createform' element={<PromotionCreateForm />}/>
+            <Route path='/updateform/:id' element={<UpdatePromotionForm/>}/>
+            <Route path='/allpromotion' element={<AllPromotions/>}/>
+        
           </Routes>
 
         </div>

@@ -28,7 +28,7 @@ const upload = multer({ storage: storage })
 
 //routes
 const menuAllRoutes = require('./routes/menuItems.routes');
-
+const promotionRouter = require("./routes/promotion.routes");
 const OrderRouter = require('./routes/Order.routes');
 
 const CustomerRouter = require('./routes/customer.routes');
@@ -36,7 +36,7 @@ const CustomerRouter = require('./routes/customer.routes');
 app.use('/menu/', menuAllRoutes(upload));
 app.use("/order/", OrderRouter);
 app.use('/customer/', CustomerRouter);
-
+app.use('/promotion/',promotionRouter);
 
 
 const PORT = process.env.PORT || 8070;
