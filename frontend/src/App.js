@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import {BrowserRouter, Routes, Route} from 'react-router-dom'
+
 
 import MenuCreateForm from './components/MenuCreateForm';
 import MenuAllItems from './components/MenuAllItems';
@@ -6,11 +7,13 @@ import MenuUpdateForm from './components/MenuUpdateForm';
 import CreateOrderForm from './components/CreateOrderForm';
 import OrdersAll from './components/OrdersAll';
 import OrderUpdateForm from './components/OrderUpdateForm';
+
 import CustomerCreateForm from "./components/CustomerCreateForm";
 import CustomerAll from "./components/CustomerAll";
 import CustomerUpdateForm from './components/CustomerUpdateForm';
 import CustomerOneManager from './components/CustomerOneManager'
 import CustomerOneCashier from './components/CustomerOneCashier'
+
 
 import NavBar from './components/NavBar';
 import Footer from './components/Footer';
@@ -21,7 +24,7 @@ function App() {
     <div className="App">
 
       <BrowserRouter>
-
+    
         <NavBar />
 
         <SideNavPanel />
