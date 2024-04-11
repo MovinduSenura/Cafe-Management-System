@@ -75,6 +75,32 @@ const getOnePayment = async(req,res) => {
     }               
 }
 
+//get - search particular payment
+const searchPayment = async (req, res) => {
+
+    try{
+
+        const amount = req.query.amount;
+        // Using a regular expression to match partial game names
+        const amountPayment = await paymentModel.find({ amount: parseFloat(amount) }); //the $regex operator in MongoDB is used to perform a regular expression search for partial matches of the game name. The i option is used to perform a case-insensitive search.
+
+        return res.status(200).send({
+            status: true,
+            message: "✨ :: Project Searched and fetched!",
+            searchPayment: amountPayment
+        })
+
+    }catch(err){
+
+        return res.status(500).send({
+            status: false,
+            message: err.message
+        });
+
+    }
+
+}
+
 //Update item details router controller
 const updatePayment = async(req,res) => {
 
@@ -127,5 +153,6 @@ module.exports = {
     getAllPayments, 
     getOnePayment, 
     updatePayment, 
-    deletePayment                    
+    deletePayment,
+    searchPayment,                    
 }

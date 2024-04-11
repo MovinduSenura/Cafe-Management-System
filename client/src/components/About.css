@@ -1,0 +1,81 @@
+/* Home - About Us sector */
+.secondSectorHome{
+    /* background-color: red; */
+    height: 100vh;
+    width: 100%;
+    font-family: 'Poppins';
+    /* margin-top: 80px; */
+}
+
+.secondSecOverlay{
+    /* background-color: rgba(0, 0, 0, 0.7); */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.widthContiner{
+    width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.AboutTextContainer{
+    /* background-color: green; */
+    width: fit-content;
+    margin-right: auto;
+    margin-left: auto;
+    text-align: center;
+}
+
+.AboutTextContainer h1{
+    margin: 0;
+    font-weight: 600;
+}
+
+.aboutSpanText{
+    /* background-color: aqua; */
+    width: 70%;
+    margin-left: 15%;
+    margin-right: 15%;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 50px;
+}
+
+.aboutSpanText p{
+    font-size: 1.25em;
+}
+
+.aboutUsContent{
+    background-color: #d8b88f;
+    width: 100vw;
+}
+
+.aboutWidthContentContiner{
+    width: 1400px;
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    gap: 20px;
+    padding: 50px 10px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.column{
+    display: flex;
+    align-items: center;
+}
+
+.aboutUsContent p{
+    /* background-color: aqua; */
+    width: 90%;
+    margin-right: 5%;
+    margin-left: 5%;
+    font-size: 1.25em;
+}

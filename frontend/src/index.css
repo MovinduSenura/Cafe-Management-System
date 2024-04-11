@@ -1,4 +1,3 @@
-
 /* google font */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;800&family=VT323&display=swap');
 
@@ -12,41 +11,120 @@ body {
   margin: 0;
   font-family: "Poppins";
 }
-header {
-  
+
+
+/* HEADER */
+
+.header {
   background: #161616;
+  height: 76px;
+  position: fixed;
+  width: 100%;
+  z-index: 10;
+  top: 0;
+  /* max-height: 76px; */
 }
-header .container {
+.header .headercontainer {
+  /* background-color: green; */
   max-width: 1400px;
+  height: inherit;
   margin: 0 auto;
-  padding: 10px 20px;
+  padding: 0 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
-header .container h1{
-  color: #fff;
+.header .headercontainer h2{
   font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+  /* margin-left: 60px; */
 }
-header a {
-  color: #fff;
-  /* color: #333; */
+
+.header a {
+  color: #ffffff;
   text-decoration: none;
 }
+
 .pages{
-  max-width: 1400px;
-  padding: 20px;
+  /* max-width: 1400px; */
+  /* padding: 20px; */
   margin: 0 auto;
 }
 
+/* FOOTER */
 
-
-/* navbar */
-nav {
-  display: flex;
-  align-items: center;
+footer {
+  background-color: #161616;
+  color: #fff;
+  padding: 20px;
+  margin-top: 20px;
+  /* z-index: -1; */
+  z-index: 10;
 }
-nav a {
+
+.copyright{
+  text-align: center;
+}
+
+.copyright p{
+  font-size: 0.7rem;
+  margin: 0;
+}
+
+.copyright small{
+  font-size: 0.6rem;
+  margin: 0;
+}
+
+.copyrighthr{
+  /* height: 12px; */
+  background-color: #ffffff!important;
+}
+
+.daedra{
+  color: #AB845B;
+  font-weight: 600;
+}
+
+/* SideNavPanel */
+
+.sidenavpanel {
+  height: 100%;
+  width: 218px; /* Adjust the width as needed */
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #161616e7;
+  padding-top: 100px;
+  z-index: 1;
+}
+
+.sidenavpanel h4{
   margin-left: 10px;
+  color: #ffffff;
 }
 
+/* Style for the links */
+.sidenavpanel a {
+  display: block;
+  padding: 10px 10px;
+  color: white;
+  text-decoration: none;
+}
+
+/* Hover effect */
+.sidenavpanel a:hover {
+  background-color: #AB845B!important;
+  color: #161616;
+}
+
+/* Active link */
+.sidenavpanel .active {
+  background-color: #AB845B;
+}
+
+/* .sidenavcontent{
+  margin-left: 200px;
+  padding: 20px;
+} */

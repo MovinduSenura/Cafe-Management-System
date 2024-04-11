@@ -56,7 +56,7 @@ const PaymentUpdateForm = () => {
                 alert(res.data.message);
                 console.log(res.data.status);
                 console.log(res.data.message);
-                navigate('/')
+                navigate('/getAllPayment')
             })
             .catch((err) => {
                 console.log("💀 :: Error on API URL or newPaymentData object : "+err.message);
