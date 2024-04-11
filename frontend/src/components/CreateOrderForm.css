@@ -1,0 +1,60 @@
+/* CreateOrderForm.css */
+
+.CreateOrderFormContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .orderFormContainer {
+    width: 400px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .orderFormContainer h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-group label {
+    font-weight: bold;
+  }
+  
+  .form-control {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  .btn-primary {
+    width: 30%;
+    padding: 10px;
+    background-color: #AB845B;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin: 0 auto; 
+    display: block; 
+  }
+  
+
+  
+  .btn-primary:hover {
+    background-color: #AB845B;
+  }
+
+  .orderFormContainer h1{
+    text-align: center;
+  }
