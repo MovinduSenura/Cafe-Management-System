@@ -1,0 +1,57 @@
+/* Home - Home sector */
+.firstSectorHome{
+    position: relative;
+    background-image: url('../images/LandingImage.jpg');
+    height: 100vh;
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+    color: #ffffff;
+    font-family: 'Poppins';
+}
+
+.firstSecOverlay{
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.7);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.firstSectorAlignDiv{
+    /* background-color: red; */
+    width: 1400px;
+    padding: 10px;
+}
+
+.logoContainer img{
+    width: 243px;
+}
+
+.InfoContainer{
+    /* background-color: yellow; */
+}
+
+.InfoContainer h1{
+    font-size: 4.5em;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.InfoContainer p{
+    font-size: 2em;
+    margin-bottom: 30px;
+}
+
+.InfoContainer button{
+    font-size: 2em;
+    border: 2px solid #ffffff;
+    background-color: transparent;
+    color: #ffffff;
+    width: 200px;
+}
