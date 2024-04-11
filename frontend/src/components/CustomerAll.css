@@ -24,7 +24,7 @@
 }
 
 .EditDeleteBTNs{
-    width: fit-content;
+    width:wrap-content;
     margin-right: auto;
     margin-left: auto;
 }

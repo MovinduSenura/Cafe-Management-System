@@ -197,7 +197,7 @@ const AllCustomers = () => {
                                 <td>{customers.customerLoyaltyPoints}</td>
                                 {/* a href = Link to , a = Link, href = to */}
                                 <td><Link to={`/CustomerView/${customers._id}`}><button type="button" className="btn btn-warning">View</button></Link>&nbsp;&nbsp;
-                                    <button type="button" class="btn btn-danger" onClick={() => handleDelete(customers._id)}>Delete</button></td>
+                                    </td>
 
                             </tr>
 
