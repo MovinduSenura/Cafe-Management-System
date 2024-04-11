@@ -24,6 +24,7 @@ import PaymentAll from './components/PaymentAll';
 import PaymentUpdateForm from './components/PaymentUpdateForm';
 
 
+
 import StaffCreateForm from './components/StaffCreateForm';
 import AllStaff from './components/AllStaff';
 import StaffLogin from './components/StaffLogin';
@@ -31,6 +32,7 @@ import Admin from './pages/admindash';
 import Chef from './pages/cheffdash';
 import Cashier from './pages/cashierdash';
 import StaffUpdateForm from './components/StaffUpdateForm';
+
 
 import NavBar from './components/NavBar';
 import Footer from './components/Footer';
@@ -71,6 +73,7 @@ function App() {
             <Route path='/getAllPayment' element={<PaymentAll/>}/>
             <Route path='/update/:id' element={<PaymentUpdateForm/>}/>
 
+
             <Route path = '/createStaff' element = {<StaffCreateForm/>}/>
             <Route path='/allstaff' element={<AllStaff/>}/>
             <Route path='/StaffLogin' element={<StaffLogin />} />
@@ -78,6 +81,7 @@ function App() {
             <Route path="/cheff" element={< Chef/>} />
             <Route path="/cashier" element={<Cashier />} />
             <Route path='/staffUpdateform/:id' element={<StaffUpdateForm/>}/>
+
 
         
           </Routes>
