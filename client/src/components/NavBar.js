@@ -29,7 +29,7 @@ const NavBar = () => {
                     <p>About</p>
                   </div>
                 </a>
-                <Link to="/">
+                <Link to="/menudisplay">
                   <div className='headerbtndiv' onClick={() => handleOptionClick('option 3')}
                   style={{backgroundColor: selectedOption === 'option 3' ? '#AB845B' : '#161616'}}>
                   <p>Menu</p>
