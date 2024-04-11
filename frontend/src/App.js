@@ -14,10 +14,10 @@ import CustomerUpdateForm from './components/CustomerUpdateForm';
 import CustomerOneManager from './components/CustomerOneManager'
 import CustomerOneCashier from './components/CustomerOneCashier'
 
+
 import PromotionCreateForm from './components/PromotionCreateForm';
 import AllPromotions from './components/AllPromotions';
 import UpdatePromotionForm from './components/UpdatePromotionForm';
-
 
 import NavBar from './components/NavBar';
 import Footer from './components/Footer';
@@ -53,7 +53,7 @@ function App() {
             <Route path='/createform' element={<PromotionCreateForm />}/>
             <Route path='/updateform/:id' element={<UpdatePromotionForm/>}/>
             <Route path='/allpromotion' element={<AllPromotions/>}/>
-         
+        
           </Routes>
 
         </div>
