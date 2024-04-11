@@ -28,11 +28,18 @@ const upload = multer({ storage: storage })
 
 //routes
 const menuAllRoutes = require('./routes/menuItems.routes');
-
+const promotionRouter = require("./routes/promotion.routes");
 const OrderRouter = require('./routes/Order.routes');
+const paymentRouter = require('./routes/payment.routes');
+const CustomerRouter = require('./routes/customer.routes');
+
 //API Middleware
 app.use('/menu/', menuAllRoutes(upload));
 app.use("/order/", OrderRouter);
+app.use('/customer/', CustomerRouter);
+app.use('/promotion/',promotionRouter);
+app.use('/payment/',paymentRouter);
+
 
 
 const PORT = process.env.PORT || 8070;
