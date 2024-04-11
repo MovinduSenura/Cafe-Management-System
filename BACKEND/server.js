@@ -30,9 +30,13 @@ const upload = multer({ storage: storage })
 const menuAllRoutes = require('./routes/menuItems.routes');
 
 const OrderRouter = require('./routes/Order.routes');
+
+const CustomerRouter = require('./routes/customer.routes');
 //API Middleware
 app.use('/menu/', menuAllRoutes(upload));
 app.use("/order/", OrderRouter);
+app.use('/customer/', CustomerRouter);
+
 
 
 const PORT = process.env.PORT || 8070;
