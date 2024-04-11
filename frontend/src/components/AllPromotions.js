@@ -16,7 +16,7 @@ const AllPromotions = ()=> {
       const getAllPromotions = async () => {
         try{
           
-          await axios.get('http://localhost:8000/api/promotions')
+          await axios.get('http://localhost:8000/promotion/promotions')
           .then((res) => {
             setAllPromotion(res.data.Allpromotions);
             console.log(res.data.Allpromotions);
@@ -44,7 +44,7 @@ const AllPromotions = ()=> {
               const confirmed  = window.confirm('Are you sure you want to delete this item?');
               
               if(confirmed){
-                 await axios.delete(`http://localhost:8000/api/deletepromotion/${id}`)
+                 await axios.delete(`http://localhost:8000/promotion/deletepromotion/${id}`)
                 .then((res) => {
                 alert(res.data.message);
                 console.log(res.data.message);

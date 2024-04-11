@@ -21,7 +21,7 @@ const PromotionCreateForm = () =>{
                 promotionDescription: promotionDescription,
                 promotionItempic: promotionItempic,
             }
-            axios.post('http://localhost:8000/api/create',newpromotionData)
+            axios.post('http://localhost:8000/promotion/create',newpromotionData)
             .then((res) =>{
                 alert(res.data.message);
                 console.log(res.data.status);

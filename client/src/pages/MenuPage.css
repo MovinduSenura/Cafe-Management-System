@@ -1,0 +1,108 @@
+.menuitemsmaindiv{
+    /* width: 1400px; */
+}
+
+.SectorMenu{
+    position: relative;
+    background-image: url('../images/menubanner.jpg');
+    height: 50vh;
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+    color: #ffffff;
+    font-family: 'Poppins';
+}
+
+.SecOverlay{
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.7);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.SectorAlignDiv{
+    /* background-color: red; */
+    width: 1400px;
+    padding: 10px;
+}
+
+.menuIconsContainer img{
+    width: 90px;
+    /* align-items: center; */
+    /* text-align: center; */
+}
+
+.menuIconsContainer{
+    /* align-items: center; */
+    text-align: center;
+}
+
+.menuInfoContainer{
+    margin-bottom: -10px;
+}
+
+.menuInfoContainer h1{
+    font-size: 2.2em;
+    font-weight: 500;
+    margin-top: 50px;
+    text-align: center;
+}
+
+.menuItemsSector{
+    width: 1400px;
+    margin-top: 80px;
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    margin-left: auto;
+    margin-right: auto;
+    /* background-color: red; */
+    /* align-items: center; */
+}
+
+.menucard{
+    background-color: none;
+    width: 200px;
+    height: 230px;
+    border-radius: 5px;
+    margin-left: auto;
+    margin-right: auto;
+    /* row-gap: 20px; */
+    margin-bottom: 150px;
+    /* padding: 20px; */
+    text-align: center;
+    
+}
+
+.submenucard{
+    background-color: rgba(17, 24, 25, 0.19);
+    width: 140px;
+    height: 150px;
+    border-radius: 5px;
+    margin-left: auto;
+    margin-right: auto;
+    /* row-gap: 20px; */
+    margin-bottom: 20px;
+    /* margin-top: 20px; */
+    padding: 20px;
+    text-align: center;
+}
+
+.submenucard img{
+    margin-top: 5px;
+}
+
+.nameh4{
+    font-size: 1.5em;
+    font-weight: 400;
+}
+
+.priceh2{
+    font-size: 1.5em;
+    font-weight: 600;
+}
