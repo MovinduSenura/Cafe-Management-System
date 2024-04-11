@@ -23,7 +23,6 @@ import PaymentCreateForm from './components/PaymentCreateForm';
 import PaymentAll from './components/PaymentAll';
 import PaymentUpdateForm from './components/PaymentUpdateForm';
 
-
 import NavBar from './components/NavBar';
 import Footer from './components/Footer';
 import SideNavPanel from './components/SideNavPanel';
@@ -62,6 +61,7 @@ function App() {
             <Route path='/create' element={<PaymentCreateForm/>}/>
             <Route path='/getAllPayment' element={<PaymentAll/>}/>
             <Route path='/update/:id' element={<PaymentUpdateForm/>}/>
+
         
           </Routes>
 
