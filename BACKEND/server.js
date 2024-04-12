@@ -36,6 +36,7 @@ const staffRouter = require('./routes/staff.routes');
 const stockRouter = require('./routes/stock.routes');
 const FeedbackRouter = require('./routes/feedback.routes');
 
+
 //API Middleware
 app.use('/menu/', menuAllRoutes(upload));
 app.use("/order/", OrderRouter);
@@ -45,6 +46,7 @@ app.use('/payment/',paymentRouter);
 app.use('/staff/', staffRouter);
 app.use('/stock/', stockRouter);
 app.use('/feedback/',FeedbackRouter);
+
 
 
 const PORT = process.env.PORT || 8070;

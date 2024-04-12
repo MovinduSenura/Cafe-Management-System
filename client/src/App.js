@@ -4,7 +4,6 @@ import FeedbackCreateForm from './components/FeedbackCreateForm';
 import FeedbacksAll from './components/FeedbacksAll';
 import UpdateForm from './components/UpdateForm';
 
-
 import NavBar from './components/NavBar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
