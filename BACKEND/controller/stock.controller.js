@@ -5,10 +5,11 @@ const addItem = async (req, res) => {
 
     try{
 
-        const { itemName, currentstocklevel, minstocklevel } = req.body;
+        const { itemName, quantity, currentstocklevel, minstocklevel } = req.body;
 
         const newItemData = {
             itemName: itemName,
+            quantity: quantity,
             currentstocklevel: currentstocklevel,
             minstocklevel: minstocklevel,
         }
@@ -69,16 +70,43 @@ const getOneItem = async (req, res) => {
     }
 }
 
+//get - search particular item
+const searchItem = async (req, res) => {
+
+    try{
+
+        const ItemName = req.query.itemName;
+        // Using a regular expression to match partial game names
+        const item = await itemModel.find({ itemName: { $regex: ItemName, $options: 'i' } }); //the $regex operator in MongoDB is used to perform a regular expression search for partial matches of the game name. The i option is used to perform a case-insensitive search.
+
+        return res.status(200).send({
+            status: true,
+            message: "✨ :: Project Searched and fetched!",
+            searchedItem: item
+        })
+
+    }catch(err){
+
+        return res.status(500).send({
+            status: false,
+            message: err.message
+        });
+
+    }
+
+}
+
 //Update item details router controller
 const updateItem = async (req, res) => {
 
     try{
 
         const itemID = req.params.id;
-        const { itemName, currentstocklevel, minstocklevel } = req.body;
+        const { itemName, quantity, currentstocklevel, minstocklevel } = req.body;
 
         const itemData = {
            itemName: itemName,
+           quantity: quantity,
            currentstocklevel: currentstocklevel,
            minstocklevel: minstocklevel,
         }
@@ -125,6 +153,7 @@ module.exports = {
     addItem,
     getAllItems,
     getOneItem,
+    searchItem,
     updateItem,
     deleteItem,
 }

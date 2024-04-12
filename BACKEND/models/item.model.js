@@ -6,6 +6,11 @@ const itemSchema = new mongoose.Schema({
         required: true,
         trim: true,
     },
+    quantity: {
+        type: Number,
+        required: true,
+        trim: true, 
+    },
     currentstocklevel: {
         type: Number,
         required: true,

@@ -1,23 +1,106 @@
-import logo from './logo.svg';
-import './App.css';
+import {BrowserRouter, Routes, Route} from 'react-router-dom'
+
+
+import MenuCreateForm from './components/MenuCreateForm';
+import MenuAllItems from './components/MenuAllItems';
+import MenuUpdateForm from './components/MenuUpdateForm';
+import CreateOrderForm from './components/CreateOrderForm';
+import OrdersAll from './components/OrdersAll';
+import OrderUpdateForm from './components/OrderUpdateForm';
+
+import CustomerCreateForm from "./components/CustomerCreateForm";
+import CustomerAll from "./components/CustomerAll";
+import CustomerUpdateForm from './components/CustomerUpdateForm';
+import CustomerOneManager from './components/CustomerOneManager'
+import CustomerOneCashier from './components/CustomerOneCashier'
+
+
+import PromotionCreateForm from './components/PromotionCreateForm';
+import AllPromotions from './components/AllPromotions';
+import UpdatePromotionForm from './components/UpdatePromotionForm';
+
+import PaymentCreateForm from './components/PaymentCreateForm';
+import PaymentAll from './components/PaymentAll';
+import PaymentUpdateForm from './components/PaymentUpdateForm';
+
+
+
+import StaffCreateForm from './components/StaffCreateForm';
+import AllStaff from './components/AllStaff';
+import StaffLogin from './components/StaffLogin';
+import Admin from './pages/admindash';
+import Chef from './pages/cheffdash';
+import Cashier from './pages/cashierdash';
+import StaffUpdateForm from './components/StaffUpdateForm';
+
+
+import StockCreateForm from './components/StockCreateForm';
+import StockUpdateForm from './components/StockUpdateForm';
+import AllItems from './components/AllItems';
+
+
+import NavBar from './components/NavBar';
+import Footer from './components/Footer';
+import SideNavPanel from './components/SideNavPanel';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+
+      <BrowserRouter>
+    
+        <NavBar />
+
+        <SideNavPanel />
+
+        <div className='pages'>
+
+          <Routes>
+
+            <Route path='/menucreateform' element={<MenuCreateForm />} />
+            <Route path='/' element={<MenuAllItems />} />
+            <Route path='/menuupdateform/:id' element={<MenuUpdateForm />} />
+            <Route path='/CreateOrder' element={<CreateOrderForm />} />
+            <Route path='/OrdersAll' element={<OrdersAll />} />
+            <Route path='/OrderUpdate/:id' element={<OrderUpdateForm />} />
+
+            <Route path='/customerCreate' element={<CustomerCreateForm />} />
+            <Route path='/customersall' element={<CustomerAll />} />
+            <Route path='/customerUpdate/:id' element={<CustomerUpdateForm />} />
+            <Route path='/customerView/:id' element={<CustomerOneManager />} />
+            <Route path='/customerView2/:id' element={<CustomerOneCashier />} />
+             
+            <Route path='/createform' element={<PromotionCreateForm />}/>
+            <Route path='/updateform/:id' element={<UpdatePromotionForm/>}/>
+            <Route path='/allpromotion' element={<AllPromotions/>}/>
+
+            <Route path='/create' element={<PaymentCreateForm/>}/>
+            <Route path='/getAllPayment' element={<PaymentAll/>}/>
+            <Route path='/update/:id' element={<PaymentUpdateForm/>}/>
+
+
+            <Route path = '/createStaff' element = {<StaffCreateForm/>}/>
+            <Route path='/allstaff' element={<AllStaff/>}/>
+            <Route path='/StaffLogin' element={<StaffLogin />} />
+            <Route path="/admin" element={<Admin />} />
+            <Route path="/cheff" element={< Chef/>} />
+            <Route path="/cashier" element={<Cashier />} />
+            <Route path='/staffUpdateform/:id' element={<StaffUpdateForm/>}/>
+
+            <Route path ='/stockcreateform' element = {<StockCreateForm />} />
+            <Route path ='/stockupdateform/:id' element = {<StockUpdateForm />} />
+            <Route path = '/items' element = {<AllItems/>}/>
+
+
+        
+          </Routes>
+
+        </div>
+
+        <Footer />
+
+      </BrowserRouter>
+
     </div>
   );
 }

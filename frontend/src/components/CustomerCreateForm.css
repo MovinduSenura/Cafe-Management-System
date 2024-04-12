@@ -1,0 +1,17 @@
+.formBootsrap{
+    width: 500px;
+    background-color: none;
+    margin-right: 300px;
+    margin-left: 300px;
+    margin-top: 40px;
+    border-radius: 10px;
+    padding:10px;
+    justify-content: center;
+    align-items: center;
+    
+
+}
+
+.formBootsrap h1{
+    text-align: center;
+}

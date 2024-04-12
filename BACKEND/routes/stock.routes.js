@@ -7,11 +7,13 @@ const {
     getOneItem,
     updateItem,
     deleteItem,
+    searchItem,
 } = require("../controller/stock.controller");
 
 StockRouter.post('/create', addItem);
 StockRouter.get('/items', getAllItems);
-StockRouter.get('/itemOne/:id', getOneItem);
+StockRouter.get('/item/:id', getOneItem);
+StockRouter.get('/searchItem', searchItem);
 StockRouter.patch('/itemUpdate/:id', updateItem);
 StockRouter.delete('/itemDelete/:id', deleteItem);
 
