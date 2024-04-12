@@ -34,6 +34,11 @@ import Cashier from './pages/cashierdash';
 import StaffUpdateForm from './components/StaffUpdateForm';
 
 
+import StockCreateForm from './components/StockCreateForm';
+import StockUpdateForm from './components/StockUpdateForm';
+import AllItems from './components/AllItems';
+
+
 import NavBar from './components/NavBar';
 import Footer from './components/Footer';
 import SideNavPanel from './components/SideNavPanel';
@@ -82,6 +87,10 @@ function App() {
             <Route path="/cashier" element={<Cashier />} />
             <Route path='/staffUpdateform/:id' element={<StaffUpdateForm/>}/>
 
+
+            <Route path ='/stockcreateform' element = {<StockCreateForm />} />
+            <Route path ='/stockupdateform/:id' element = {<StockUpdateForm />} />
+            <Route path = '/items' element = {<AllItems/>}/>
 
         
           </Routes>
