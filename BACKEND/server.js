@@ -34,6 +34,7 @@ const paymentRouter = require('./routes/payment.routes');
 const CustomerRouter = require('./routes/customer.routes');
 const staffRouter = require('./routes/staff.routes');
 const stockRouter = require('./routes/stock.routes');
+const FeedbackRouter = require('./routes/feedback.routes');
 
 
 //API Middleware
@@ -44,6 +45,7 @@ app.use('/promotion/',promotionRouter);
 app.use('/payment/',paymentRouter);
 app.use('/staff/', staffRouter);
 app.use('/stock/', stockRouter);
+app.use('/feedback/',FeedbackRouter);
 
 
 
