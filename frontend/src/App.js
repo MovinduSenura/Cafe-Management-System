@@ -87,10 +87,10 @@ function App() {
             <Route path="/cashier" element={<Cashier />} />
             <Route path='/staffUpdateform/:id' element={<StaffUpdateForm/>}/>
 
+
             <Route path ='/stockcreateform' element = {<StockCreateForm />} />
             <Route path ='/stockupdateform/:id' element = {<StockUpdateForm />} />
             <Route path = '/items' element = {<AllItems/>}/>
-
 
         
           </Routes>
