@@ -64,6 +64,31 @@ const getOneFeedback = async(req,res)=>{
     }
 }
 
+const searchFeedback = async (req, res) => {
+
+    try{
+
+        const FeedbackName = req.query.Name;
+        // Using a regular expression to match partial game names
+        const feedback = await FeedbackModel.find({Name: { $regex:FeedbackName, $options: 'i' } }); //the $regex operator in MongoDB is used to perform a regular expression search for partial matches of the game name. The i option is used to perform a case-insensitive search.
+
+        return res.status(200).send({
+            status: true,
+            message: "✨ :: Project Searched and fetched!",
+            searchedFeedback: feedback
+        })
+
+    }catch(err){
+
+        return res.status(500).send({
+            status: false,
+            message: err.message
+        });
+
+    }
+
+}
+
 const updateFeedback = async(req,res)=>{
     try{
         const feedbackID = req.params.id;
@@ -115,5 +140,6 @@ module.exports = {
     getOneFeedback,
     updateFeedback,
     deleteFeedback,
+    searchFeedback,
 }
 

@@ -1,0 +1,50 @@
+.formContainer h1{
+    text-align: center;
+}
+
+.myForm {
+    max-width: 400px;
+    margin: 0 auto;
+  }
+  
+  .myForm label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .myForm input,
+  .myForm textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .myForm button {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .myForm button:hover {
+    background-color: #45a049;
+  }
+  
+  .formBootstrap{
+    width: 500px;
+    background-color: none;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 40px;
+    border: 1px dashed #ccc;
+    border-radius: 10px;
+    padding: 20px;
+  }
+
+  .formBootstrap h1{
+    text-align: center;
+  }

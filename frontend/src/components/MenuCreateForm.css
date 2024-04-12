@@ -1,0 +1,26 @@
+.menucreateFormContainer{
+  margin-top: 100px;
+}
+
+.menuformBootstrap{
+    width: 500px;
+    background-color: none;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 40px;
+    border: 1px dashed #ccc;
+    border-radius: 10px;
+    padding: 20px;
+  }
+
+  .menuformBootstrap h2{
+    text-align: center;
+  }
+
+  .submitbtndiv{
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+

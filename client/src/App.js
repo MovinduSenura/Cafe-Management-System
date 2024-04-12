@@ -1,0 +1,44 @@
+import {BrowserRouter, Routes, Route} from 'react-router-dom'
+
+import FeedbackCreateForm from './components/FeedbackCreateForm';
+import FeedbacksAll from './components/FeedbacksAll';
+import UpdateForm from './components/UpdateForm';
+
+
+import NavBar from './components/NavBar';
+import Footer from './components/Footer';
+import Home from './pages/Home';
+import MenuPage from './pages/MenuPage';
+
+function App() {
+  return (
+    <div className="App">
+
+      <BrowserRouter>
+
+      <NavBar/>
+
+      <div className='pages'>
+
+        <Routes>
+
+          <Route path = '/' element = {<Home />} />
+          <Route path = '/menudisplay' element = {<MenuPage />} />
+
+          <Route path='/feedbackcreateform' element={<FeedbackCreateForm />}/> 
+          <Route path='/feedbackupdateform/:id' element={<UpdateForm/>}/>
+          <Route path='/allfeedbacks' element={<FeedbacksAll/>}/>
+
+        </Routes>
+
+      </div>
+
+      <Footer/>
+      
+      </BrowserRouter>
+      
+    </div>
+  );
+}
+
+export default App;

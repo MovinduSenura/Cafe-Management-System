@@ -1,13 +1,13 @@
-.FeedbackformContainer h1{
+.stockformContainer h1{
     text-align: center;
 }
 
-.FeedbackmyForm {
+.stockmyForm {
     max-width: 400px;
     margin: 0 auto;
   }
   
-  .FeedbackmyForm label {
+  .stockmyForm label {
     display: block;
     margin-bottom: 5px;
   }
@@ -31,9 +31,10 @@
   }
   
   .myForm button:hover {
-    background-color: #45a049;
-  }
-  .formBootstrap{
+    background-color:#45a049;
+}
+
+.formBootstrap{
     width: 500px;
     background-color: none;
     margin-right: auto;

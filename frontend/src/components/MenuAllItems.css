@@ -1,0 +1,85 @@
+.menualldiv{
+    margin-top: 76px;
+    margin-bottom: 76px;
+}
+
+.tableHead{
+    /* background-color: red; */
+    width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 100px;
+}
+
+.searchTable {
+    display: flex;
+    align-items: center;
+  }
+  
+  #searchBar {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 5px;
+    width: 200px; /* Adjust width as needed */
+    height: 38px;
+  }
+  
+  button[type="submit"] {
+    background-color: #AB845B; /* Change the background color as needed */
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 8px 15px;
+    height: 38px;
+  }
+  
+  button[type="submit"]:hover {
+    background-color: #94724e; /* Change the hover background color as needed */
+  }
+  
+  .fa-search {
+    font-size: 16px; /* Adjust icon size as needed */
+  }
+
+.search-container{
+    /* background-color: green; */
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.AddItemBtn{
+    background-color: #AB845B;
+    border: none;
+    margin-bottom: 50px;
+    margin-top: 40px;
+    float: right;
+    font-weight: 600;
+}
+
+.AddItemBtn:hover{
+    cursor: pointer;
+    background-color: #94724e;
+}
+
+.tablecontainer{
+    width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.op{
+    text-align: center;
+}
+
+.EditDeleteBTNs{
+    width: fit-content;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+thead{
+    border: 1px solid ;
+}

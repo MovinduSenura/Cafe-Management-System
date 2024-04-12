@@ -1,0 +1,32 @@
+.AddItemBtn{
+    background-color: #AB845B;
+    border: none;
+    margin-bottom: 50px;
+    margin-top: 50px;
+    float: right;
+}
+
+.AddItemBtn:hover{
+    cursor: pointer;
+    background-color: #94724e;
+}
+
+.tablecontainer{
+    width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.op{
+    text-align: center;
+}
+
+.EditDeleteBTNs{
+    width: fit-content;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+thead{
+    border: 1px solid ;
+}
