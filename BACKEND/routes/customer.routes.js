@@ -10,7 +10,13 @@ const {
     deleteCustomer,
     searchCustomer,
     addFeedback,
+    getFeedback,
+    getOneFeedback,
+    updateFeedback,
+    deleteFeedback,
 } = require("../controller/customer.controller");
+
+
 
 CustomerRouter.post('/customercreate', addCustomer);
 CustomerRouter.get('/customers', getAllCustomers);
@@ -21,6 +27,12 @@ CustomerRouter.get('/customersearch', searchCustomer);
 
 //Sithmi
 CustomerRouter.post('/addfeedback/:userid', addFeedback);
+CustomerRouter.get('/getfeedback/:userid', getFeedback);
+CustomerRouter.get('/getfeedback/:customerNIC/:feedbackId',getOneFeedback);
+CustomerRouter.patch('/updatefeedback/:userId/:feedbackId',updateFeedback);
+CustomerRouter.delete('/deletefeedback/:userId/:feedbackId',deleteFeedback);
+
+
 
 
 module.exports = CustomerRouter;

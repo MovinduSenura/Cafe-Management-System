@@ -192,6 +192,121 @@ const addFeedback = async(req,res) => {
     }
 }
 
+const getFeedback = async(req,res) => {
+    try {
+        
+        const userid=req.params.userid;
+
+        const feed=await customerModel.findById(userid).populate('feedbacks')
+        .then((user)=>{
+            res.status(200)
+            .send({status:"feedback fetched",feedbacks:user.feedbacks})
+        })
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({error:"Server error"})
+    }
+}
+
+const getOneFeedback = async(req,res) =>{
+    try {
+        const { customerNIC, feedbackId } = req.params;
+
+        // Assuming you have a 'User' model with an 'feedbacks' field
+        const user = await customerModel.findOne({customerNIC});
+        
+
+        if (!user) {
+            return res.status(404).json({ error: 'user not found' });
+        }
+
+        const feedback = user.feedbacks
+        
+        .find(
+            (fb) => fb._id.toString() === feedbackId
+        );
+        
+
+        if (!feedback) {
+            return res.status(404).json({ error: 'Feedback not found',customerNIC,feedbackId });
+        }
+
+        // Return the feedback details
+        res.status(200).json({ feedback });
+
+    } catch (error) {
+        console.error('Error fetching feedbacks:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
+const updateFeedback =async(req,res) => {
+    const { userId, feedbackId } = req.params;
+   
+    const { DayVisited, TimeVisited, Comment } = req.body;
+
+    //const patient = await User.findById(userId);
+
+    const updateFeedback = {
+        DayVisited, TimeVisited, Comment
+    };
+
+    try {
+        const update = await customerModel.findOneAndUpdate(
+            { _id: userId, 'feedbacks._id': feedbackId },
+            { $set: { 'feedbacks.$': updateFeedback } },
+            { new: true }
+        ).then(() => {
+            res.status(200).send({ status: "Feedback Updated!", updateFeedback })
+            console.log("saved",updateFeedback);
+        });
+
+        ////res.json(updateedPatient)
+    } catch (error) {
+        res.status(500).json({ error });
+    }
+
+
+}
+
+const deleteFeedback = async(req,res) => {
+    try {
+        const { userId, feedbackId } = req.params;
+
+        // Find the user by ID
+        const user = await customerModel.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        // Find the index of the feedback to delete
+        const feedbackIndex = user.feedbacks.findIndex(
+            (feedback) => feedback._id.toString() === feedbackId
+        );
+
+        if (feedbackIndex === -1) {
+            return res.status(404).json({ error: 'Appointment not found' });
+        }
+
+        // Remove the appointment from the array
+        user.feedbacks.splice(feedbackIndex, 1);
+
+        // Save the updated user
+        await user.save();
+
+        res.status(200).json({ status: 'Appointment deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting appointment:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+
+
+}
+
+
+
 //exporting, get all item router controller
 module.exports = {
     addCustomer,
@@ -201,4 +316,8 @@ module.exports = {
     deleteCustomer,
     searchCustomer,
     addFeedback,
+    getFeedback,
+    getOneFeedback,
+    updateFeedback,
+    deleteFeedback,
 }
