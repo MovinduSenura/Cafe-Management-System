@@ -1,8 +1,9 @@
-import {BrowserRouter, Routes, Route} from 'react-router-dom'
+import {BrowserRouter, Routes, Route, useLocation} from 'react-router-dom'
 
 
 import MenuCreateForm from './components/MenuCreateForm';
 import MenuAllItems from './components/MenuAllItems';
+import MenuAllItems2 from './components/MenuAllItems2';
 import MenuUpdateForm from './components/MenuUpdateForm';
 import CreateOrderForm from './components/CreateOrderForm';
 import OrdersAll from './components/OrdersAll';
@@ -42,24 +43,56 @@ import AllItems from './components/AllItems';
 import NavBar from './components/NavBar';
 import Footer from './components/Footer';
 import SideNavPanel from './components/SideNavPanel';
+import SideNavPanel2 from './components/SideNavPanel2';
 
 function App() {
   return (
     <div className="App">
-
       <BrowserRouter>
+        <AppContent />
+      </BrowserRouter>
+    </div>
+  );
+}
+
+function AppContent() {
+
+  const location = useLocation();
+
+    // Array of routes where the navbar should be shown
+    const showSideNavBarRoutes = ['/menucreateform', '/', '/menuupdateform/:id'];
+    const showSideNavBar2Routes = ['/cashiermenu'];
+
+    // Function to determine whether to render the navbar
+    const renderSideNavBar = () => {
+      return showSideNavBarRoutes.includes(location.pathname);
+    };
+
+    const renderSideNavBar2 = () => {
+      return showSideNavBar2Routes.includes(location.pathname);
+    };
+
+  return (
+    <div className="App">
+
+      <NavBar />
+
+      <div className='pagegridcontainer'>
+
+        <div className='sidenavpanelsdiv'>
+          {renderSideNavBar() && <SideNavPanel />}
+          {renderSideNavBar2() && <SideNavPanel2 />}
+        </div>
     
-        <NavBar />
-
-        <SideNavPanel />
-
         <div className='pages'>
 
           <Routes>
 
             <Route path='/menucreateform' element={<MenuCreateForm />} />
-            <Route path='/' element={<MenuAllItems />} />
+            <Route path='/' element={<MenuAllItems />} />     
             <Route path='/menuupdateform/:id' element={<MenuUpdateForm />} />
+
+            <Route path='/cashiermenu' element={<MenuAllItems2 />} />
             <Route path='/CreateOrder' element={<CreateOrderForm />} />
             <Route path='/OrdersAll' element={<OrdersAll />} />
             <Route path='/OrderUpdate/:id' element={<OrderUpdateForm />} />
@@ -78,7 +111,6 @@ function App() {
             <Route path='/getAllPayment' element={<PaymentAll/>}/>
             <Route path='/update/:id' element={<PaymentUpdateForm/>}/>
 
-
             <Route path = '/createStaff' element = {<StaffCreateForm/>}/>
             <Route path='/allstaff' element={<AllStaff/>}/>
             <Route path='/StaffLogin' element={<StaffLogin />} />
@@ -86,7 +118,6 @@ function App() {
             <Route path="/cheff" element={< Chef/>} />
             <Route path="/cashier" element={<Cashier />} />
             <Route path='/staffUpdateform/:id' element={<StaffUpdateForm/>}/>
-
 
             <Route path ='/stockcreateform' element = {<StockCreateForm />} />
             <Route path ='/stockupdateform/:id' element = {<StockUpdateForm />} />
@@ -97,9 +128,9 @@ function App() {
 
         </div>
 
-        <Footer />
+      </div>
 
-      </BrowserRouter>
+        <Footer />
 
     </div>
   );

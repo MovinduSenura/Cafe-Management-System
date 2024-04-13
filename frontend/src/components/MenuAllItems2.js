@@ -2,13 +2,13 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+// import { ToastContainer, toast } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css';
 
 //importing CSS files
 import './MenuAllItems.css'
 
-const MenuAllItems = () => {
+const MenuAllItems2 = () => {
 
     const [ MenuAllItems, setMenuAllItems ] = useState([]);
     const [ MenuItemName , setMenuItemName ] = useState('');
@@ -41,29 +41,29 @@ const MenuAllItems = () => {
 
     }, [])
 
-    const handleDelete = async (id) => {
+    // const handleDelete = async (id) => {
 
-        try{
+    //     try{
 
-            const confirmed = window.confirm('Are you sure want to delete this item?');
+    //         const confirmed = window.confirm('Are you sure want to delete this item?');
 
-            if(confirmed){
-                await axios.delete(`http://localhost:8000/menu/deletemenuItem/${id}`)
-                .then((res) => {
-                    alert(res.data.message);
-                    console.log(res.data.message);
-                })
-                .catch((err) => {
-                    console.log('☠️ :: Error on API URL : ' + err.message);
-                })
-            } else {
-                toast.warning('Deletion Cancelled!');
-                console.log('Deletion Cancelled!');
-            }
-        }catch(err) {
-            console.log('☠️ :: handleDelete function failed! ERROR : ' + err.message);
-        }
-    }
+    //         if(confirmed){
+    //             await axios.delete(`http://localhost:8000/menu/deletemenuItem/${id}`)
+    //             .then((res) => {
+    //                 alert(res.data.message);
+    //                 console.log(res.data.message);
+    //             })
+    //             .catch((err) => {
+    //                 console.log('☠️ :: Error on API URL : ' + err.message);
+    //             })
+    //         } else {
+    //             toast.warning('Deletion Cancelled!');
+    //             console.log('Deletion Cancelled!');
+    //         }
+    //     }catch(err) {
+    //         console.log('☠️ :: handleDelete function failed! ERROR : ' + err.message);
+    //     }
+    // }
 
     //search function
 
@@ -120,6 +120,7 @@ const MenuAllItems = () => {
             <div className="maintablecontainer">
 
             <div className="tableHead">
+                {/* <h2>Controller</h2> */}
 
                 <div className="search-container">
                     <form className="searchTable" onSubmit={handleFormSubmit}>
@@ -131,10 +132,10 @@ const MenuAllItems = () => {
             
                 <div className = "tablecontainer">
                     <div className="logoutdiv"><Link to='/menucreateform'><button type="button" className="btn btn-secondary btn-lg LogoutBtn">Logout</button></Link></div>
-                    <div className="addbtndiv"><Link to='/menucreateform'><button type="button" className="btn btn-secondary btn-lg AddItemBtn">Add item</button></Link></div>            
+                    {/* <div className="addbtndiv"><Link to='/menucreateform'><button type="button" className="btn btn-secondary btn-lg AddItemBtn">Add item</button></Link></div> */}
                 <div className="tablediv">
 
-                <ToastContainer/>
+                {/* <ToastContainer/> */}
 
                 <table className="table table-striped tbl">
                     <thead>
@@ -146,7 +147,7 @@ const MenuAllItems = () => {
                             <th scope="col">Category</th>
                             <th scope="col">Price</th>
                             <th scope="col">Availability</th>
-                            <th className="op" scope="col">Operations</th>
+                            {/* <th className="op" scope="col">Operations</th> */}
                         </tr>
                     </thead>
                     <tbody>
@@ -166,7 +167,7 @@ const MenuAllItems = () => {
                                 <td>{menuitems.menuItemCategory}</td>
                                 <td>{menuitems.menuItemPrice}</td>
                                 <td>{menuitems.menuItemAvailability}</td>
-                                <td>
+                                {/* <td>
                                     <table className="EditDeleteBTNs">
                                         <tbody>
                                             <tr>
@@ -175,7 +176,7 @@ const MenuAllItems = () => {
                                             </tr>
                                         </tbody>
                                     </table>
-                                </td>
+                                </td> */}
                             </tr>
                         ))}
 
@@ -188,4 +189,4 @@ const MenuAllItems = () => {
     )
 };
 
-export default MenuAllItems;
+export default MenuAllItems2;
