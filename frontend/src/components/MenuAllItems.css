@@ -1,6 +1,10 @@
 .menualldiv{
     margin-top: 76px;
     margin-bottom: 76px;
+    /* margin-right: 500px; */
+    /* width: 1200px; */
+    /* align-items: left; */
+    /* text-align: left; */
 }
 
 .tableHead{
@@ -83,3 +87,8 @@
 thead{
     border: 1px solid ;
 }
+
+/* .tbl{
+  width: 1100px;
+  text-align: right;
+} */
