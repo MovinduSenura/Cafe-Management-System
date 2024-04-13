@@ -60,12 +60,27 @@
     margin-bottom: 20px;
     margin-top: -40px;
     float: right;
-    font-weight: 600;
+    font-weight: 500;
 }
 
 .AddItemBtn:hover{
     cursor: pointer;
     background-color: #94724e;
+}
+
+.LogoutBtn{
+  background-color: #0e3acc;
+  border: none;
+  margin-bottom: 20px;
+  margin-top: -40px;
+  margin-left: 10px;
+  float: right;
+  font-weight: 500;
+}
+
+.LogoutBtn:hover{
+  cursor: pointer;
+  background-color: #0c30a5;
 }
 
 .tablecontainer{

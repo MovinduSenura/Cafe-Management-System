@@ -122,7 +122,7 @@ const MenuAllItems2 = () => {
             <div className="tableHead">
                 {/* <h2>Controller</h2> */}
 
-                <div className="search-container" style={{ marginBottom: '20px' }}>
+                <div className="search-container">
                     <form className="searchTable" onSubmit={handleFormSubmit}>
                         <input id="searchBar" type="text" value={MenuItemName} onChange={handleSearchChange} placeholder="Search..." name="search"/>
                         <button type="submit"><i className="fa fa-search" style={{color: "#ffffff",}}></i></button> 
@@ -131,6 +131,7 @@ const MenuAllItems2 = () => {
             </div>
             
                 <div className = "tablecontainer">
+                    <div className="logoutdiv"><Link to='/menucreateform'><button type="button" className="btn btn-secondary btn-lg LogoutBtn">Logout</button></Link></div>
                     {/* <div className="addbtndiv"><Link to='/menucreateform'><button type="button" className="btn btn-secondary btn-lg AddItemBtn">Add item</button></Link></div> */}
                 <div className="tablediv">
 
