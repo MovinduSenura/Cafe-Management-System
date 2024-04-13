@@ -120,7 +120,6 @@ const MenuAllItems = () => {
             <div className="maintablecontainer">
 
             <div className="tableHead">
-                {/* <h2>Controller</h2> */}
 
                 <div className="search-container">
                     <form className="searchTable" onSubmit={handleFormSubmit}>
