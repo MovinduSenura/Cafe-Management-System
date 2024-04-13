@@ -1,6 +1,6 @@
 /* CreateOrderForm.css */
 
-/* .CreateOrderFormContainer {
+.CreateOrderFormContainer {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -57,4 +57,4 @@
 
   .orderFormContainer h1{
     text-align: center;
-  } */
+  }
