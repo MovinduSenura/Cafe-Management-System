@@ -13,7 +13,7 @@ const NavBar = () => {
     <div className='header'>
         <div className="headercontainer">
             <a href='/'>
-                <h2>ESSPRESSO ELEGANCE</h2>
+                <h2>ESPRESSO ELEGANCE</h2>
             </a>
             <nav>
               <div className='navbtncontainer'>
