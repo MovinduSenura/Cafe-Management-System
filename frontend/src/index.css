@@ -12,6 +12,10 @@ body {
   font-family: "Poppins";
 }
 
+/* .pagegridcontainer{
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+} */
 
 /* HEADER */
 
@@ -50,6 +54,7 @@ body {
   /* max-width: 1400px; */
   /* padding: 20px; */
   margin: 0 auto;
+  margin-left: 240px;
 }
 
 /* FOOTER */

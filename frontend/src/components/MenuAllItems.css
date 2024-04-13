@@ -53,8 +53,8 @@
 .AddItemBtn{
     background-color: #AB845B;
     border: none;
-    margin-bottom: 50px;
-    margin-top: 40px;
+    margin-bottom: 20px;
+    margin-top: -40px;
     float: right;
     font-weight: 600;
 }
