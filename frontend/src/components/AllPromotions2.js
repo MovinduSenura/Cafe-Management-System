@@ -65,9 +65,17 @@ const AllPromotions2 = ()=> {
 
     return (
         
-        <div className = "allPromotionscontainer">
+        <div className = "alldiv">
+       
+        <div className = "maintablecontainer">
+         
+         <div className = "tablecontainer">
+        <div className="logoutdiv"><Link to='/menucreateform'><button type="button" className="btn btn-secondary btn-lg LogoutBtn">Logout</button></Link></div>
+        <div className="addbtndiv"><Link to='/menucreateform'><button type="button" className="btn btn-secondary btn-lg AddItemBtn">Add item</button></Link></div>  
+        <div className="tablediv">
 
-        <table class = "table">
+
+        <table class = "table table-striped tbl">
         <thead>
         <tr>
         <th scope="col">No</th>
@@ -105,6 +113,10 @@ const AllPromotions2 = ()=> {
         
         </table>
         </div>
+        </div>
+        </div>
+        </div>
+
     )
 
 };
