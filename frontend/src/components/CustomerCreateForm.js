@@ -5,7 +5,7 @@ import React, {useState} from "react";
 import axios from 'axios';
 
 //importing css file
-import './CustomerCreateForm.css'
+//import './CustomerCreateForm.css'
 
 
 const CustomerCreateForm = () => {
@@ -160,8 +160,9 @@ const CustomerCreateForm = () => {
 
                                         </div>
 
-
-                                        <center><button type="submit" className="btn btn-primary">Register</button></center>
+                                        <div className="submitbtndiv">
+                                        <button type="submit" className="btn btn-primary submitbtn">Register</button>
+                                        </div>
 
                                 </form>
                         </div>
