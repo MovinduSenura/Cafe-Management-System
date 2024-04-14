@@ -6,7 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 //importing CSS files
-import './MenuAllItems.css'
+import './DataTable.css'
 
 const MenuAllItems = () => {
 
@@ -115,12 +115,11 @@ const MenuAllItems = () => {
     };
 
     return(
-        <div className="menualldiv">
+        <div className="alldiv">
 
             <div className="maintablecontainer">
 
             <div className="tableHead">
-                {/* <h2>Controller</h2> */}
 
                 <div className="search-container">
                     <form className="searchTable" onSubmit={handleFormSubmit}>
@@ -131,57 +130,58 @@ const MenuAllItems = () => {
             </div>
             
                 <div className = "tablecontainer">
-                    <div className="addbtndiv"><Link to='/menucreateform'><button type="button" className="btn btn-secondary btn-lg AddItemBtn">Add item</button></Link></div>
-                <div className="tablediv">
+                    <div className="logoutdiv"><Link to='/menucreateform'><button type="button" className="btn btn-secondary btn-lg LogoutBtn">Logout</button></Link></div>
+                    <div className="addbtndiv"><Link to='/menucreateform'><button type="button" className="btn btn-secondary btn-lg AddItemBtn">Add item</button></Link></div>            
+                    <div className="tablediv">
 
-                <ToastContainer/>
+                    <ToastContainer/>
 
-                <table className="table table-striped tbl">
-                    <thead>
-                        <tr>
-                            <th scope="col">Item No.</th>
-                            <th scope="col">Image</th>
-                            <th scope="col">Item Name</th>
-                            <th scope="col">Description</th>
-                            <th scope="col">Category</th>
-                            <th scope="col">Price</th>
-                            <th scope="col">Availability</th>
-                            <th className="op" scope="col">Operations</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {MenuAllItems.map((menuitems, index) => (
-                            <tr key={menuitems._id}>
-                                <th scope="row">{index + 1}</th>
-                                <td>
-                                    <img 
-                                        src={require(`../uploads/${menuitems.menuItemImage}`)}
-                                        width={30}
-                                        height={40}
-                                        alt="menuItemImage" 
-                                    />
-                                </td>
-                                <td>{menuitems.menuItemName}</td>
-                                <td>{menuitems.menuItemDescription}</td>
-                                <td>{menuitems.menuItemCategory}</td>
-                                <td>{menuitems.menuItemPrice}</td>
-                                <td>{menuitems.menuItemAvailability}</td>
-                                <td>
-                                    <table className="EditDeleteBTNs">
-                                        <tbody>
-                                            <tr>
-                                                <td><Link to={`/menuupdateform/${menuitems._id}`}><button type="button" className="btn btn-success">Edit</button></Link></td>&nbsp;&nbsp;
-                                                <td><button type="button" className="btn btn-danger" onClick={() => handleDelete(menuitems._id)}>Delete</button></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
+                    <table className="table table-striped tbl">
+                        <thead>
+                            <tr>
+                                <th scope="col">Item No.</th>
+                                <th scope="col">Image</th>
+                                <th scope="col">Item Name</th>
+                                <th scope="col">Description</th>
+                                <th scope="col">Category</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Availability</th>
+                                <th className="op" scope="col">Operations</th>
                             </tr>
-                        ))}
+                        </thead>
+                        <tbody>
+                            {MenuAllItems.map((menuitems, index) => (
+                                <tr key={menuitems._id}>
+                                    <th scope="row">{index + 1}</th>
+                                    <td>
+                                        <img 
+                                            src={require(`../uploads/${menuitems.menuItemImage}`)}
+                                            width={30}
+                                            height={40}
+                                            alt="menuItemImage" 
+                                        />
+                                    </td>
+                                    <td>{menuitems.menuItemName}</td>
+                                    <td>{menuitems.menuItemDescription}</td>
+                                    <td>{menuitems.menuItemCategory}</td>
+                                    <td>{menuitems.menuItemPrice}</td>
+                                    <td>{menuitems.menuItemAvailability}</td>
+                                    <td>
+                                        <table className="EditDeleteBTNs">
+                                            <tbody>
+                                                <tr>
+                                                    <td><Link to={`/menuupdateform/${menuitems._id}`}><button type="button" className="btn btn-success">Edit</button></Link></td>&nbsp;&nbsp;
+                                                    <td><button type="button" className="btn btn-danger" onClick={() => handleDelete(menuitems._id)}>Delete</button></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            ))}
 
-                    </tbody>
-                </table>
-                </div>
+                        </tbody>
+                    </table>
+                    </div>
                 </div>
             </div>
         </div>

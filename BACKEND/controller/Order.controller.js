@@ -71,6 +71,32 @@ const getOneOrder = async (req, res) => {
   }
 };
 
+//get one order from the search function
+const searchOrder = async (req, res) => {
+
+  try{
+
+      const orderName = req.query.OrderName;
+      // Using a regular expression to match partial order names
+      const Order = await OrderModel.find({ OrderName : { $regex: `^${orderName}`, $options: 'i' } }); //the $regex operator in MongoDB is used to perform a regular expression search for partial matches of the game name. The i option is used to perform a case-insensitive search.
+
+      return res.status(200).send({
+          status: true,
+          message: "✨ :: Order Searched!",
+          searchedOrder: Order
+      })
+
+  }catch(err){
+
+      return res.status(500).send({
+          status: false,
+          message: err.message
+      });
+
+  }
+
+};
+
 //update order details router control
 
 const updateOrder = async (req, res) => {
@@ -127,4 +153,6 @@ module.exports = {
   getOneOrder,
   updateOrder,
   deleteOrder,
+  searchOrder,
+
 };

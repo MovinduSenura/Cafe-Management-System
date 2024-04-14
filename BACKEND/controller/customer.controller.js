@@ -171,6 +171,27 @@ const deleteCustomer = async (req,res) => {
    
 }
 
+//Sithmi
+const addFeedback = async(req,res) => {
+    try{
+        const {DayVisited,TimeVisited,Comment} = req.body;
+        const userid = req.params.userid;
+        const user = await customerModel.findById(userid);
+
+        if(!user){
+            return res.status(400).json({status:"user not found"})
+        }
+        
+        user.feedbacks.push({DayVisited,TimeVisited,Comment});
+        await user.save();
+        res.status(200).json({status:"New feedback added",user});
+
+    }catch(err) {
+        console.log(err);
+        res.status(500).json({status:"Error adding new feedback",err});
+    }
+}
+
 //exporting, get all item router controller
 module.exports = {
     addCustomer,
@@ -179,4 +200,5 @@ module.exports = {
     updateCustomer,
     deleteCustomer,
     searchCustomer,
+    addFeedback,
 }

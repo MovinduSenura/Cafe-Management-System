@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const customerSchema = new mongoose.Schema({
 
     customerFullName:{
+
         type: String,
         required: true,
         trim: true,
@@ -44,6 +45,29 @@ const customerSchema = new mongoose.Schema({
         required: true,
         trim: true,
     },
+
+    feedbacks: {
+        type: [
+            {
+                DayVisited: {
+                    type: String,
+
+                },
+
+                TimeVisited: {
+                    type: String,
+
+                },
+
+                Comment: {
+                    type: String,
+
+                },
+                
+            },
+        ],
+        default: []
+    }
 
     
 })

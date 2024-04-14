@@ -1,13 +1,13 @@
 /* CreateOrderForm.css */
 
-.CreateOrderFormContainer {
+.CreateFormContainer {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
   }
   
-  .orderFormContainer {
+  .formBootstrap {
     width: 400px;
     padding: 20px;
     border: 1px solid #ccc;

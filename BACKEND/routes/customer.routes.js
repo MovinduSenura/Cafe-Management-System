@@ -9,6 +9,7 @@ const {
     updateCustomer,
     deleteCustomer,
     searchCustomer,
+    addFeedback,
 } = require("../controller/customer.controller");
 
 CustomerRouter.post('/customercreate', addCustomer);
@@ -17,5 +18,9 @@ CustomerRouter.get('/customer/:id', getOneCustomer);
 CustomerRouter.patch('/customerUpdate/:id', updateCustomer);
 CustomerRouter.delete('/customerdelete/:id', deleteCustomer);
 CustomerRouter.get('/customersearch', searchCustomer);
+
+//Sithmi
+CustomerRouter.post('/addfeedback/:userid', addFeedback);
+
 
 module.exports = CustomerRouter;

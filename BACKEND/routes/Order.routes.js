@@ -7,6 +7,7 @@ const {
   getOneOrder,
   updateOrder,
   deleteOrder,
+  searchOrder,
   
 } = require("../controller/Order.controller");
 
@@ -15,5 +16,6 @@ OrderRouter.get("/allOrders", getAllOrders);
 OrderRouter.get("/oneOrder/:id" , getOneOrder);
 OrderRouter.patch("/Update/:id", updateOrder);
 OrderRouter.delete("/delete/:id", deleteOrder);
+OrderRouter.get("/searchOrder" , searchOrder);
 
 module.exports = OrderRouter;
