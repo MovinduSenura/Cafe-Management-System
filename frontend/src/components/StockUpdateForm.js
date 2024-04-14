@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useParams, useNavigate } from "react-router-dom";
 
 // Import CSS file
-import './StockCreateForm.css';
+//import './StockCreateForm.css';
 
 const StockUpdateForm = () => {
     const [itemName, setItemName] = useState('');
@@ -75,8 +75,8 @@ const StockUpdateForm = () => {
     };
     
     return (
-        <div className="stockcreateFormContainer">
-            <div className="formBootstrap">
+        <div className="updateFormContainer">
+            <div className="updateformBootstrap">
                 <h2 className="mb-4">Update Form</h2>
 
                 <form onSubmit={updateData}>
@@ -127,7 +127,8 @@ const StockUpdateForm = () => {
                             required
                         />
                     </div>
-                    <button type="submit" className="btn btn-primary">Submit</button>
+                    <div className="updatebtndiv"></div>
+                    <button type="submit" className="btn btn-primary submitbtn">Submit</button>
                 </form>
             
            

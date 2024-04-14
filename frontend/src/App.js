@@ -37,6 +37,7 @@ import StaffUpdateForm from './components/StaffUpdateForm';
 import StockCreateForm from './components/StockCreateForm';
 import StockUpdateForm from './components/StockUpdateForm';
 import AllItems from './components/AllItems';
+import AllItems2 from './components/AllItems2';
 
 
 import NavBar from './components/NavBar';
@@ -90,6 +91,7 @@ function App() {
             <Route path ='/stockcreateform' element = {<StockCreateForm />} />
             <Route path ='/stockupdateform/:id' element = {<StockUpdateForm />} />
             <Route path = '/items' element = {<AllItems/>}/>
+            <Route path = '/items2' element = {<AllItems2/>}/>
 
 
         

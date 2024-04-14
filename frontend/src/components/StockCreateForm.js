@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from 'axios';
 
 // Import CSS file
-import './StockCreateForm.css';
+//import './StockCreateForm.css';
 
 const StockCreateForm = () => {
     const [itemName, setItemName] = useState('');
@@ -38,7 +38,7 @@ const StockCreateForm = () => {
     };
     
     return (
-        <div className="stockcreateFormContainer">
+        <div className="createFormContainer">
             <div className="formBootstrap">
             <h2 className="mb-4">Create Form</h2>
 
@@ -91,7 +91,9 @@ const StockCreateForm = () => {
                             required
                         />
                     </div>
-                    <button type="submit" className="btn btn-primary">Submit</button>
+                    <div className="submitbtndiv">
+                    <button type="submit" className="btn btn-primary submitbtn">Submit</button>
+                    </div>
                 </form>
             
            

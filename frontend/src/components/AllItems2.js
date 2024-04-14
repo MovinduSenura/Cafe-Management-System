@@ -3,13 +3,13 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-//import './AllItems.css'
+// import { ToastContainer, toast } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css';
+import './AllItems.css'
 
 
 
-export const AllItems = () => {
+export const AllItems2 = () => {
 
     //const navigate = useNavigate();
     
@@ -45,34 +45,34 @@ export const AllItems = () => {
 
     }, [])
 
-    const handleDelete = async (id) => {
+    // const handleDelete = async (id) => {
 
-        try{
+    //     try{
 
-            const confirmed = window.confirm('Are you sure you want to delete this item?');
+    //         const confirmed = window.confirm('Are you sure you want to delete this item?');
 
-            if(confirmed){
+    //         if(confirmed){
 
-               await axios.delete(`http://localhost:8000/stock/itemDelete/${id}`)
-               .then((res) => {
-                alert(res.data.message);
-                console.log(res.data.message);
-                window.location.href='/items'
-            })
-            .catch((err) => {
-                console.log('☠ :: Error on API URL : ' + err.message);
-            })
+    //            await axios.delete(`http://localhost:8000/stock/itemDelete/${id}`)
+    //            .then((res) => {
+    //             alert(res.data.message);
+    //             console.log(res.data.message);
+    //             window.location.href='/items'
+    //         })
+    //         .catch((err) => {
+    //             console.log('☠ :: Error on API URL : ' + err.message);
+    //         })
 
-        } else {
-            toast.warning('Deletion cancelled!')
-            console.log('Deletion cancelled!')
-        }
+    //     } else {
+    //         toast.warning('Deletion cancelled!')
+    //         console.log('Deletion cancelled!')
+    //     }
 
-        }catch(err) {
-            console.log('☠ :: handleDelete function failed! ERROR: ' + err.message);
-        }
+    //     }catch(err) {
+    //         console.log('☠ :: handleDelete function failed! ERROR: ' + err.message);
+    //     }
       
-    }
+    // }
 
     
     //search functions
@@ -125,12 +125,13 @@ export const AllItems = () => {
 
 
     return (
-        <div className="alldiv">
+        <div className="allItemscontainer">
 
-        <div className = "maintablecontainer">
+        <div className = "tablecontainer">
           <h1>Stocks</h1>
 
           <div className="tableHead">
+                    <h2>Controller</h2>
 
                     <div className="search-container">
                         <form className="searchTable" onSubmit={handleFormSubmit}>
@@ -140,14 +141,13 @@ export const AllItems = () => {
                     </div>
                 </div>
 
-         <div className="tablecontainer">
-            <div className="logoutdiv"><Link to='/stockcreateform'><button type="button" class="btn btn-success">Logout</button></Link>&nbsp;
-            <div className="addbtndiv"><Link to='/stockcreateform'><button type="button" class="btn btn-success">Add Item</button></Link>&nbsp;
-          </div>
+         {/* <div className="addItemBtnDiv">
+            <Link to='/stockcreateform'><button type="button" class="btn btn-success">Add Item</button></Link>&nbsp;
+          </div> */}
 
-          <ToastContainer/>
+          {/* <ToastContainer/> */}
 
-            <table className = "table table-striped tbl">
+            <table className = "table table-striped">
                 <thead>
                     <tr>
                         <th scope = "col">ID</th>
@@ -155,7 +155,7 @@ export const AllItems = () => {
                         <th scope = "col" >Quantity</th>
                         <th scope = "col">Minimum stock Level</th>
                         <th scope = "col">Current stock Level</th>
-                        <th scope = "col" className='op'>Operations</th>
+                        {/* { <th scope = "col" className='op'>Operation</th> } */}
                     </tr>
                     </thead>
                     <tbody>
@@ -172,14 +172,14 @@ export const AllItems = () => {
                                 <table className='EditDeleteBTNs'>
                                 <tbody>
                                 <tr>
-                                <td><Link to={`/stockupdateform/${items._id}`}><button type="button" className="btn btn-success">Edit</button></Link>&nbsp;&nbsp;
+                                <td><Link to={`/stockupdateform/${items._id}`}><button type="button" className="btn btn-success">Edit</button></Link>&nbsp;
                                 </td>
                                 <td>
-                                <button type="button" className="btn btn-danger" onClick={() => handleDelete(items._id)}>Delete</button>
                                 </td>
                             </tr>
                             </tbody>
-                            </table>
+                            
+                        </table>
                     </td>
 
             </tr>
@@ -189,13 +189,10 @@ export const AllItems = () => {
             </tbody>
             </table> 
 
-             </div>
-
-            </div>
         </div>
-    </div>
 
+        </div>
     )
 };
 
-export default AllItems;
+export default AllItems2;
