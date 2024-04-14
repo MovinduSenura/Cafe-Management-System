@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 // import 'react-toastify/dist/ReactToastify.css';
 
 //importing CSS files
-import './MenuAllItems.css'
+import './DataTable.css'
 
 const MenuAllItems2 = () => {
 
