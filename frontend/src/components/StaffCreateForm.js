@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import axios from 'axios';                           
 
 //importing CSS  files
-import './StaffCreateForm.css'
+//import './StaffCreateForm.css'
 
 const StaffCreateForm =() =>{
 
@@ -70,9 +70,9 @@ const StaffCreateForm =() =>{
       
 
       return(
-        <div className="staffcreateFormContainer">
+        <div className="createFormContainer">
 
-        <div className="staffformBootstrap">
+        <div className="formBootstrap">
             <h1>Registration Form</h1>
             <form onSubmit={sendData}>
                 <div className="form-group mb-3">
@@ -129,8 +129,9 @@ const StaffCreateForm =() =>{
 
 
          
-
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <div className="submitbtndiv">
+                <button type="submit" class="btn btn-primary submitbtn">Submit</button>
+                </div>
             </form>
         </div>
        
