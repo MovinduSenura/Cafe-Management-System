@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useParams, useNavigate } from "react-router-dom";                         
 
 //importing CSS  files
-import './StaffCreateForm.css'
+//import './StaffCreateForm.css'
 
 const StaffUpdateForm =() =>{
 
@@ -112,9 +112,9 @@ const StaffUpdateForm =() =>{
       
 
       return(
-        <div className="staffcreateFormContainer">
+        <div className="updateFormContainer">
 
-        <div className="staffformBootstrap">
+        <div className="updateformBootstrap">
             <h1>Update Form</h1>
             <form onSubmit={updateData}>
                 <div className="form-group mb-3">
@@ -171,8 +171,9 @@ const StaffUpdateForm =() =>{
 
 
          
-
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <div className="updatebtndiv">
+                <button type="submit" class="btn btn-primary submitbtn">Update</button>
+                </div>
             </form>
         </div>
        

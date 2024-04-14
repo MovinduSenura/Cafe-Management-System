@@ -121,13 +121,13 @@ const AllStaff = () => {
     };
 
     return (
-     <div className="allStaffcontainer">
+     <div className="alldiv">
        <ToastContainer/>
         
-          <div className="tableContainer">
+          <div className="maintableContainer">
 
               <div className="tableHead">
-                <h2>Controller</h2>
+                {/* <h2>Controller</h2> */}
 
                 <div className="search-container">
                   <form className="searchTable" onSubmit={handleFormSubmit}>
@@ -137,7 +137,12 @@ const AllStaff = () => {
                 </div>
               </div>
 
-        <table class="table">
+              <div className="tablecontainer">
+              <div className="logoutdiv"><Link to='/StaffCreateform'><button type="button" className="btn btn-secondary btn-lg LogoutBtn">Logout</button></Link></div>
+              <div className="addbtndiv"><Link to='/StaffCreateform'><button type="button" className="btn btn-secondary btn-lg AddItemBtn">Add item</button></Link></div>
+              <div className="tablediv">
+
+        <table class="table table-striped tbl">
           <thead>
              <tr>
                <th scope="col">Name</th>
@@ -148,7 +153,7 @@ const AllStaff = () => {
                <th scope="col">Gender</th>
                <th scope="col">Salary Per Hours</th>
                <th scope="col">Worked Hours</th>
-               <th scope="col">Operations</th>
+               <th className="op" scope="col">Operations</th>
                <th scope="col"></th> 
      
              </tr>
@@ -168,10 +173,10 @@ const AllStaff = () => {
                 <td></td>
                 
                 <td>
-                    <table>
+                    <table className="EditDeleteBTNs">
                         <tbody>
                             <tr>
-                                <Link to={`/staffUpdateform/${staff._id}`}><button type="button" className="btn btn-success">Edit</button></Link>&nbsp;
+                               <td> <Link to={`/staffUpdateform/${staff._id}`}><button type="button" className="btn btn-success">Edit</button></Link></td>&nbsp;&nbsp;
                                 <td><button type="button" class="btn btn-danger" onClick={() => handleDelete(staff._id)} >Delete</button></td>
                                 
                             </tr>
@@ -184,6 +189,8 @@ const AllStaff = () => {
           
         </tbody>
       </table>
+      </div>
+      </div>
    </div>   
 </div>
 
