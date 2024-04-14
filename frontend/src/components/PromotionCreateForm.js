@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import axios from 'axios';
 // import './PromotionCreateForm.css'
-
+import './CreateForm.css'
 
 const PromotionCreateForm = () =>{
     
