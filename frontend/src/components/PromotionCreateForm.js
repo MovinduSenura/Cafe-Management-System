@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import axios from 'axios';
-import './PromotionCreateForm.css'
+// import './PromotionCreateForm.css'
 
 
 const PromotionCreateForm = () =>{
@@ -48,7 +48,8 @@ const PromotionCreateForm = () =>{
     return (
         
 
-        <div className="promotioncreateFormContainer">
+        <div className="createFormContainer">
+
             <div classNme="formBootstrap">
                 <h1>Add Promotion</h1>
                 <form onSubmit={sendData}>
@@ -88,8 +89,9 @@ const PromotionCreateForm = () =>{
                        
                 }    value={promotionItempic}/>
             </div>
-            
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <div className="submitbtndiv">
+            <button type="submit" class="btn btn-primary submitbtn">Submit</button>
+            </div>
             </form>
             </div>
 

@@ -2,12 +2,12 @@ import React,{ useState, useEffect } from "react";
 import axios from 'axios';
 import {Link}from"react-router-dom";
 
-import { ToastContainer, toast } from 'react-toastify';
- import 'react-toastify/dist/ReactToastify.css';
+// import { ToastContainer, toast } from 'react-toastify';
+//  import 'react-toastify/dist/ReactToastify.css';
 //import {useNavigate} from "react-router-dom"
 
 
-const AllPromotions = ()=> {
+const AllPromotions2 = ()=> {
 
     const [ allPromotions, setAllPromotion ] = useState([]);
 
@@ -37,31 +37,31 @@ const AllPromotions = ()=> {
     }, [])
 
 
-       const handledelete = async (id) =>{
+    //    const handledelete = async (id) =>{
 
-            try{
+    //         try{
 
-              const confirmed  = window.confirm('Are you sure you want to delete this item?');
+    //           const confirmed  = window.confirm('Are you sure you want to delete this item?');
               
-              if(confirmed){
-                 await axios.delete(`http://localhost:8000/promotion/deletepromotion/${id}`)
-                .then((res) => {
-                alert(res.data.message);
-                console.log(res.data.message);
-               })
-               .catch((err) => {
-                console.log('☠️ :: Error on API URL : ' +err.message);
-               })            
+    //           if(confirmed){
+    //              await axios.delete(`http://localhost:8000/promotion/deletepromotion/${id}`)
+    //             .then((res) => {
+    //             alert(res.data.message);
+    //             console.log(res.data.message);
+    //            })
+    //            .catch((err) => {
+    //             console.log('☠️ :: Error on API URL : ' +err.message);
+    //            })            
               
-       }else {
-        toast.warning('Deletion cancelled');
-        console.log('Delection cancelled');
-       }
+    //    }else {
+    //     toast.warning('Deletion cancelled');
+    //     console.log('Delection cancelled');
+    //    }
       
-      }catch(err){
-        console.log('☠️ :: handleDelete function failed ! ERROR:'+err.message);
-      }
-       }
+    //   }catch(err){
+    //     console.log('☠️ :: handleDelete function failed ! ERROR:'+err.message);
+    //   }
+    //    }
 
     return (
         
@@ -75,7 +75,6 @@ const AllPromotions = ()=> {
         <div className="tablediv">
 
 
-
         <table class = "table table-striped tbl">
         <thead>
         <tr>
@@ -85,11 +84,11 @@ const AllPromotions = ()=> {
         <th scope="col">Value</th>
         <th scope="col">Discription</th>
         <th scope="col">Item Pic</th>
-        <th className="op" scope="col">Operations</th>
+        {/* <th scope="col"></th> */}
         </tr>
         </thead>
 
-        <ToastContainer/>
+        {/* <ToastContainer/> */}
       <tbody>
         {allPromotions.map((promotion) => (
           <tr>
@@ -99,16 +98,15 @@ const AllPromotions = ()=> {
             <td>{promotion.promotionValues}</td>
             <td>{promotion.promotionDescription}</td>
             <td>{promotion.promotionItempic}</td>
-            <td>
-              <table className="EditDeleteBTNs">
+            {/* <td>
               <tbody>
                 <tr>
                   <td><Link to={`/updateform/${promotion._id}`}><button type="button" className="btn btn-warning">Edit</button></Link></td> &nbsp;
                   <td><button type="button" className="btn btn-danger" onClick={() => handledelete(promotion._id)}>Delete</button></td>
                 </tr>
               </tbody>
-              </table>
-            </td>
+            </td> */}
+            
           </tr>
         ))}
       </tbody>
@@ -118,7 +116,8 @@ const AllPromotions = ()=> {
         </div>
         </div>
         </div>
+
     )
 
 };
-export default AllPromotions;
+export default AllPromotions2;

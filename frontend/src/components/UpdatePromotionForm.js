@@ -1,7 +1,7 @@
 import React from "react";
 import { useState , useEffect } from "react";
 import axios from 'axios';
-import './PromotionCreateForm.css'
+// import './PromotionCreateForm.css'
 import { useParams, useNavigate} from "react-router-dom";
 
 
@@ -76,8 +76,8 @@ const UpdatePromotionForm = () => {
     return (
         
 
-        <div className="promotioncreateFormContainer">
-            <div classNme="formBootstrap">
+        <div className="updateFormContainer">
+            <div classNme="updateformBootstrap">
                 <h2 className="mb-4">Update Form</h2>
                 
                 <form onSubmit={updateData}>
@@ -117,8 +117,9 @@ const UpdatePromotionForm = () => {
                        
                 }    value={promotionItempic}/>
             </div>
-            
-            <button type="submit" className="btn btn-primary">Submit</button>
+            <div className="updatebtndiv">
+            <button type="submit" className="btn btn-primary submitbtn">Submit</button>
+            </div>
             </form>
             </div>
 
