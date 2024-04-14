@@ -3,12 +3,15 @@ import axios from 'axios';
 
 // Import CSS file
 //import './StockCreateForm.css';
+import './CreateForm.css'
 
 const StockCreateForm = () => {
     const [itemName, setItemName] = useState('');
     const [quantity, setQuantity] = useState('');
     const [currentstocklevel, setCurrentStockLevel] = useState('');
     const [minstocklevel, setMinStockLevel] = useState('');
+
+    //
 
     const sendData = async (e) => {
         e.preventDefault();
