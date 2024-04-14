@@ -4,6 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 
 //importing CSS  files
 //import './StaffCreateForm.css'
+import './UpdateForm.css'
 
 const StaffUpdateForm =() =>{
 
