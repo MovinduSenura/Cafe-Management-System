@@ -1,9 +1,14 @@
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 
+import FeedbackCreateForm from './components/FeedbackCreateForm';
+import FeedbacksAll from './components/FeedbacksAll';
+import UpdateForm from './components/UpdateForm';
+
 import NavBar from './components/NavBar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
 import CustomerLogin from './pages/CustomerLogin';
+import MenuPage from './pages/MenuPage';
 
 function App() {
   return (
@@ -19,7 +24,11 @@ function App() {
 
           <Route path = '/' element = {<Home />} />
           <Route exact path="/login" element={<CustomerLogin/>} />
+          <Route path = '/menudisplay' element = {<MenuPage />} />
 
+          <Route path='/feedbackcreateform' element={<FeedbackCreateForm />}/> 
+          <Route path='/feedbackupdateform/:id' element={<UpdateForm/>}/>
+          <Route path='/allfeedbacks' element={<FeedbacksAll/>}/>
         </Routes>
 
       </div>

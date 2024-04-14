@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useParams, useNavigate } from "react-router-dom";
 
 //importing CSS files
-import './MenuCreateForm.css'
+import './UpdateForm.css'
 
 const MenuUpdateForm = () => {
 
@@ -89,9 +89,9 @@ const MenuUpdateForm = () => {
 
     return (
 
-        <div className="menucreateFormContainer">
+        <div className="updateFormContainer">
 
-            <div className="menuformBootstrap">
+            <div className="updateformBootstrap">
                 <h2>Update Form</h2>
                 <form onSubmit={updateData}>
                     <div className="form-group mb-3">
@@ -124,7 +124,7 @@ const MenuUpdateForm = () => {
                         <label for="menuItemAvailability">Availability:</label>
                         <input type="text" className="form-control" id="menuItemAvailability" placeholder="Mention Availability (Yes/No)" autoComplete="off" onChange={(e) => setmenuItemAvailability(e.target.value)} value={menuItemAvailability}/>
                     </div>
-                    <div className="submitbtndiv">
+                    <div className="updatebtndiv">
                     <button type="submit" className="btn btn-primary submitbtn">Update</button>
                     </div>
                 </form>
