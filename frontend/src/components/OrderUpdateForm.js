@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 
-import './CreateOrderForm.css'
+// import './CreateOrderForm.css'
 
 const OrderUpdateForm = () => {
   //   return (
@@ -71,8 +71,8 @@ const OrderUpdateForm = () => {
   };
 
   return (
-    <div className="CreateOrderFormContainer">
-      <div className="orderFormContainer">
+    <div className="updateFormContainer">
+      <div className="updateformBootstrap">
         <h1>Add Order</h1>
 
         <form onSubmit={updateData}>
@@ -112,9 +112,9 @@ const OrderUpdateForm = () => {
             />
           </div>
 
-          <button type="submit" class="btn btn-primary">
-            Update
-          </button>
+          <div className="updatebtndiv">
+          <button type="submit" class="btn btn-primary submitbtn">Update</button>
+          </div>
         </form>
       </div>
     </div>

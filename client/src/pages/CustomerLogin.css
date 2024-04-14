@@ -1,0 +1,44 @@
+.login-form-container {
+  max-width: 300px;
+  margin: 100px auto 0 0; /* Adjust the margins to position the container */
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #AB845B;
+  display: grid; /* Use CSS Grid */
+  grid-template-columns: 1fr 4fr; /* Divide the container into two columns */
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  font-weight: bold;
+}
+
+input[type="text"] {
+  padding: 8px;
+  font-size: 16px;
+  border-radius: 3px;
+  border: 1px solid #ccc;
+  opacity: 0.7;
+  width: 100%; /* Adjust the width of the input to fill its column */
+  grid-column: 2; /* Place the input in the second column */
+}
+
+.submit-button {
+  background-color: #ffffff;
+  color: #000000;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 3px;
+  cursor: pointer;
+  width: 100%; /* Adjust the width of the button to fill its column */
+  grid-column: 2; /* Place the button in the second column */
+}
