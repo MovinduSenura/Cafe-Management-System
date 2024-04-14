@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 
 //import axios
 import axios from 'axios';
+import './CreateForm.css'
 
 //importing css file
 //import './CustomerUpdateForm.css'

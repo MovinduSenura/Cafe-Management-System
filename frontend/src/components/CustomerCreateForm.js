@@ -6,6 +6,7 @@ import axios from 'axios';
 
 //importing css file
 //import './CustomerCreateForm.css'
+import './CreateForm.css'
 
 
 const CustomerCreateForm = () => {
