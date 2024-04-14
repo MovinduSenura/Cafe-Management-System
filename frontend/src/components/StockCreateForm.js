@@ -11,6 +11,8 @@ const StockCreateForm = () => {
     const [currentstocklevel, setCurrentStockLevel] = useState('');
     const [minstocklevel, setMinStockLevel] = useState('');
 
+    //
+
     const sendData = async (e) => {
         e.preventDefault();
 
