@@ -5,7 +5,7 @@ import { useParams, useNavigate } from "react-router-dom";
 // Import CSS file
 //import './StockCreateForm.css';
 
-const StockUpdateForm = () => {
+const StockUpdateForm2 = () => {
     const [itemName, setItemName] = useState('');
     const [quantity, setQuantity] = useState('');
     const [currentstocklevel, setCurrentStockLevel] = useState('');
@@ -56,7 +56,7 @@ const StockUpdateForm = () => {
                 alert(res.data.message);
                 console.log(res.data.status);
                 console.log(res.data.message);
-                navigate('/items');
+                navigate('/items2');
             })
             .catch((err) => {
                 console.log("☠ :: Error on API URL or updateItemData object: " +err.message);
@@ -139,4 +139,4 @@ const StockUpdateForm = () => {
     );
 };
 
-export default StockUpdateForm;
+export default StockUpdateForm2;
