@@ -4,6 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 
 // Import CSS file
 //import './StockCreateForm.css';
+import './UpdateForm.css'
 
 const StockUpdateForm2 = () => {
     const [itemName, setItemName] = useState('');
