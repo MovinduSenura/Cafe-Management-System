@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 //import './CustomerAll.css'
 //import {ToastContainer} from 'react-toastify';
 //import 'react-toastify/dist/ReactToastify.css';
+import './DataTable.css'
+
 import { Link } from "react-router-dom";
 
 //toast=assign a message ToastContainer = call the set message
@@ -170,7 +172,7 @@ const AllCustomers = () => {
                 <div className="tablecontainer">
                     {/* <a href="/customerCreate"> */}
                     <div className="logoutdiv"><Link to='/menucreateform'><button type="button" className="btn btn-secondary btn-lg LogoutBtn">Logout</button></Link></div>
-                    <div className="addbtndiv"><Link to='/CustomerCreateForm'><button type="button" className="btn btn-secondary btn-lg AddItemBtn">Add item</button></Link></div>
+                    <div className="addbtndiv"><Link to='/customerCreate'><button type="button" className="btn btn-secondary btn-lg AddItemBtn">Add item</button></Link></div>
                     <div className="tablediv">
                         {/* <button type="button" className="btn btn-secondary AddItemBtn">Add New Customer</button> */}
                     {/* </a> */}

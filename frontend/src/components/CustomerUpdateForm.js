@@ -6,6 +6,7 @@ import axios from 'axios';
 
 //importing css file
 //import './CustomerUpdateForm.css'
+import './UpdateForm.css'
 import { useParams, useNavigate} from "react-router-dom";
 
 
