@@ -1,8 +1,8 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import './CustomerAll.css'
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+//import './CustomerAll.css'
+//import {ToastContainer} from 'react-toastify';
+//import 'react-toastify/dist/ReactToastify.css';
 import { Link } from "react-router-dom";
 
 //toast=assign a message ToastContainer = call the set message
@@ -52,42 +52,42 @@ const AllCustomers = () => {
     //2 arguments in useEffect - 1. arrow function  2.empty array
 
     //Delete
-    const handleDelete = async (id) => {
-        //customers._id(in delete button) parameter is passed to id above   
-        try {
+    // const handleDelete = async (id) => {
+    //     //customers._id(in delete button) parameter is passed to id above   
+    //     try {
 
-            const confirmed = window.confirm("Are you want to delete this customer??");
+    //         const confirmed = window.confirm("Are you want to delete this customer??");
 
-            if (confirmed) {
+    //         if (confirmed) {
 
-                //when passing a parameter or variable bactic mark is used
-                await axios.delete(`http://localhost:8000/customer/customerdelete/${id}`)
-                    .then((res) => {
-                        alert(res.data.message);
-                        console.log(res.data.message);
-                    })
-                    .catch((err) => {
-                        console.log("❌ :: Error on API URL : " + err.message);
-                    })
-
-
-            } else {
-                toast.error('Deletion Cancelled!', {
-                    position: "top-center",
-                });
-                console.log("Deletion Cancelled!")
-            }
+    //             //when passing a parameter or variable bactic mark is used
+    //             await axios.delete(`http://localhost:8000/customer/customerdelete/${id}`)
+    //                 .then((res) => {
+    //                     alert(res.data.message);
+    //                     console.log(res.data.message);
+    //                 })
+    //                 .catch((err) => {
+    //                     console.log("❌ :: Error on API URL : " + err.message);
+    //                 })
 
 
-
-
-        } catch (err) {
-            console.log("❌ :: handleDelete function failed! ERROR : " + err.message);
-        }
+    //         } else {
+    //             toast.error('Deletion Cancelled!', {
+    //                 position: "top-center",
+    //             });
+    //             console.log("Deletion Cancelled!")
+    //         }
 
 
 
-    }
+
+    //     } catch (err) {
+    //         console.log("❌ :: handleDelete function failed! ERROR : " + err.message);
+    //     }
+
+
+
+    // }
 
     //searchCustomer
     //SearchFunction eka cal krddi async ekt ehptte eka replace wenw.
@@ -150,13 +150,13 @@ const AllCustomers = () => {
 
 
     return (
-        <div className="CustomerAllContainer">
+        <div className="alldiv">
 
-            <div className="tableContainer">
-                <center><h3 className="mt-3">Loyalty Customers</h3></center>
+            <div className="maintablecontainer">
+                <h3 className="mt-3">Loyalty Customers</h3>
 
                 <div className="tableHead">
-                    <h2>Controller</h2>
+                    
 
                     <div className="search-container">
                         <form className="searchTable" onSubmit={handleFormSubmit}>
@@ -167,16 +167,19 @@ const AllCustomers = () => {
                 </div>
 
 
-                <div>
-                    <a href="/customerCreate">
-                        <button type="button" className="btn btn-secondary AddItemBtn">Add New Customer</button>
-                    </a>
-                </div>
+                <div className="tablecontainer">
+                    {/* <a href="/customerCreate"> */}
+                    <div className="logoutdiv"><Link to='/menucreateform'><button type="button" className="btn btn-secondary btn-lg LogoutBtn">Logout</button></Link></div>
+                    <div className="addbtndiv"><Link to='/CustomerCreateForm'><button type="button" className="btn btn-secondary btn-lg AddItemBtn">Add item</button></Link></div>
+                    <div className="tablediv">
+                        {/* <button type="button" className="btn btn-secondary AddItemBtn">Add New Customer</button> */}
+                    {/* </a> */}
+                
 
-                {/* can put in anyplace within main div */}
-                <ToastContainer />
+                
+                
 
-                <table class="table table-striped">
+                <table class="table table-striped tbl">
                     <thead>
                         <tr>
                             <th scope="col">ID</th>
@@ -184,7 +187,7 @@ const AllCustomers = () => {
                             <th scope="col">NIC</th>
                             <th scope='col'>Email</th>
                             <th scope="col">Loyalty Points</th>
-                            <th scope="col">Operations</th>
+                            <th className="op" scope="col">Operations</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -195,9 +198,19 @@ const AllCustomers = () => {
                                 <td>{customers.customerNIC}</td>
                                 <td>{customers.customerEmail}</td>
                                 <td>{customers.customerLoyaltyPoints}</td>
-                                {/* a href = Link to , a = Link, href = to */}
-                                <td><Link to={`/CustomerView/${customers._id}`}><button type="button" className="btn btn-warning">View</button></Link>&nbsp;&nbsp;
-                                    </td>
+                                <td>
+
+                                <table className="EditDeleteBTNs">
+                                    <tbody>
+                                        <tr>
+                                          {/* a href = Link to , a = Link, href = to */}
+                                            <td><Link to={`/CustomerView/${customers._id}`}><button type="button" className="btn btn-warning">View</button></Link>&nbsp;&nbsp;
+                                            </td>  
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                </td>
+                                
 
                             </tr>
 
@@ -205,6 +218,8 @@ const AllCustomers = () => {
 
                     </tbody>
                 </table>
+                </div>
+                </div>
             </div>
 
 

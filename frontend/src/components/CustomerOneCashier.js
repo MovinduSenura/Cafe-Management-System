@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import axios from 'axios';
 
 //importing css file
-import './CustomerUpdateForm.css'
+//import './CustomerUpdateForm.css'
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 

@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import axios from 'axios';
 
 //importing css file
-import './CustomerUpdateForm.css'
+//import './CustomerUpdateForm.css'
 import { useParams, useNavigate} from "react-router-dom";
 
 
@@ -105,9 +105,9 @@ const CustomerUpdateForm = () => {
         return (
                 //dynamic ekaka function wda kennoni
                 //only one div is inside return. but many divs can be inside devs.
-                <div className="createFormContainer">
+                <div className="updateFormContainer">
 
-                        <div className="formBootsrap">
+                        <div className="updateformBootstrap">
                         
                                 
                                 <form onSubmit={updateData}>
@@ -185,9 +185,9 @@ const CustomerUpdateForm = () => {
                                         </div>
 
 
-                                        
-                                        <center><button type="submit" className="btn btn-primary">Update</button></center>
-
+                                        <div className="updatebtndiv">
+                                        <button type="submit" className="btn btn-primary submitbtn">Update</button>
+                                        </div>
                                         
 
                                 </form>
