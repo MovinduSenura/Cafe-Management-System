@@ -1,8 +1,8 @@
-.menucreateFormContainer{
+.createFormContainer{
   margin-top: 100px;
 }
 
-.menuformBootstrap{
+.formBootstrap{
     width: 500px;
     background-color: none;
     margin-right: auto;
@@ -13,7 +13,7 @@
     padding: 20px;
   }
 
-  .menuformBootstrap h2{
+  .formBootstrap h2{
     text-align: center;
   }
 

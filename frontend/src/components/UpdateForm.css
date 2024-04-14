@@ -1,9 +1,9 @@
-.menuupdateFormContainer{
+.updateFormContainer{
     margin-top: 100px;
     margin-left: -220px;
   }
   
-  .menuupdateformBootstrap{
+  .updateformBootstrap{
       width: 500px;
       background-color: none;
       margin-right: auto;
@@ -14,7 +14,7 @@
       padding: 20px;
     }
   
-    .menuupdateformBootstrap h2{
+    .updateformBootstrap h2{
       text-align: center;
     }
   
