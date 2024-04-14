@@ -67,9 +67,9 @@ const MenuCreateForm = () => {
 
     return (
 
-        <div className="menucreateFormContainer">
+        <div className="createFormContainer">
 
-            <div className="menuformBootstrap">
+            <div className="formBootstrap">
                 <h2>New Item Form</h2>
                 <form onSubmit={sendData}>
                     <div className="form-group mb-3">

@@ -89,9 +89,9 @@ const MenuUpdateForm = () => {
 
     return (
 
-        <div className="menuupdateFormContainer">
+        <div className="updateFormContainer">
 
-            <div className="menuupdateformBootstrap">
+            <div className="updateformBootstrap">
                 <h2>Update Form</h2>
                 <form onSubmit={updateData}>
                     <div className="form-group mb-3">
