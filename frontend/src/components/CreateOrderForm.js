@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from 'axios';
 
-import './CreateOrderForm.css'
+// import './CreateOrderForm.css'
 
 const CreateOrderForm = () => {
 
@@ -42,9 +42,9 @@ const CreateOrderForm = () => {
     
   return (
 
-    <div className="CreateOrderFormContainer">
+    <div className="CreateFormContainer">
 
-        <div className="orderFormContainer">
+        <div className="formBootstrap">
             <h1>Add Order</h1>
 
     <form onSubmit={sendData}>
@@ -62,8 +62,9 @@ const CreateOrderForm = () => {
     <label for="Order_amount">Full-Amount (Rs)</label>
         <input type="number" class="form-control" id="AmountExample"  placeholder="Choose the amount" onChange={(e)=>setOrderPrice(e.target.value)} value={OrderPrice}  />
     </div>
-
-    <button type="submit" class="btn btn-primary">Place Order</button>
+    <div className="submitbtndiv">
+    <button type="submit" class="btn btn-primary submitbtn">Place Order</button>
+    </div>
 </form>
 
     </div>
