@@ -16,6 +16,7 @@ import CustomerOneCashier from './components/CustomerOneCashier'
 
 import PromotionCreateForm from './components/PromotionCreateForm';
 import AllPromotions from './components/AllPromotions';
+import AllPromotions2 from './components/AllPromotions2';
 import UpdatePromotionForm from './components/UpdatePromotionForm';
 
 
@@ -53,6 +54,7 @@ function App() {
             <Route path='/createform' element={<PromotionCreateForm />}/>
             <Route path='/updateform/:id' element={<UpdatePromotionForm/>}/>
             <Route path='/allpromotion' element={<AllPromotions/>}/>
+            <Route path='/allpromotion2' element={<AllPromotions2/>}/>
          
           </Routes>
 
