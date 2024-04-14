@@ -59,8 +59,8 @@ function AppContent() {
   const location = useLocation();
 
     // Array of routes where the navbar should be shown
-    const showSideNavBarRoutes = ['/menucreateform', '/', '/menuupdateform/:id'];
-    const showSideNavBar2Routes = ['/cashiermenu'];
+    const showSideNavBarRoutes = ['/menucreateform', '/', '/menuupdateform/:id', '/customersall', '/customerView/:id', '/stockcreateform', '/stockupdateform/:id', '/items', '/createform', '/updateform/:id', '/allpromotion', '/createStaff', '/allstaff', '/staffUpdateform/:id'];
+    const showSideNavBar2Routes = ['/cashiermenu', '/customerCreate', '/customerUpdate/:id', '/customerView2/:id', '/CreateOrder', '/OrdersAll', '/OrderUpdate/:id', '/allpromotion2'];
 
     // Function to determine whether to render the navbar
     const renderSideNavBar = () => {
@@ -90,8 +90,8 @@ function AppContent() {
             <Route path='/menucreateform' element={<MenuCreateForm />} />
             <Route path='/' element={<MenuAllItems />} />     
             <Route path='/menuupdateform/:id' element={<MenuUpdateForm />} />
-
             <Route path='/cashiermenu' element={<MenuAllItems2 />} />
+
             <Route path='/CreateOrder' element={<CreateOrderForm />} />
             <Route path='/OrdersAll' element={<OrdersAll />} />
             <Route path='/OrderUpdate/:id' element={<OrderUpdateForm />} />
@@ -111,19 +111,19 @@ function AppContent() {
             <Route path='/getAllPayment' element={<PaymentAll/>}/>
             <Route path='/update/:id' element={<PaymentUpdateForm/>}/>
 
-            <Route path = '/createStaff' element = {<StaffCreateForm/>}/>
+            <Route path='/createStaff' element = {<StaffCreateForm/>}/>
             <Route path='/allstaff' element={<AllStaff/>}/>
-            <Route path='/StaffLogin' element={<StaffLogin />} />
+            <Route path='/staffUpdateform/:id' element={<StaffUpdateForm/>}/>
+            <Route path='/StaffLogin' element={<StaffLogin />} />      
             <Route path="/admin" element={<Admin />} />
             <Route path="/cheff" element={< Chef/>} />
             <Route path="/cashier" element={<Cashier />} />
-            <Route path='/staffUpdateform/:id' element={<StaffUpdateForm/>}/>
-
-            <Route path ='/stockcreateform' element = {<StockCreateForm />} />
-            <Route path ='/stockupdateform/:id' element = {<StockUpdateForm />} />
-            <Route path ='/stockupdateform2/:id' element = {<StockUpdateForm2 />} />
-            <Route path = '/items' element = {<AllItems/>}/>
-            <Route path = '/items2' element = {<AllItems2/>}/>
+            
+            <Route path='/stockcreateform' element = {<StockCreateForm />} />
+            <Route path='/stockupdateform/:id' element = {<StockUpdateForm />} />
+            <Route path='/stockupdateform2/:id' element = {<StockUpdateForm2 />} />
+            <Route path='/items' element = {<AllItems/>}/>
+            <Route path='/items2' element = {<AllItems2/>}/>
 
         
 
