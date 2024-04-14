@@ -6,7 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 //importing CSS files
-import './MenuAllItems.css'
+import './DataTable.css'
 
 const MenuAllItems = () => {
 

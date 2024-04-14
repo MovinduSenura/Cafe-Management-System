@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useParams, useNavigate } from "react-router-dom";
 
 //importing CSS files
-import './MenuUpdateForm.css'
+import './UpdateForm.css'
 
 const MenuUpdateForm = () => {
 
