@@ -29,7 +29,7 @@
     height: 38px;
   }
   
-  button[type="submit"] {
+  .searchTable button[type="submit"] {
     background-color: #AB845B; /* Change the background color as needed */
     color: #fff;
     border: none;
@@ -39,7 +39,7 @@
     height: 38px;
   }
   
-  button[type="submit"]:hover {
+  .searchTable button[type="submit"]:hover {
     background-color: #94724e; /* Change the hover background color as needed */
   }
   
