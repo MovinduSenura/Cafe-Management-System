@@ -80,11 +80,11 @@ const AllPromotions2 = ()=> {
         <thead>
         <tr>
         <th scope="col">No</th>
-        <th scope="col">PromotionID</th>
+        {/* <th scope="col">PromotionID</th> */}
         <th scope="col">Name</th>
-        <th scope="col">Value</th>
-        <th scope="col">Discription</th>
-        <th scope="col">Item Pic</th>
+        <th scope="col">Offer Percentage(%)</th>
+        <th scope="col">Description</th>
+        {/* <th scope="col">Item Pic</th> */}
         {/* <th scope="col"></th> */}
         </tr>
         </thead>
@@ -94,11 +94,19 @@ const AllPromotions2 = ()=> {
         {allPromotions.map((promotion) => (
           <tr>
             <th scope="row" key={promotion._id}>1</th>
-            <td>{promotion._id}</td>
+            <td>
+                <img 
+                   src={require(`../uploads/${promotion.promotionItempic}`)}
+                   width={30}
+                   height={40}
+                   alt="promotionItemImage" 
+                />
+            </td>
+            {/* <td>{promotion._id}</td> */}
             <td>{promotion.promotionName}</td>
             <td>{promotion.promotionValues}</td>
             <td>{promotion.promotionDescription}</td>
-            <td>{promotion.promotionItempic}</td>
+            {/* <td>{promotion.promotionItempic}</td> */}
             {/* <td>
               <tbody>
                 <tr>
