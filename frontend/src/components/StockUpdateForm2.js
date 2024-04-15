@@ -82,7 +82,7 @@ const StockUpdateForm2 = () => {
 
                 <form onSubmit={updateData}>
                     <div className="form-group mb-3">
-                        <label For="itemName">Name</label>
+                        <label For="itemName">Name:</label>
                         <input
                             type="text"
                             className="form-control"
@@ -93,7 +93,7 @@ const StockUpdateForm2 = () => {
                         />
                     </div>
                     <div className="form-group mb-3">
-                        <label For="quantity">Quantity</label>
+                        <label For="quantity">Quantity:</label>
                         <input
                             type="number"
                             className="form-control"
@@ -105,7 +105,7 @@ const StockUpdateForm2 = () => {
                         />
                     </div>
                     <div className="form-group mb-3">
-                        <label For="currentStockLevel">Current Stock Level</label>
+                        <label For="currentStockLevel">Current Stock Level:</label>
                         <input
                             type="number"
                             className="form-control"
@@ -117,7 +117,7 @@ const StockUpdateForm2 = () => {
                         />
                     </div>
                     <div className="form-group mb-3">
-                        <label For="minStockLevel">Minimum Stock Level</label>
+                        <label For="minStockLevel">Minimum Stock Level:</label>
                         <input
                             type="number"
                             className="form-control"

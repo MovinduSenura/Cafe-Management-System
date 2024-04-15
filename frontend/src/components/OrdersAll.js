@@ -108,7 +108,7 @@ const handleFormSubmit = (e) => {
     <div className="alldiv">
       <div className="maintablecontainer">
       <div className="tableHead">
-                    <h2>Search Order</h2>
+                    {/* <h2>Search Order</h2> */}
 
                     <div className="search-container">
                         <form className="searchTable" onSubmit={handleFormSubmit}>
@@ -119,8 +119,9 @@ const handleFormSubmit = (e) => {
                 </div>
 
                 <div className="tablecontainer">
+                <div className="logoutdiv"><Link to='/'><button type="button" className="btn btn-secondary btn-lg LogoutBtn">Logout</button></Link></div>
                 <div className="addbtndiv"><Link to='/CreateOrder'><button type="button" className="btn btn-secondary btn-lg AddItemBtn">Add Order</button></Link></div>
-      <div className="logoutdiv"><Link to='/'><button type="button" className="btn btn-secondary btn-lg LogoutBtn">Logout</button></Link></div>
+      
       <div className="tablediv">
                
         <ToastContainer />
@@ -148,9 +149,9 @@ const handleFormSubmit = (e) => {
                         <td>
                           <Link to={`/OrderUpdate/${orders._id}`}>
                             <button className="btn btn-success">Edit</button>
-                          </Link>
-                          &nbsp;
-                          <button
+                          </Link></td>
+                          &nbsp;&nbsp;
+                          <td><button
                             className="btn btn-danger"
                             onClick={() => handleDelete(orders._id)}
                           >Delete</button>
