@@ -1,5 +1,5 @@
 import React from "react";
-import { useState , useEffect } from "react";
+import { useState , useEffect, useRef } from "react";
 import axios from 'axios';
 // import './PromotionCreateForm.css'
 import { useParams, useNavigate} from "react-router-dom";
@@ -9,9 +9,11 @@ import './UpdateForm.css'
 const UpdatePromotionForm = () => {
     
     const[promotionName, setpromotionName]= useState('');
+    const [uploadedFileName, setUploadedFileName] = useState(''); // State to store uploaded file name
     const[promotionValues, setpromotionValues]= useState('');
     const[promotionDescription, setpromotionDescription]= useState('');
-    const[promotionItempic, setpromotionItempic]= useState('');
+    // const[promotionItempic, setpromotionItempic]= useState('');
+    const fileInputRef = useRef(null); // Create a ref for file input
  
     const {id} = useParams();
     const navigate = useNavigate();
@@ -27,7 +29,7 @@ const UpdatePromotionForm = () => {
             setpromotionName(res.data.Promotion.promotionName);
             setpromotionValues(res.data.Promotion.promotionValues);
             setpromotionDescription(res.data.Promotion.promotionDescription);
-            setpromotionItempic(res.data.Promotion.promotionItempic);
+            setUploadedFileName(res.data.Promotion.promotionItempic);
             console.log("✨ Promotion fetched successfuly!");
                 })
                 .catch((err)=> {
@@ -45,15 +47,24 @@ const UpdatePromotionForm = () => {
 
     const updateData = (e) => {
         e.preventDefault();
+
+        const promotionformdata = new FormData(); // Create menuformdata object to append data
+        // menuformdata.append('menuItemImage', menuItemImage);
+        promotionformdata.append('promotionName', promotionName);
+        promotionformdata.append('promotionValues', promotionValues);
+        promotionformdata.append('promotionDescription', promotionDescription);
+        promotionformdata.append('promotionItempic', fileInputRef.current.files[0]); // Retrieve file from file input ref
+
             
         try{
-            let updateItemData = {
-                promotionName: promotionName,
-                promotionValues: promotionValues,
-                promotionDescription: promotionDescription,
-                promotionItempic: promotionItempic,
-            }
-            axios.patch(`http://localhost:8000/promotion/promotionUpdate/${id}`,updateItemData)
+
+            // let updateItemData = {
+            //     promotionName: promotionName,
+            //     promotionValues: promotionValues,
+            //     promotionDescription: promotionDescription,
+            //     promotionItempic: promotionItempic,
+            // }
+            axios.patch(`http://localhost:8000/promotion/promotionUpdate/${id}`,promotionformdata)
             .then((res) =>{
                 alert(res.data.message);
                 console.log(res.data.status);
@@ -109,15 +120,14 @@ const UpdatePromotionForm = () => {
                        
                 }    value={promotionDescription}/>
             </div>
-            <div class="form-group mb-3">
-                <label for="promotionItempic">Item Pic:</label>
-                <input type="text" className="form-control" id="promotionItempic" placeholder="pic" autoComplete="off" onChange={
-                    (e) => {
-                        setpromotionItempic(e.target.value)
-                    }
+            <div className="form-group mb-3">
                        
-                }    value={promotionItempic}/>
-            </div>
+                       <label for="promotionImage">Promotion Image:</label>
+                           {/* <input type="file" accept="image/*" className="form-control" id="menuItemImage" placeholder="Enter menuItemImage" autoComplete="off" onChange={(e) => setmenuItemImage(e.target.files[0])}/> */}
+                       <input type="file" accept="image/*" className="form-control" id="promotionImage"  autoComplete="off" ref={fileInputRef} required/>
+                       {uploadedFileName && <p>Uploaded File: {uploadedFileName}</p>} 
+               </div>
+              
             <div className="updatebtndiv">
             <button type="submit" className="btn btn-primary submitbtn">Submit</button>
             </div>
