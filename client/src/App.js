@@ -9,6 +9,7 @@ import Footer from './components/Footer';
 import Home from './pages/Home';
 import CustomerLogin from './pages/CustomerLogin';
 import MenuPage from './pages/MenuPage';
+import PromotionPage from './pages/PromotionPage';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route path = '/' element = {<Home />} />
           <Route exact path="/login" element={<CustomerLogin/>} />
           <Route path = '/menudisplay' element = {<MenuPage />} />
+          <Route path = '/promotiondisplay' element = {<PromotionPage />} />
 
           <Route path='/feedbackcreateform' element={<FeedbackCreateForm />}/> 
           <Route path='/feedbackupdateform/:id' element={<UpdateForm/>}/>
