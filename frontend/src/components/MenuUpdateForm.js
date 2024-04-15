@@ -105,11 +105,11 @@ const MenuUpdateForm = () => {
                         <input type="text" className="form-control" id="menuItemName" placeholder="Enter Item Name" autoComplete="off" onChange={(e) => setmenuItemName(e.target.value)} value={menuItemName}/>
                     </div>
                     <div className="form-group mb-3">
-                        <label for="menuItemDescription">Description</label>
+                        <label for="menuItemDescription">Description:</label>
                         <textarea class="form-control" id="menuItemDescription" rows="3" autoComplete="off" onChange={(e) => setmenuItemDescription(e.target.value)} value={menuItemDescription}></textarea>
                     </div>
                     <div className="mb-3">
-                        <label for="menuItemCategory">Category</label>
+                        <label for="menuItemCategory">Category:</label>
                         <select className="form-select" id="menuItemCategory" onChange={(e) => setmenuItemCategory(e.target.value)} value={menuItemCategory}>
                             <option selected>-Select-</option>
                             <option value="Beverage">Beverage</option>

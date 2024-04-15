@@ -102,6 +102,7 @@ footer {
   top: 0;
   left: 0;
   background-color: #161616e7;
+  /* background-color: #161616; */
   padding-top: 100px;
   z-index: 1;
 }
@@ -126,9 +127,9 @@ footer {
 }
 
 /* Active link */
-.sidenavpanel .active {
+/* .sidenavpanel .active {
   background-color: #AB845B;
-}
+} */
 
 /* .sidenavcontent{
   margin-left: 200px;
@@ -138,3 +139,31 @@ footer {
 /* .logoutdiv{
   color: white;
 } */
+
+  /* .ccc{
+    background-color: red;
+    width: 500px;
+  } */
+
+  /* .accessbox{
+    background-color: #161616;
+    height: 50px;
+    padding-left: 10px;
+    padding-top: 12px;
+  }
+
+  .accessbox:hover{
+    background-color: #AB845B!important;
+    color: #161616!important;
+  }
+
+  .accessbox p{
+    color: white;
+    margin: 0;
+    font-size: 1.0rem;
+    font-weight: 400;
+  }
+
+  .accessbox:hover p {
+    color: #161616;
+  } */

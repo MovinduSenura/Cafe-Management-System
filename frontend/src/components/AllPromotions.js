@@ -67,13 +67,13 @@ const AllPromotions = ()=> {
 
     return (
         
-        <div className = "alldiv">
+        <div className = "alldiv" style={{marginTop: "200px"}}>
        
         <div className = "maintablecontainer">
          
          <div className = "tablecontainer">
         <div className="logoutdiv"><Link to='/menucreateform'><button type="button" className="btn btn-secondary btn-lg LogoutBtn">Logout</button></Link></div>
-        <div className="addbtndiv"><Link to='/menucreateform'><button type="button" className="btn btn-secondary btn-lg AddItemBtn">Add item</button></Link></div>  
+        <div className="addbtndiv"><Link to='/createform'><button type="button" className="btn btn-secondary btn-lg AddItemBtn">Add Promotion</button></Link></div>  
         <div className="tablediv">
 
 
@@ -93,9 +93,9 @@ const AllPromotions = ()=> {
 
         <ToastContainer/>
       <tbody>
-        {allPromotions.map((promotion) => (
-          <tr>
-            <th scope="row" key={promotion._id}>1</th>
+        {allPromotions.map((promotion, index) => (
+          <tr key={promotion._id}>
+            <th scope="row">{index + 1}</th>
             <td>{promotion._id}</td>
             <td>{promotion.promotionName}</td>
             <td>{promotion.promotionValues}</td>
@@ -105,7 +105,7 @@ const AllPromotions = ()=> {
               <table className="EditDeleteBTNs">
               <tbody>
                 <tr>
-                  <td><Link to={`/updateform/${promotion._id}`}><button type="button" className="btn btn-warning">Edit</button></Link></td> &nbsp;
+                  <td><Link to={`/updateform/${promotion._id}`}><button type="button" className="btn btn-success">Edit</button></Link></td> &nbsp;
                   <td><button type="button" className="btn btn-danger" onClick={() => handledelete(promotion._id)}>Delete</button></td>
                 </tr>
               </tbody>

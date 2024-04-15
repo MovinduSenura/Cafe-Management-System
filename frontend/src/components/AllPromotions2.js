@@ -66,13 +66,13 @@ const AllPromotions2 = ()=> {
 
     return (
         
-        <div className = "alldiv">
+        <div className = "alldiv" style={{marginTop: "200px"}}>
        
         <div className = "maintablecontainer">
          
          <div className = "tablecontainer">
         <div className="logoutdiv"><Link to='/menucreateform'><button type="button" className="btn btn-secondary btn-lg LogoutBtn">Logout</button></Link></div>
-        <div className="addbtndiv"><Link to='/menucreateform'><button type="button" className="btn btn-secondary btn-lg AddItemBtn">Add item</button></Link></div>  
+        {/* <div className="addbtndiv"><Link to='/createform'><button type="button" className="btn btn-secondary btn-lg AddItemBtn">Add Item</button></Link></div>   */}
         <div className="tablediv">
 
 

@@ -115,9 +115,9 @@ const MenuAllItems2 = () => {
     };
 
     return(
-        <div className="menualldiv">
+        <div className="menualldiv" >
 
-            <div className="maintablecontainer">
+            <div className="maintablecontainer" style={{marginBottom: "70px"}}>
 
             <div className="tableHead">
                 {/* <h2>Controller</h2> */}
