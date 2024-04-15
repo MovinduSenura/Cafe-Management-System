@@ -1,0 +1,55 @@
+.promotionitemsmaindiv{
+    /* width: 1400px; */
+}
+
+.SectorPromotion{
+    position: relative;
+    background-image: url('../images/promotionbanner.jpg');
+    height: 50vh;
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+    color: #ffffff;
+    font-family: 'Poppins';
+}
+
+.SecOverlay2{
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.7);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.SectorAlignDiv2{
+    /* background-color: red; */
+    width: 1400px;
+    padding: 10px;
+}
+
+.promotionIconsContainer img{
+    width: 90px;
+    /* align-items: center; */
+    /* text-align: center; */
+}
+
+.promotionIconsContainer{
+    /* align-items: center; */
+    text-align: center;
+}
+
+.promotionInfoContainer{
+    margin-bottom: -10px;
+}
+
+.promotionInfoContainer h1{
+    font-size: 2.2em;
+    font-weight: 500;
+    margin-top: 50px;
+    text-align: center;
+}
