@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./CustomerLogin.css";
+import "../pages/CustomerLogin.css";
 
 function LoginForm() {
   const [username, setUsername] = useState("");
@@ -13,8 +13,8 @@ function LoginForm() {
 
   return (
     <div className="login-form-container">
-      <form onSubmit={handleSubmit} className="login-form">
-        <div className="form-group">
+      <form onSubmit={handleSubmit} className="login-form loginForm">
+        <div className="form-group FormGroup">
           <label htmlFor="username"></label>
           <input
             type="text"
