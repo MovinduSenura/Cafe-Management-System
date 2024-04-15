@@ -1,10 +1,37 @@
-// import axios from "axios";
-// import React, { useEffect, useState } from "react";
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+// import React from "react";
 import menuicons from '../images/menuicons.png'
 import './PromotionPage.css'
 
 const PromotionPage = () => {
+
+    const [ allPromotions, setAllPromotion ] = useState([]);
+
+    useEffect(() => {
+
+      const getAllPromotions = async () => {
+        try{
+          
+          await axios.get('http://localhost:8000/promotion/promotions')
+          .then((res) => {
+            setAllPromotion(res.data.Allpromotions);
+            console.log(res.data.Allpromotions);
+            console.log('status: ' + res.data.status);
+          })
+          .catch((err) => {
+            console.log('☠️ :: Error on API URL! ERROR: ', err.message);
+          })
+
+        }catch(err) {
+         
+          console.log('☠️ :: getAllPromotions function failed! ERROR: ' + err.message)
+        }
+      }
+
+      getAllPromotions();
+
+    }, [])
 
   return (
     <div className="promotionitemsmaindiv">
@@ -23,7 +50,23 @@ const PromotionPage = () => {
         </div>
 
         <div className='promotionItemsSector'>
-              <h2>Content</h2>
+
+            <h2 className="promotiontopic">Current Deals</h2>
+
+            {allPromotions.map((promotion) => (  
+                <div className="promotioncard">
+                    <div className="subpromotioncard">
+                        <img 
+                            src={require(`../../../frontend/src/uploads/${promotion.promotionItempic}`)}
+                            // width={90}
+                            // height={100}
+                            alt="promotionItemImage" 
+                        />
+                    </div>
+                    <h4 className="promotionnameh4">{promotion.promotionName}</h4>
+                    <h2 className="promotionvalueh2">{promotion.promotionValues}%</h2>
+                </div>
+            ))}
         </div>
 
     </div>
