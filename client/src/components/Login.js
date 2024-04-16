@@ -31,7 +31,7 @@ const handleSubmit = async (e) => {
 
 
   return (
-    <div className="mt-5">
+    <div className="mt-5" style={{marginTop: "500px"}}>
       <h2>Login</h2>
       {error && <p style={{ color: 'red' }}>{error}</p>}
       <form onSubmit={handleSubmit}>

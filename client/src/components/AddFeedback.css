@@ -1,4 +1,4 @@
-.FeedbackformContainer h1{
+/* .FeedbackformContainer h1{
     text-align: center;
 }
 
@@ -46,4 +46,34 @@
 
   .formBootstrap h1{
     text-align: center;
+  } */
+
+  .createFormContainer2{
+    margin-top: 180px;
+    margin-bottom: 100px;
   }
+  
+  .formBootstrap2{
+      width: 500px;
+      background-color: none;
+      margin-right: auto;
+      margin-left: auto;
+      margin-top: 40px;
+      border: 1px dashed #ccc;
+      border-radius: 10px;
+      padding: 20px;
+    }
+  
+    .formBootstrap2 h2{
+      text-align: center;
+    }
+  
+    .submitbtndiv2{
+      width: fit-content;
+      margin-left: auto;
+      margin-right: auto;
+      /* background-color: red; */
+    }
+  
+  
+  

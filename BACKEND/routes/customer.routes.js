@@ -16,6 +16,8 @@ const {
     deleteFeedback,
     loginFeedback,
     allFeedbacks,
+    searchFeedback,
+    getAllFeedbacks,
 } = require("../controller/customer.controller");
 
 
@@ -34,7 +36,9 @@ CustomerRouter.patch('/updatefeedback/:userId/:feedbackId',updateFeedback);
 CustomerRouter.delete('/deletefeedback/:userId/:feedbackId',deleteFeedback);
 CustomerRouter.get('/login/:nic', loginFeedback);
 CustomerRouter.put('/feedback/:customerNIC/:feedbackId', updateFeedback);
-CustomerRouter.get('/feedback/all',allFeedbacks);
+CustomerRouter.get('/feedback/all', allFeedbacks);
+CustomerRouter.get('/feedbacksearch', searchFeedback);
+CustomerRouter.get('/feedbackall', getAllFeedbacks);
 
 
 
