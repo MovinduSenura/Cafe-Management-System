@@ -134,6 +134,8 @@ const deleteFeedback = async(req,res)=> {
 
 
 }
+
+
 module.exports = {
     addFeedback,
     getAllFeedbacks,
@@ -141,5 +143,6 @@ module.exports = {
     updateFeedback,
     deleteFeedback,
     searchFeedback,
+   
 }
 

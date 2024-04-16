@@ -242,7 +242,7 @@ const getOneFeedback = async(req,res) =>{
 }
 
 const updateFeedback =async(req,res) => {
-    const { userId, feedbackId } = req.params;
+    const { customerNIC, feedbackId } = req.params;
    
     const { DayVisited, TimeVisited, Comment } = req.body;
 
@@ -254,7 +254,7 @@ const updateFeedback =async(req,res) => {
 
     try {
         const update = await customerModel.findOneAndUpdate(
-            { _id: userId, 'feedbacks._id': feedbackId },
+            { customerNIC, 'feedbacks._id': feedbackId },
             { $set: { 'feedbacks.$': updateFeedback } },
             { new: true }
         ).then(() => {
@@ -305,7 +305,44 @@ const deleteFeedback = async(req,res) => {
 
 }
 
+const loginFeedback = async(req,res) =>{
+    try {
+        const customerNIC = req.params.nic;
 
+        // Find the user by customerNIC
+        const user = await customerModel.findOne({ customerNIC });
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        // Return the user data
+        res.status(200).json({ status: 'User found', user });
+    } catch (error) {
+        console.error('Error fetching user:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
+const allFeedbacks = async(req,res) => {
+    try {
+        // Find all users with appointments
+        const usersWithFeedbacks = await customerModel.find({ feedbacks: { $exists: true, $not: { $size: 0 } } });
+
+        // Extract all appointments from users
+        const allFeedbacks = usersWithFeedbacks.reduce((feedbacks, user) => {
+            feedbacks.push(...user.feedbacks);
+            return feedbacks;
+        }, []);
+
+        // Send the appointments as JSON response
+        res.json(allFeedbacks);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+
+}
 
 //exporting, get all item router controller
 module.exports = {
@@ -320,4 +357,7 @@ module.exports = {
     getOneFeedback,
     updateFeedback,
     deleteFeedback,
+    loginFeedback,
+    allFeedbacks,
+
 }

@@ -14,8 +14,9 @@ const {
     getOneFeedback,
     updateFeedback,
     deleteFeedback,
+    loginFeedback,
+    allFeedbacks,
 } = require("../controller/customer.controller");
-
 
 
 CustomerRouter.post('/customercreate', addCustomer);
@@ -28,10 +29,12 @@ CustomerRouter.get('/customersearch', searchCustomer);
 //Sithmi
 CustomerRouter.post('/addfeedback/:userid', addFeedback);
 CustomerRouter.get('/getfeedback/:userid', getFeedback);
-CustomerRouter.get('/getfeedback/:customerNIC/:feedbackId',getOneFeedback);
+CustomerRouter.get('/getonefeedback/:customerNIC/:feedbackId',getOneFeedback);
 CustomerRouter.patch('/updatefeedback/:userId/:feedbackId',updateFeedback);
 CustomerRouter.delete('/deletefeedback/:userId/:feedbackId',deleteFeedback);
-
+CustomerRouter.get('/login/:nic', loginFeedback);
+CustomerRouter.put('/feedback/:customerNIC/:feedbackId', updateFeedback);
+CustomerRouter.get('/feedback/all',allFeedbacks);
 
 
 

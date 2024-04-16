@@ -139,8 +139,8 @@ const FeedbacksAll = () =>{
         <td>{feedback.DayVisited}</td>
         <td>{feedback.TimeVisited}</td>
         <td>{feedback.Comment}</td>
-        <td><Link to={`/feedbackupdateform/${feedback._id}`}><button type="button" class="btn btn-success">Edit</button></Link>&nbsp;&nbsp;
-        <button type="button" class="btn btn-danger" onClick={() => handleDelete(feedback._id)}>Delete</button></td>
+        {/* <td><Link to={`/updateform/${feedback._id}`}><button type="button" class="btn btn-success">Edit</button></Link>&nbsp;&nbsp;
+        <button type="button" class="btn btn-danger" onClick={() => handleDelete(feedback._id)}>Delete</button></td> */}
       </tr>
     ))}
    
