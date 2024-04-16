@@ -75,7 +75,7 @@ export const PaymentAll = () => {
           amount: searchTermAsNumber
         }})
         .then((res) => {
-            if(res.data.searchPayment.length == 0){
+            if(res.data.searchPayment.length === 0){
               setPaymentAll(res.data.searchPayment);
                 
             }
