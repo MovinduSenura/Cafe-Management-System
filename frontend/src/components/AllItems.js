@@ -5,7 +5,8 @@ import { Link } from "react-router-dom";
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import './AllItems.css'
+//import './AllItems.css'
+import './DataTable.css'
 
 
 
@@ -125,13 +126,12 @@ export const AllItems = () => {
 
 
     return (
-        <div className="allItemscontainer">
+        <div className="alldiv">
 
-        <div className = "tablecontainer">
-          <h1>Stocks</h1>
+        <div className = "maintablecontainer">
+          {/* <h1>Stocks</h1> */}
 
           <div className="tableHead">
-                    <h2>Controller</h2>
 
                     <div className="search-container">
                         <form className="searchTable" onSubmit={handleFormSubmit}>
@@ -139,22 +139,22 @@ export const AllItems = () => {
                             <button type="submit"><i className="fa fa-search" style={{color: "#ffffff",}}></i></button> 
                         </form>
                     </div>
-                </div>
+            </div>
 
-         <div className="addItemBtnDiv">
-            <Link to='/stockcreateform'><button type="button" class="btn btn-success">Add Item</button></Link>&nbsp;
-          </div>
-
+         <div className="tablecontainer">
+            <div className="logoutdiv"><Link to='/stockcreateform'><button type="button" class="btn btn-secondary btn-lg LogoutBtn">Logout</button></Link></div>
+            <div className="addbtndiv"><Link to='/stockcreateform'><button type="button" class="btn btn-secondary btn-lg AddItemBtn">Add Item</button></Link></div>
+            <div className="tablediv">
           <ToastContainer/>
 
-            <table className = "table table-striped">
+            <table className = "table table-striped tbl">
                 <thead>
                     <tr>
                         <th scope = "col">ID</th>
                         <th scope = "col">Ingredient Name</th>
-                        <th scope = "col" >Quantity</th>
-                        <th scope = "col">Minimum stock Level</th>
-                        <th scope = "col">Current stock Level</th>
+                        <th scope = "col">Quantity</th>
+                        <th scope = "col">Minimum Stock Level</th>
+                        <th scope = "col">Current Stock Level</th>
                         <th scope = "col" className='op'>Operations</th>
                     </tr>
                     </thead>
@@ -172,15 +172,14 @@ export const AllItems = () => {
                                 <table className='EditDeleteBTNs'>
                                 <tbody>
                                 <tr>
-                                <td><Link to={`/stockupdateform/${items._id}`}><button type="button" className="btn btn-success">Edit</button></Link>&nbsp;
+                                <td><Link to={`/stockupdateform/${items._id}`}><button type="button" className="btn btn-success">Edit</button></Link>&nbsp;&nbsp;
                                 </td>
                                 <td>
                                 <button type="button" className="btn btn-danger" onClick={() => handleDelete(items._id)}>Delete</button>
                                 </td>
                             </tr>
                             </tbody>
-                            
-                        </table>
+                            </table>
                     </td>
 
             </tr>
@@ -190,9 +189,12 @@ export const AllItems = () => {
             </tbody>
             </table> 
 
+             
+            </div>
+            </div>
         </div>
+    </div>
 
-        </div>
     )
 };
 

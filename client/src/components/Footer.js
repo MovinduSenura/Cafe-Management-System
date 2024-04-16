@@ -48,7 +48,7 @@ const Footer = () => {
             <div className='copyright'>
                 <hr className='copyrighthr'></hr>
                 {/* Copyright text */}
-                <p>© Copyright 2024 ELEGANT ESPRESSO. All Rights Reserved</p>
+                <p>© Copyright 2024 ESPRESSO ELEGANCE. All Rights Reserved</p>
                 <small>Designed by <w className='daedra'>DAEDRA</w></small>
             </div>
         </div>

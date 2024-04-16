@@ -5,7 +5,9 @@ import { Link } from "react-router-dom";
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
 //import { useNavigate} from "reac"
+import './DataTable.css'
 
 const AllStaff = () => {
 
@@ -121,13 +123,13 @@ const AllStaff = () => {
     };
 
     return (
-     <div className="allStaffcontainer">
+     <div className="alldiv">
        <ToastContainer/>
         
-          <div className="tableContainer">
+          <div className="maintableContainer">
 
               <div className="tableHead">
-                <h2>Controller</h2>
+                {/* <h2>Controller</h2> */}
 
                 <div className="search-container">
                   <form className="searchTable" onSubmit={handleFormSubmit}>
@@ -137,26 +139,32 @@ const AllStaff = () => {
                 </div>
               </div>
 
-        <table class="table">
+              <div className="tablecontainer">
+              <div className="logoutdiv"><Link to='/createStaff'><button type="button" className="btn btn-secondary btn-lg LogoutBtn">Logout</button></Link></div>
+              <div className="addbtndiv"><Link to='/createStaff'><button type="button" className="btn btn-secondary btn-lg AddItemBtn">Add Member</button></Link></div>
+              <div className="tablediv">
+
+        <table class="table table-striped tbl">
           <thead>
              <tr>
-               <th scope="col">Name</th>
-               <th scope="col">Email</th>
-               <th scope="col">Contact No</th>
-               <th scope="col">Address</th>
-               <th scope="col">Age</th>
-               <th scope="col">Gender</th>
-               <th scope="col">Salary Per Hours</th>
-               <th scope="col">Worked Hours</th>
-               <th scope="col">Operations</th>
-               <th scope="col"></th> 
+                <th scope="col">No.</th>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Contact No.</th>
+                <th scope="col">Address</th>
+                <th scope="col">Age</th>
+                <th scope="col">Gender</th>
+                <th scope="col">Salary Per Hours</th>
+                <th scope="col">Worked Hours</th>
+                <th className="op" scope="col">Operations</th>
+                <th scope="col"></th> 
      
              </tr>
           </thead>
        <tbody>
-          {allStaff.map((staff) => (
+          {allStaff.map((staff, index) => (
              <tr key={staff._id}>
-
+                <th scope="row">{index + 1}</th>
                 <td>{staff.staffName}</td>
                 <td>{staff.staffEmail}</td>
                 <td>{staff.staffContactNo}</td>
@@ -165,13 +173,13 @@ const AllStaff = () => {
                 <td>{staff.staffGender}</td>
                 <td>{staff.staffSalaryPerHours}</td>
                 <td>{staff.staffWorkedHours}</td>
-                <td></td>
+                
                 
                 <td>
-                    <table>
+                    <table className="EditDeleteBTNs">
                         <tbody>
                             <tr>
-                                <Link to={`/staffUpdateform/${staff._id}`}><button type="button" className="btn btn-success">Edit</button></Link>&nbsp;
+                               <td> <Link to={`/staffUpdateform/${staff._id}`}><button type="button" className="btn btn-success">Edit</button></Link></td>&nbsp;&nbsp;
                                 <td><button type="button" class="btn btn-danger" onClick={() => handleDelete(staff._id)} >Delete</button></td>
                                 
                             </tr>
@@ -184,6 +192,8 @@ const AllStaff = () => {
           
         </tbody>
       </table>
+      </div>
+      </div>
    </div>   
 </div>
 

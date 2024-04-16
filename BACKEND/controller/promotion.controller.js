@@ -5,7 +5,9 @@ const addpromotion = async (req, res) => {
     try{
 
    
-        const{promotionName,promotionValues,promotionDescription,promotionItempic} = req.body;
+        const{promotionName,promotionValues,promotionDescription} = req.body;
+        
+        const  promotionItempic = req.file.filename; //Extract the filename from the uploaded file
 
         const newpromotionData = {
            
@@ -17,6 +19,7 @@ const addpromotion = async (req, res) => {
 
         const newpromotionobj = new promotionModel(newpromotionData);
         await newpromotionobj.save();
+       
         await res.status(200).send({
             status: true,
             message:"✨ :: Data saved successfuly!"
@@ -81,15 +84,21 @@ const addpromotion = async (req, res) => {
         try{
 
             const promotionID = req.params.id;
-            const{promotionName,promotionValues,promotionDescription,promotionItempic} = req.body;
+            const{promotionName,promotionValues,promotionDescription} = req.body;
 
             const promotionData = {
                 promotionName:promotionName,
                 promotionValues:promotionValues,
                 promotionDescription:promotionDescription,
-                promotionItempic:promotionItempic,
+                // promotionItempic:promotionItempic,
 
             }
+
+         // Check if file exists in the request then only send image with itemData object
+            if (req.file) {
+                promotionData.promotionItempic = req.file.filename; // Extract the filename from the uploaded file
+            }
+
             const updatepromotionobj = await promotionModel.findByIdAndUpdate(promotionID,promotionData);
 
             return  res.status(200).send({

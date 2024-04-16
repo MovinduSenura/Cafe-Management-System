@@ -1,11 +1,15 @@
-.menualldiv{
+.alldiv{
     margin-top: 76px;
     margin-bottom: 76px;
+    /* margin-right: 500px; */
+    /* width: 1200px; */
+    /* align-items: left; */
+    /* text-align: left; */
 }
 
 .tableHead{
     /* background-color: red; */
-    width: 1400px;
+    /* width: 1400px; */
     margin-left: auto;
     margin-right: auto;
     margin-top: 100px;
@@ -25,7 +29,7 @@
     height: 38px;
   }
   
-  button[type="submit"] {
+  .searchTable button[type="submit"] {
     background-color: #AB845B; /* Change the background color as needed */
     color: #fff;
     border: none;
@@ -35,7 +39,7 @@
     height: 38px;
   }
   
-  button[type="submit"]:hover {
+  .searchTable button[type="submit"]:hover {
     background-color: #94724e; /* Change the hover background color as needed */
   }
   
@@ -53,15 +57,30 @@
 .AddItemBtn{
     background-color: #AB845B;
     border: none;
-    margin-bottom: 50px;
-    margin-top: 40px;
+    margin-bottom: 20px;
+    margin-top: -40px;
     float: right;
-    font-weight: 600;
+    font-weight: 500;
 }
 
 .AddItemBtn:hover{
     cursor: pointer;
     background-color: #94724e;
+}
+
+.LogoutBtn{
+  background-color: #0e3acc;
+  border: none;
+  margin-bottom: 20px;
+  margin-top: -40px;
+  margin-left: 10px;
+  float: right;
+  font-weight: 500;
+}
+
+.LogoutBtn:hover{
+  cursor: pointer;
+  background-color: #0c30a5;
 }
 
 .tablecontainer{
@@ -83,3 +102,8 @@
 thead{
     border: 1px solid ;
 }
+
+/* .tbl{
+  width: 1100px;
+  text-align: right;
+} */

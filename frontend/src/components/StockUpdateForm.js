@@ -3,7 +3,8 @@ import axios from 'axios';
 import { useParams, useNavigate } from "react-router-dom";
 
 // Import CSS file
-import './StockCreateForm.css';
+//import './StockCreateForm.css';
+import './UpdateForm.css'
 
 const StockUpdateForm = () => {
     const [itemName, setItemName] = useState('');
@@ -75,13 +76,13 @@ const StockUpdateForm = () => {
     };
     
     return (
-        <div className="stockcreateFormContainer">
-            <div className="formBootstrap">
-                <h2 className="mb-4">Update Form</h2>
+        <div className="updateFormContainer" style={{marginBottom: "75px", marginTop: "150px"}}>
+            <div className="updateformBootstrap">
+                <h2>Update Form</h2>
 
                 <form onSubmit={updateData}>
                     <div className="form-group mb-3">
-                        <label For="itemName">Name</label>
+                        <label For="itemName">Name:</label>
                         <input
                             type="text"
                             className="form-control"
@@ -92,7 +93,7 @@ const StockUpdateForm = () => {
                         />
                     </div>
                     <div className="form-group mb-3">
-                        <label For="quantity">Quantity</label>
+                        <label For="quantity">Quantity:</label>
                         <input
                             type="number"
                             className="form-control"
@@ -104,7 +105,7 @@ const StockUpdateForm = () => {
                         />
                     </div>
                     <div className="form-group mb-3">
-                        <label For="currentStockLevel">Current Stock Level</label>
+                        <label For="currentStockLevel">Current Stock Level:</label>
                         <input
                             type="number"
                             className="form-control"
@@ -116,7 +117,7 @@ const StockUpdateForm = () => {
                         />
                     </div>
                     <div className="form-group mb-3">
-                        <label For="minStockLevel">Minimum Stock Level</label>
+                        <label For="minStockLevel">Minimum Stock Level:</label>
                         <input
                             type="number"
                             className="form-control"
@@ -127,7 +128,9 @@ const StockUpdateForm = () => {
                             required
                         />
                     </div>
-                    <button type="submit" className="btn btn-primary">Submit</button>
+                    <div className="updatebtndiv">
+                    <button type="submit" className="btn btn-primary submitbtn">Submit</button>
+                    </div>
                 </form>
             
            

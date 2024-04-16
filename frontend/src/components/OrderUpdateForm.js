@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 
-import './CreateOrderForm.css'
+import './UpdateForm.css';
 
 const OrderUpdateForm = () => {
   //   return (
@@ -71,50 +71,55 @@ const OrderUpdateForm = () => {
   };
 
   return (
-    <div className="CreateOrderFormContainer">
-      <div className="orderFormContainer">
-        <h1>Add Order</h1>
+    <div className="updateFormContainer" style={{marginBottom: "109px", marginTop: "190px"}}>
+      <div className="updateformBootstrap">
+        <h2>Updtae Order Details</h2>
 
         <form onSubmit={updateData}>
           <div class="form-group mb-3">
-            <label for="Order_name">Order-Name</label>
+            <label for="Order_name">Order Name:</label>
             <input
               type="text"
               class="form-control"
               id="Order_name"
               placeholder="Choose Order Items"
+              autoComplete="off"
               onChange={(e) => setOrderName(e.target.value)}
               value={OrderName}
             />
           </div>
 
           <div class="form-group mb-3">
-            <label for="Order_quantity">Quantity</label>
+            <label for="Order_quantity">Quantity:</label>
             <input
               type="number"
               class="form-control"
               id="Order_quantity"
               placeholder="Choose the quantity"
+              autoComplete="off"
+              min={0}
               onChange={(e) => setOrderQuantity(e.target.value)}
               value={OrderQuantity}
             />
           </div>
 
           <div class="form-group mb3">
-            <label for="Order_amount">Full-Amount</label>
+            <label for="Order_amount">Full Amount(Rs):</label>
             <input
               type="number"
               class="form-control"
               id="AmountExample"
               placeholder="Choose the amount"
+              autoComplete="off"
+              min={0}
               onChange={(e) => setOrderPrice(e.target.value)}
               value={OrderPrice}
             />
           </div>
 
-          <button type="submit" class="btn btn-primary">
-            Update
-          </button>
+          <div style={{marginTop: "20px"}} className="updatebtndiv">
+          <button type="submit" class="btn btn-primary submitbtn">Update</button>
+          </div>
         </form>
       </div>
     </div>

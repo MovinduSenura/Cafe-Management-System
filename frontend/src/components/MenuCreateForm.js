@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import axios from 'axios';
 
 //importing CSS files
-import './MenuCreateForm.css'
+import './CreateForm.css'
 
 const MenuCreateForm = () => {
 
@@ -67,9 +67,9 @@ const MenuCreateForm = () => {
 
     return (
 
-        <div className="menucreateFormContainer">
+        <div className="createFormContainer">
 
-            <div className="menuformBootstrap">
+            <div className="formBootstrap">
                 <h2>New Item Form</h2>
                 <form onSubmit={sendData}>
                     <div className="form-group mb-3">
@@ -82,11 +82,11 @@ const MenuCreateForm = () => {
                         <input type="text" className="form-control" id="menuItemName" placeholder="Enter Item Name" autoComplete="off" onChange={(e) => setmenuItemName(e.target.value)} value={menuItemName}/>
                     </div>
                     <div className="form-group mb-3">
-                        <label for="menuItemDescription">Description</label>
-                        <textarea class="form-control" id="menuItemDescription" rows="3" autoComplete="off" onChange={(e) => setmenuItemDescription(e.target.value)} value={menuItemDescription}></textarea>
+                        <label for="menuItemDescription">Description:</label>
+                        <textarea className="form-control" id="menuItemDescription" rows="3" autoComplete="off" onChange={(e) => setmenuItemDescription(e.target.value)} value={menuItemDescription}></textarea>
                     </div>
                     <div className="mb-3">
-                        <label for="menuItemCategory">Category</label>
+                        <label for="menuItemCategory">Category:</label>
                         <select className="form-select" id="menuItemCategory" onChange={(e) => setmenuItemCategory(e.target.value)} value={menuItemCategory}>
                             <option selected>-Select-</option>
                             <option value="Beverage">Beverage</option>

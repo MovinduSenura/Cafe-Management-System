@@ -6,6 +6,8 @@ import './MenuPage.css'
 const MenuPage = () => {
 
     const [ MenuPage, setMenuAllItems ] = useState([]);
+    const [ MenuItemName , setMenuItemName ] = useState('');
+    const [ AllOriginalMenuItems , setAllOriginalMenuItems ] = useState([]);
 
     useEffect(() => {
 
@@ -16,6 +18,7 @@ const MenuPage = () => {
                 await axios.get('http://localhost:8000/menu/menuItems')
                 .then((res) => {
                     setMenuAllItems(res.data.AllmenuItems);
+                    setAllOriginalMenuItems(res.data.AllmenuItems);
                     console.log(res.data.message);
                 })
                 .catch((err) => {
@@ -33,8 +36,67 @@ const MenuPage = () => {
 
     }, [])
 
+    //search function
+
+    const SearchFunction = async (searchTerm) => {
+        // e.preventDefault();
+
+        try{
+            await axios.get('http://localhost:8000/menu/searchmenuItem', {
+            params: {
+                menuItemName: searchTerm
+            }})
+            .then((res) => {
+                if(res.data.searchedmenuItem.length === 0){
+                    setMenuAllItems(res.data.searchedmenuItem);
+                }
+                else{
+                    setMenuAllItems(res.data.searchedmenuItem);
+                    console.log(res.data.message);
+                }
+            })
+            .catch((error) => {
+                console.log("☠️ :: Error on response from server! ERROR : ", error.message);
+            })
+
+        }catch(err){
+            console.log("☠️ :: Error on axios API Request! ERROR : ", err.message);
+        }
+    }
+
+
+    const handleSearchChange = async (e) => {
+        const searchTerm = e.target.value;
+        setMenuItemName(searchTerm);
+
+        if (searchTerm === '') { // when placeholder empty fetch all data
+            setMenuAllItems(AllOriginalMenuItems); // Fetch all data when search term is empty
+            // setSearchString("");
+        } else {
+            await SearchFunction(searchTerm);
+            // if(searchString != ''){
+            //     setSearchString("");
+            // }
+        }
+    };
+
+    const handleFormSubmit = (e) => {
+        e.preventDefault();
+        SearchFunction(MenuItemName);
+    };
+
   return (
     <div className="menuitemsmaindiv">
+        <div className="tableHead">
+                {/* <h2>Controller</h2> */}
+
+                <div className="search-container">
+                    <form className="searchTable" onSubmit={handleFormSubmit}>
+                        <input id="searchBar" type="text" value={MenuItemName} onChange={handleSearchChange} placeholder="Search..." name="search"/>
+                        <button type="submit"><i className="fa fa-search" style={{color: "#ffffff",}}></i></button> 
+                    </form>
+                </div>
+            </div>
         <div className="SectorMenu">
             <div className="SecOverlay">
                 <div className="SectorAlignDiv">

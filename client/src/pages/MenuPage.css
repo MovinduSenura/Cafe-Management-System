@@ -56,7 +56,7 @@
 
 .menuItemsSector{
     width: 1400px;
-    margin-top: 80px;
+    margin-top: 100px;
     display: grid;
     grid-template-columns: auto auto auto auto;
     margin-left: auto;
@@ -105,4 +105,41 @@
 .priceh2{
     font-size: 1.5em;
     font-weight: 600;
+}
+
+#searchBar {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 5px;
+    width: 200px; /* Adjust width as needed */
+    height: 38px;
+  }
+
+  .searchTable button[type="submit"] {
+    background-color: #AB845B; /* Change the background color as needed */
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 8px 15px;
+    height: 38px;
+  }
+  
+  .searchTable button[type="submit"]:hover {
+    background-color: #94724e; /* Change the hover background color as needed */
+  }
+
+  .fa-search {
+    font-size: 16px; /* Adjust icon size as needed */
+  }
+
+.search-container{
+    /* background-color: green; */
+    width: fit-content;
+    margin-left: 41.7%;
+    margin-right: 41.7%;
+    margin-top: 400px;
+    /* margin-bottom: 10px; */
+    position: absolute;
 }

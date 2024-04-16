@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from 'axios';
 
-import './CreateOrderForm.css'
+import './CreateForm.css';
 
 const CreateOrderForm = () => {
 
@@ -42,28 +42,29 @@ const CreateOrderForm = () => {
     
   return (
 
-    <div className="CreateOrderFormContainer">
+    <div className="createFormContainer" style={{marginBottom: "109px", marginTop: "190px"}}>
 
-        <div className="orderFormContainer">
-            <h1>Add Order</h1>
+        <div className="formBootstrap">
+            <h2>Add Order</h2>
 
     <form onSubmit={sendData}>
   <div class="form-group mb-3">
-    <label for="Order_name">Order-Name</label>
-        <input type="text" class="form-control" id="Order_name" placeholder="Choose Order Items" onChange={(e)=>setOrderName(e.target.value)} value={OrderName} />
+    <label for="Order_name">Order Name:</label>
+        <input type="text" class="form-control" id="Order_name" placeholder="Choose Order Items" autoComplete="off" onChange={(e)=>setOrderName(e.target.value)} value={OrderName} />
     </div>
 
     <div class="form-group mb-3">
-    <label for="Order_quantity">Quantity</label>
-        <input type="number" class="form-control" id="Order_quantity" placeholder="Choose the quantity" onChange={(e)=>setOrderQuantity(e.target.value)} value={OrderQuantity} />
+    <label for="Order_quantity">Quantity:</label>
+        <input type="number" class="form-control" id="Order_quantity" placeholder="Choose the quantity" autoComplete="off" min={0} onChange={(e)=>setOrderQuantity(e.target.value)} value={OrderQuantity} />
     </div>
 
     <div class="form-group mb3">
-    <label for="Order_amount">Full-Amount (Rs)</label>
-        <input type="number" class="form-control" id="AmountExample"  placeholder="Choose the amount" onChange={(e)=>setOrderPrice(e.target.value)} value={OrderPrice}  />
+    <label for="Order_amount">Full Amount(Rs):</label>
+        <input type="number" class="form-control" id="AmountExample"  placeholder="Choose the amount" autoComplete="off" min={0} onChange={(e)=>setOrderPrice(e.target.value)} value={OrderPrice}  />
     </div>
-
-    <button type="submit" class="btn btn-primary">Place Order</button>
+    <div style={{marginTop: "20px"}} className="submitbtndiv">
+    <button type="submit" class="btn btn-primary submitbtn">Place Order</button>
+    </div>
 </form>
 
     </div>

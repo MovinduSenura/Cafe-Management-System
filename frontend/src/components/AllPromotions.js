@@ -6,6 +6,8 @@ import { ToastContainer, toast } from 'react-toastify';
  import 'react-toastify/dist/ReactToastify.css';
 //import {useNavigate} from "react-router-dom"
 
+import './DataTable.css'
+
 
 const AllPromotions = ()=> {
 
@@ -65,44 +67,67 @@ const AllPromotions = ()=> {
 
     return (
         
-        <div className = "allPromotionscontainer">
+        <div className = "alldiv" style={{marginTop: "200px"}}>
+       
+        <div className = "maintablecontainer">
+         
+         <div className = "tablecontainer">
+        <div className="logoutdiv"><Link to='/menucreateform'><button type="button" className="btn btn-secondary btn-lg LogoutBtn">Logout</button></Link></div>
+        <div className="addbtndiv"><Link to='/createform'><button type="button" className="btn btn-secondary btn-lg AddItemBtn">Add Promotion</button></Link></div>  
+        <div className="tablediv">
 
-        <table class = "table">
+
+
+        <table class = "table table-striped tbl">
         <thead>
         <tr>
         <th scope="col">No</th>
-        <th scope="col">PromotionID</th>
+        <th scope="col">Image</th>
+        {/* <th scope="col">PromotionID</th> */}
         <th scope="col">Name</th>
-        <th scope="col">Value</th>
-        <th scope="col">Discription</th>
-        <th scope="col">Item Pic</th>
-        <th scope="col"></th>
+        <th scope="col">Offer Percentage(%)</th>
+        <th scope="col">Description</th>
+        {/* <th scope="col">Item Pic</th> */}
+        <th className="op" scope="col">Operations</th>
         </tr>
         </thead>
 
         <ToastContainer/>
       <tbody>
-        {allPromotions.map((promotion) => (
-          <tr>
-            <th scope="row" key={promotion._id}>1</th>
-            <td>{promotion._id}</td>
+        {allPromotions == null ? "" : allPromotions.map((promotion, index) => (
+          <tr key={promotion._id}>
+            <th scope="row">{index + 1}</th> 
+            <td>
+                <img 
+                   src={require(`../uploads/${promotion.promotionItempic}`)}
+                   width={30}
+                   height={40}
+                   alt="promotionItemImage" 
+                />
+            </td>
+            {/* <td>{promotion._id}</td> */}
             <td>{promotion.promotionName}</td>
             <td>{promotion.promotionValues}</td>
             <td>{promotion.promotionDescription}</td>
-            <td>{promotion.promotionItempic}</td>
+            {/* <td>{promotion.promotionItempic}</td> */}
             <td>
+              <table className="EditDeleteBTNs">
               <tbody>
                 <tr>
-                  <td><Link to={`/updateform/${promotion._id}`}><button type="button" className="btn btn-warning">Edit</button></Link></td> &nbsp;
+                  <td><Link to={`/updateform/${promotion._id}`}><button type="button" className="btn btn-success">Edit</button></Link></td> &nbsp;
                   <td><button type="button" className="btn btn-danger" onClick={() => handledelete(promotion._id)}>Delete</button></td>
                 </tr>
               </tbody>
+              </table>
             </td>
           </tr>
         ))}
       </tbody>
         
         </table>
+        </div>
+        </div>
+        </div>
         </div>
     )
 
