@@ -130,7 +130,7 @@ const AllPromotions2 = ()=> {
                     </form>
                 </div>
             </div>
-        <div className="logoutdiv"><Link to='/menucreateform'><button type="button" className="btn btn-secondary btn-lg LogoutBtn">Logout</button></Link></div>
+        <div className="logoutdiv"><Link to='/'><button type="button" className="btn btn-secondary btn-lg LogoutBtn">Logout</button></Link></div>
         {/* <div className="addbtndiv"><Link to='/createform'><button type="button" className="btn btn-secondary btn-lg AddItemBtn">Add Item</button></Link></div>   */}
         <div className="tablediv">
 

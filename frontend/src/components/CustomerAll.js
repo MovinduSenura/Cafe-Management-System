@@ -176,7 +176,7 @@ const AllCustomers = () => {
 
                 <div className="tablecontainer">
                     {/* <a href="/customerCreate"> */}
-                    <div className="logoutdiv"><Link to='/menucreateform'><button type="button" className="btn btn-secondary btn-lg LogoutBtn">Logout</button></Link></div>
+                    <div className="logoutdiv"><Link to='/'><button type="button" className="btn btn-secondary btn-lg LogoutBtn">Logout</button></Link></div>
                     <div className="addbtndiv"><Link to='/customerCreate'><button type="button" className="btn btn-secondary btn-lg AddItemBtn">Add Customer</button></Link></div>
                     <div className="tablediv">
                         {/* <button type="button" className="btn btn-secondary AddItemBtn">Add New Customer</button> */}

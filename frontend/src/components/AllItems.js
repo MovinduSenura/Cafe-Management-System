@@ -142,17 +142,14 @@ export const AllItems = () => {
             </div>
 
          <div className="tablecontainer">
-<<<<<<< HEAD
-            <div className="logoutdiv"><Link to='/stockcreateform'><button type="button" className="btn btn-secondary btn-lg LogoutBtn">Logout</button></Link>
+
+            <div className="logoutdiv"><Link to='/'><button type="button" class="btn btn-secondary btn-lg LogoutBtn">Logout</button></Link></div>
             <div className="addbtndiv"><Link to='/stockcreateform'><button type="button" className="btn btn-secondary btn-lg AdditemBtn">Add Item</button></Link>
             {/* </div><div className="addbtndiv"><Link to='/stockcreateform'><button type="button" class="btn btn-success">Add Item</button></Link>&nbsp; */}
           </div>
 
-=======
-            <div className="logoutdiv"><Link to='/stockcreateform'><button type="button" class="btn btn-secondary btn-lg LogoutBtn">Logout</button></Link></div>
-            <div className="addbtndiv"><Link to='/stockcreateform'><button type="button" class="btn btn-secondary btn-lg AddItemBtn">Add Item</button></Link></div>
             <div className="tablediv">
->>>>>>> 351fe952e35d01d2b9f1611d4856227b09310507
+
           <ToastContainer/>
 
             <table className = "table table-striped tbl">

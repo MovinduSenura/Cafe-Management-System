@@ -94,7 +94,7 @@ const searchCustomer = async (req, res) => {
         const CustomerNIC = req.query.customerNIC;
         // Using a regular expression to match partial game names
         //regex- ghna akurata match wena eka enw
-        const customer = await customerModel.find({ customerNIC: { $regex: CustomerNIC, $options: 'i' } }); //the $regex operator in MongoDB is used to perform a regular expression search for partial matches of the game name. The i option is used to perform a case-insensitive search.
+        const customer = await customerModel.find({ customerNIC: { $regex: `^${CustomerNIC}`, $options: 'i' } }); //the $regex operator in MongoDB is used to perform a regular expression search for partial matches of the game name. The i option is used to perform a case-insensitive search.
                                             //customerNIC == CustomerNIC samanada kyl blnw 
 
         return res.status(200).send({

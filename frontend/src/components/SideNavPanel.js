@@ -31,7 +31,7 @@ const SideNavPanel = () => {
         <div className="ccc" onClick={() => handleOptionClick('option 4')} style={{backgroundColor: selectedOption === 'option 4' ? '#AB845B' : '#161616'}}>
           <a href="/allpromotion">Promotion Management</a>
         </div> */}
-        <a href="/">Menu Management</a>
+        <a href="/allmenuitems">Menu Management</a>
         <a href="getAllPayment">Payment Management</a>
         <a href="/customersall2">Customer Management</a>
         <a href="/allpromotion">Promotion Management</a>

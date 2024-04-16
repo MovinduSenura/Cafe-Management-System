@@ -153,8 +153,9 @@ const StaffUpdateForm =() =>{
                 <div className="form-group mb-3">
                 <label htmlFor="staffRole">Role:</label><br />
                     <select name="role" className="form-select" id="role" value={staffRole} onChange ={(e) => setstaffRole(e.target.value)} >
-                        <option value="admin">Admin</option>
-                        <option value="cheff">Chef</option>
+                        <option selected>-Select-</option>
+                        <option value="admin">Manager</option>
+                        <option value="chef">Chef</option>
                         <option value="cashier">Cashier</option>
                     </select>
                </div>  
