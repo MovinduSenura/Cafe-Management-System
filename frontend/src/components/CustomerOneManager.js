@@ -8,9 +8,9 @@ import './UpdateForm.css'
 //importing css file
 //import './CustomerUpdateForm.css'
 import { useParams } from "react-router-dom";
-import { Link } from "react-router-dom";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+// import { Link } from "react-router-dom";
+// import { ToastContainer, toast } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css';
 
 const CustomerOneForm = () => {
         //sending data to backend
@@ -62,42 +62,42 @@ const CustomerOneForm = () => {
         //the variables created outside the function are stated inside [] above. e eeke wdya.
 
         //Delete
-    const handleDelete = async (id) => {
-        //customers._id(in delete button) parameter is passed to id above   
-        try {
+    // const handleDelete = async (id) => {
+           
+    //     try {
 
-            const confirmed = window.confirm("Are you want to delete this customer??");
+    //         const confirmed = window.confirm("Are you want to delete this customer??");
 
-            if (confirmed) {
+    //         if (confirmed) {
 
-                //when passing a parameter or variable bactic mark is used
-                await axios.delete(`http://localhost:8000/customer/customerdelete/${id}`)
-                    .then((res) => {
-                        alert(res.data.message);
-                        console.log(res.data.message);
-                    })
-                    .catch((err) => {
-                        console.log("❌ :: Error on API URL : " + err.message);
-                    })
-
-
-            } else {
-                toast.error('Deletion Cancelled!',{
-                    position: "top-center",
-                });
-                console.log("Deletion Cancelled!")
-            }
+                
+    //             await axios.delete(`http://localhost:8000/customer/customerdelete/${id}`)
+    //                 .then((res) => {
+    //                     alert(res.data.message);
+    //                     console.log(res.data.message);
+    //                 })
+    //                 .catch((err) => {
+    //                     console.log("❌ :: Error on API URL : " + err.message);
+    //                 })
 
 
-
-
-        } catch (err) {
-            console.log("❌ :: handleDelete function failed! ERROR : " + err.message);
-        }
+    //         } else {
+    //             toast.error('Deletion Cancelled!',{
+    //                 position: "top-center",
+    //             });
+    //             console.log("Deletion Cancelled!")
+    //         }
 
 
 
-    }
+
+    //     } catch (err) {
+    //         console.log("❌ :: handleDelete function failed! ERROR : " + err.message);
+    //     }
+
+
+
+    // }
 
 
         return (
@@ -108,7 +108,7 @@ const CustomerOneForm = () => {
                     <div className="updateformBootstrap">
                     
                      {/* can put in anyplace within main div */}
-            <ToastContainer/>
+            {/* <ToastContainer/> */}
                             
                             <form>
 
