@@ -142,8 +142,8 @@ export const AllItems2 = () => {
                 </div>
 
                 <div className="tablecontainer">
-                    <div className="logoutdiv"><Link to='/stockcreateform'><button type="button" class="btn btn-success">Logout</button></Link>&nbsp;
-            
+                    <div className="logoutdiv"><Link to='/stockcreateform'><button type="button" class="btn btn-secondary btn-lg LogoutBtn">Logout</button></Link></div>
+                    <div className="tablediv">
 
           {/* <ToastContainer/> */}
 
@@ -153,15 +153,15 @@ export const AllItems2 = () => {
                         <th scope = "col">ID</th>
                         <th scope = "col">Ingredient Name</th>
                         <th scope = "col" >Quantity</th>
-                        <th scope = "col">Minimum stock Level</th>
-                        <th scope = "col">Current stock Level</th>
+                        <th scope = "col">Minimum Stock Level</th>
+                        <th scope = "col">Current Stock Level</th>
                         { <th scope = "col" className='op'>Operation</th> }
                     </tr>
                     </thead>
                     <tbody>
                         {AllItems.map((items,index) => (
                         <tr key = {items._id}>
-                            <td>{index+1}</td>
+                            <th scope="row">{index + 1}</th>
                             <td>{items.itemName}</td>
                             <td>{items.quantity}</td>
                             <td>{items.minstocklevel}</td>

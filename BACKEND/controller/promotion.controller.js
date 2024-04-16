@@ -5,7 +5,9 @@ const addpromotion = async (req, res) => {
     try{
 
    
-        const{promotionName,promotionValues,promotionDescription,promotionItempic} = req.body;
+        const{promotionName,promotionValues,promotionDescription} = req.body;
+        
+        const  promotionItempic = req.file.filename; //Extract the filename from the uploaded file
 
         const newpromotionData = {
            
@@ -17,6 +19,7 @@ const addpromotion = async (req, res) => {
 
         const newpromotionobj = new promotionModel(newpromotionData);
         await newpromotionobj.save();
+       
         await res.status(200).send({
             status: true,
             message:"✨ :: Data saved successfuly!"
@@ -81,15 +84,21 @@ const addpromotion = async (req, res) => {
         try{
 
             const promotionID = req.params.id;
-            const{promotionName,promotionValues,promotionDescription,promotionItempic} = req.body;
+            const{promotionName,promotionValues,promotionDescription} = req.body;
 
             const promotionData = {
                 promotionName:promotionName,
                 promotionValues:promotionValues,
                 promotionDescription:promotionDescription,
-                promotionItempic:promotionItempic,
+                // promotionItempic:promotionItempic,
 
             }
+
+         // Check if file exists in the request then only send image with itemData object
+            if (req.file) {
+                promotionData.promotionItempic = req.file.filename; // Extract the filename from the uploaded file
+            }
+
             const updatepromotionobj = await promotionModel.findByIdAndUpdate(promotionID,promotionData);
 
             return  res.status(200).send({
@@ -130,7 +139,33 @@ const addpromotion = async (req, res) => {
     })
 
 }
+}
+
+//get - search particular promotion
+const searchPromotion = async (req, res) => {
+
+    try{
+
+        const promotionName = req.query.promotionName;
+        // Using a regular expression to match partial game names
+        const promotionItem = await promotionModel.find({ promotionName: { $regex: `^${promotionName}`, $options: 'i' } }); //the $regex operator in MongoDB is used to perform a regular expression search for partial matches of the game name. The i option is used to perform a case-insensitive search.
+
+        return res.status(200).send({
+            status: true,
+            message: "✨ :: Project Searched and fetched!",
+            searchedPromotion: promotionItem
+        })
+
+    }catch(err){
+
+        return res.status(500).send({
+            status: false,
+            message: err.message
+        });
+
     }
+
+}
 
     module.exports = {
         addpromotion,
@@ -138,5 +173,6 @@ const addpromotion = async (req, res) => {
         getOnepromotion,
         updatepromotion,
         deletepromotion,
+        searchPromotion,
     }
 

@@ -3,6 +3,7 @@ import axios from 'axios';
 
 //importing CSS  files
 //import './StaffCreateForm.css'
+import './CreateForm.css'
 
 const StaffCreateForm =() =>{
 
@@ -73,43 +74,43 @@ const StaffCreateForm =() =>{
         <div className="createFormContainer">
 
         <div className="formBootstrap">
-            <h1>Registration Form</h1>
+            <h2>Registration Form</h2>
             <form onSubmit={sendData}>
                 <div className="form-group mb-3">
                    <label for="staffName">Name:</label>
-                   <input type="text" className="form-control" id="staffName" onChange={(e) => setstaffName(e.target.value)} value={staffName} />
+                   <input type="text" className="form-control" autoComplete="off" id="staffName" onChange={(e) => setstaffName(e.target.value)} value={staffName} />
                 </div>
                 <div className="form-group mb-3">
                 <label for="staffEmail">Email:</label>
-                   <input type="text" className="form-control" id="staffEmail" onChange={(e) => setstaffEmail(e.target.value)} value={staffEmail} />
+                   <input type="email" className="form-control" autoComplete="off" id="staffEmail" onChange={(e) => setstaffEmail(e.target.value)} value={staffEmail} />
                 </div>
 
 
                 <div className="form-group mb-3">
-                <label htmlFor="password">Password</label><br />
-               <input type="password" id="password" name="password"  onChange={(e) => setstaffPassword(e.target.value)} value={staffPassword}  minLength="6" required />
+                <label htmlFor="password">Password:</label><br />
+               <input type="password" id="password" className="form-control" autoComplete="off" name="password"  onChange={(e) => setstaffPassword(e.target.value)} value={staffPassword}  minLength="6" required />
                 </div>
 
                 <div className="form-group mb-3">
                 <label for="staffContactNo">Contact No:</label>
-                   <input type="text" className="form-control" id="staffContactNo" onChange={(e) => setstaffContactNo(e.target.value)} value={staffContactNo} />
+                   <input type="tel" className="form-control" id="staffContactNo" autoComplete="off" onChange={(e) => setstaffContactNo(e.target.value)} value={staffContactNo} />
                 </div>
                 <div className="form-group mb-3">
                 <label for="staffAddress">Address:</label>
-                   <input type="text" className="form-control" id="staffAddress" onChange={(e) => setstaffAddress(e.target.value)} value={staffAddress} />
+                   <input type="text" className="form-control" id="staffAddress" autoComplete="off" onChange={(e) => setstaffAddress(e.target.value)} value={staffAddress} />
                 </div>
                 <div className="form-group mb-3">
                 <label for="staffAge">Age:</label>
-                   <input type="text" className="form-control" id="staffAge"  onChange={(e) => setstaffAge(e.target.value)} value={staffAge}/>
+                   <input type="number" className="form-control" id="staffAge" autoComplete="off" min={0}  onChange={(e) => setstaffAge(e.target.value)} value={staffAge}/>
                 </div>
                 <div className="form-group mb-3">
                 <label for="staffGender">Gender:</label>
-                   <input type="text" className="form-control" id="staffGender"  onChange={(e) => setstaffGender(e.target.value)} value={staffGender}/>
+                   <input type="text" className="form-control" id="staffGender" autoComplete="off"  onChange={(e) => setstaffGender(e.target.value)} value={staffGender}/>
                 </div>
 
                 <div className="form-group mb-3">
-                <label htmlFor="staffRole">Role</label><br />
-                    <select name="role" id="role" value={staffRole} onChange ={(e) => setstaffRole(e.target.value)} >
+                <label htmlFor="staffRole">Role:</label><br />
+                    <select name="role" className="form-select" id="role" value={staffRole} onChange ={(e) => setstaffRole(e.target.value)} >
                         <option value="admin">Admin</option>
                         <option value="cheff">Chef</option>
                         <option value="cashier">Cashier</option>
@@ -118,11 +119,11 @@ const StaffCreateForm =() =>{
 
                 <div className="form-group mb-3">
                 <label for="staffSalaryPerHours">Salary Per Hours:</label>
-                   <input type="text" className="form-control" id="staffSalaryPerHours" onChange={(e) => setstaffSalaryPerHours(e.target.value)} value={staffSalaryPerHours} />
+                   <input type="number" className="form-control" id="staffSalaryPerHours" autoComplete="off" min={0} onChange={(e) => setstaffSalaryPerHours(e.target.value)} value={staffSalaryPerHours} />
                 </div>
                 <div className="form-group mb-3">
                 <label for="staffWorkedHours">Worked Hours:</label>
-                   <input type="text" className="form-control" id="staffWorkedHours"  onChange={(e) => setstaffWorkedHours(e.target.value)} value={staffWorkedHours} />
+                   <input type="number" className="form-control" id="staffWorkedHours" autoComplete="off" min={0} onChange={(e) => setstaffWorkedHours(e.target.value)} value={staffWorkedHours} />
                 </div>
                 
 
@@ -134,9 +135,9 @@ const StaffCreateForm =() =>{
                 </div>
             </form>
         </div>
-       
+   
 
-    </div>
+   </div>
 
     )
 };

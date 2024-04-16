@@ -129,7 +129,7 @@ export const AllItems = () => {
         <div className="alldiv">
 
         <div className = "maintablecontainer">
-          <h1>Stocks</h1>
+          {/* <h1>Stocks</h1> */}
 
           <div className="tableHead">
 
@@ -139,14 +139,20 @@ export const AllItems = () => {
                             <button type="submit"><i className="fa fa-search" style={{color: "#ffffff",}}></i></button> 
                         </form>
                     </div>
-                </div>
+            </div>
 
          <div className="tablecontainer">
+<<<<<<< HEAD
             <div className="logoutdiv"><Link to='/stockcreateform'><button type="button" className="btn btn-secondary btn-lg LogoutBtn">Logout</button></Link>
             <div className="addbtndiv"><Link to='/stockcreateform'><button type="button" className="btn btn-secondary btn-lg AdditemBtn">Add Item</button></Link>
             {/* </div><div className="addbtndiv"><Link to='/stockcreateform'><button type="button" class="btn btn-success">Add Item</button></Link>&nbsp; */}
           </div>
 
+=======
+            <div className="logoutdiv"><Link to='/stockcreateform'><button type="button" class="btn btn-secondary btn-lg LogoutBtn">Logout</button></Link></div>
+            <div className="addbtndiv"><Link to='/stockcreateform'><button type="button" class="btn btn-secondary btn-lg AddItemBtn">Add Item</button></Link></div>
+            <div className="tablediv">
+>>>>>>> 351fe952e35d01d2b9f1611d4856227b09310507
           <ToastContainer/>
 
             <table className = "table table-striped tbl">
@@ -154,16 +160,16 @@ export const AllItems = () => {
                     <tr>
                         <th scope = "col">ID</th>
                         <th scope = "col">Ingredient Name</th>
-                        <th scope = "col" >Quantity</th>
-                        <th scope = "col">Minimum stock Level</th>
-                        <th scope = "col">Current stock Level</th>
+                        <th scope = "col">Quantity</th>
+                        <th scope = "col">Minimum Stock Level</th>
+                        <th scope = "col">Current Stock Level</th>
                         <th scope = "col" className='op'>Operations</th>
                     </tr>
                     </thead>
                     <tbody>
                         {AllItems.map((items,index) => (
                         <tr key = {items._id}>
-                            <td>{index+1}</td>
+                            <th scope="row">{index + 1}</th>
                             <td>{items.itemName}</td>
                             <td>{items.quantity}</td>
                             <td>{items.minstocklevel}</td>
@@ -191,8 +197,8 @@ export const AllItems = () => {
             </tbody>
             </table> 
 
-             </div>
-
+             
+            </div>
             </div>
         </div>
     </div>

@@ -41,17 +41,18 @@ const StockCreateForm = () => {
     };
     
     return (
-        <div className="createFormContainer">
+        <div className="createFormContainer" style={{marginBottom: "75px", marginTop: "150px"}}>
             <div className="formBootstrap">
-            <h2 className="mb-4">Create Form</h2>
+            <h2>Create Form</h2>
 
                 <form onSubmit={sendData}>
                     <div className="form-group mb-3">
-                        <label For="itemName">Name</label>
+                        <label For="itemName">Name:</label>
                         <input
                             type="text"
                             className="form-control"
                             id="itemName"
+                            autoComplete="off"
                             placeholder="Name"
                             value={itemName}
                             onChange={(e) => setItemName(e.target.value)}
@@ -59,36 +60,42 @@ const StockCreateForm = () => {
                         />
                     </div>
                     <div className="form-group mb-3">
-                        <label For="quantity">Quantity</label>
+                        <label For="quantity">Quantity:</label>
                         <input
                             type="number"
                             className="form-control"
                             id="quantity"
+                            autoComplete="off"
                             placeholder="Quantity"
+                            min={0}
                             value={quantity}
                             onChange={(e) => setQuantity(e.target.value)}
                             required
                         />
                     </div>
                     <div className="form-group mb-3">
-                        <label For="currentStockLevel">Current Stock Level</label>
+                        <label For="currentStockLevel">Current Stock Level:</label>
                         <input
                             type="number"
                             className="form-control"
                             id="currentStockLevel"
+                            autoComplete="off"
                             placeholder="Current Stock Level"
+                            min={0}
                             value={currentstocklevel}
                             onChange={(e) => setCurrentStockLevel(e.target.value)}
                             required
                         />
                     </div>
                     <div className="form-group mb-3">
-                        <label For="minStockLevel">Minimum Stock Level</label>
+                        <label For="minStockLevel">Minimum Stock Level:</label>
                         <input
                             type="number"
                             className="form-control"
                             id="minStockLevel"
+                            autoComplete="off"
                             placeholder="Minimum Stock Level"
+                            min={0}
                             value={minstocklevel}
                             onChange={(e) => setMinStockLevel(e.target.value)}
                             required

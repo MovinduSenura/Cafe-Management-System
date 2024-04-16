@@ -12,6 +12,7 @@ import OrderUpdateForm from './components/OrderUpdateForm';
 
 import CustomerCreateForm from "./components/CustomerCreateForm";
 import CustomerAll from "./components/CustomerAll";
+import CustomerAll2 from "./components/CustomerAll2";
 import CustomerUpdateForm from './components/CustomerUpdateForm';
 import CustomerOneManager from './components/CustomerOneManager'
 import CustomerOneCashier from './components/CustomerOneCashier'
@@ -39,6 +40,8 @@ import StockUpdateForm2 from './components/StockUpdateForm2';
 import AllItems from './components/AllItems';
 import AllItems2 from './components/AllItems2';
 
+import AllFeedbacks from './components/AllFeedbacks';
+
 import NavBar from './components/NavBar';
 import Footer from './components/Footer';
 import SideNavPanel from './components/SideNavPanel';
@@ -59,8 +62,8 @@ function AppContent() {
   const location = useLocation();
 
     // Array of routes where the navbar should be shown
-    const showSideNavBarRoutes = ['/menucreateform', '/', '/menuupdateform/:id'];
-    const showSideNavBar2Routes = ['/cashiermenu'];
+    const showSideNavBarRoutes = ['/menucreateform', '/', '/customersall2', '/customerView/:id', '/menuupdateform/:id', '/stockcreateform', '/stockupdateform/:id', '/items', '/createform', '/updateform/:id', '/allpromotion', '/createStaff', '/allstaff', '/staffUpdateform/:id', '/allfeedback'];
+    const showSideNavBar2Routes = ['/cashiermenu', '/customerCreate', '/customersall', '/customerUpdate/:id', '/customerView2/:id', '/CreateOrder', '/OrdersAll', '/OrderUpdate/:id', '/allpromotion2'];
 
     // Function to determine whether to render the navbar
     const renderSideNavBar = () => {
@@ -87,43 +90,54 @@ function AppContent() {
 
           <Routes>
 
+            {/* Menu */}
             <Route path='/menucreateform' element={<MenuCreateForm />} />
             <Route path='/' element={<MenuAllItems />} />     
             <Route path='/menuupdateform/:id' element={<MenuUpdateForm />} />
-
             <Route path='/cashiermenu' element={<MenuAllItems2 />} />
-            <Route path='/CreateOrder' element={<CreateOrderForm />} />
-            <Route path='/OrdersAll' element={<OrdersAll />} />
-            <Route path='/OrderUpdate/:id' element={<OrderUpdateForm />} />
 
+            {/* Payment */}
+            <Route path='/create' element={<PaymentCreateForm/>}/>
+            <Route path='/getAllPayment' element={<PaymentAll/>}/>
+            <Route path='/update/:id' element={<PaymentUpdateForm/>}/>
+
+            {/* Customer */}
             <Route path='/customerCreate' element={<CustomerCreateForm />} />
             <Route path='/customersall' element={<CustomerAll />} />
+            <Route path='/customersall2' element={<CustomerAll2 />} />
             <Route path='/customerUpdate/:id' element={<CustomerUpdateForm />} />
             <Route path='/customerView/:id' element={<CustomerOneManager />} />
             <Route path='/customerView2/:id' element={<CustomerOneCashier />} />
-             
+
+            {/* Promotion   */}
             <Route path='/createform' element={<PromotionCreateForm />}/>
             <Route path='/updateform/:id' element={<UpdatePromotionForm/>}/>
             <Route path='/allpromotion' element={<AllPromotions/>}/>
             <Route path='/allpromotion2' element={<AllPromotions2/>}/>
 
-            <Route path='/create' element={<PaymentCreateForm/>}/>
-            <Route path='/getAllPayment' element={<PaymentAll/>}/>
-            <Route path='/update/:id' element={<PaymentUpdateForm/>}/>
+            {/* Feedback */}
+            <Route path='/allfeedback' element={<AllFeedbacks/>} />
 
-            <Route path = '/createStaff' element = {<StaffCreateForm/>}/>
+            {/* Stock */}
+            <Route path='/stockcreateform' element = {<StockCreateForm />} />
+            <Route path='/stockupdateform/:id' element = {<StockUpdateForm />} />
+            <Route path='/stockupdateform2/:id' element = {<StockUpdateForm2 />} />
+            <Route path='/items' element = {<AllItems/>}/>
+            <Route path='/items2' element = {<AllItems2/>}/>
+           
+            {/* Staff */}
+            <Route path='/createStaff' element = {<StaffCreateForm/>}/>
             <Route path='/allstaff' element={<AllStaff/>}/>
-            <Route path='/StaffLogin' element={<StaffLogin />} />
+            <Route path='/staffUpdateform/:id' element={<StaffUpdateForm/>}/>
+            <Route path='/StaffLogin' element={<StaffLogin />} />      
             <Route path="/admin" element={<Admin />} />
             <Route path="/cheff" element={< Chef/>} />
             <Route path="/cashier" element={<Cashier />} />
-            <Route path='/staffUpdateform/:id' element={<StaffUpdateForm/>}/>
-
-            <Route path ='/stockcreateform' element = {<StockCreateForm />} />
-            <Route path ='/stockupdateform/:id' element = {<StockUpdateForm />} />
-            <Route path ='/stockupdateform2/:id' element = {<StockUpdateForm2 />} />
-            <Route path = '/items' element = {<AllItems/>}/>
-            <Route path = '/items2' element = {<AllItems2/>}/>
+           
+            {/* Order */}
+            <Route path='/CreateOrder' element={<CreateOrderForm />} />
+            <Route path='/OrdersAll' element={<OrdersAll />} />
+            <Route path='/OrderUpdate/:id' element={<OrderUpdateForm />} />
 
         
 

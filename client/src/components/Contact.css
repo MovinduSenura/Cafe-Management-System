@@ -4,6 +4,7 @@
     height: 60vh;
     width: 100%;
     font-family: 'Poppins';
+    margin-bottom: 60px;
 }
 
 .thirdSecOverlay{
@@ -60,4 +61,12 @@
     background-image: linear-gradient(to right, #F4A177 , #D8B88F);
     border-radius: 5px;
     padding: 50px 10px;
+}
+
+.contactCard p{
+    color: #161616;
+}
+
+.contactCard p:hover{
+    color: white;
 }

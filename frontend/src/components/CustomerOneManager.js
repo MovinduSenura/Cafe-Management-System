@@ -3,13 +3,14 @@ import React, { useEffect, useState } from "react";
 
 //import axios
 import axios from 'axios';
+import './UpdateForm.css'
 
 //importing css file
 //import './CustomerUpdateForm.css'
 import { useParams } from "react-router-dom";
-import { Link } from "react-router-dom";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+// import { Link } from "react-router-dom";
+// import { ToastContainer, toast } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css';
 
 const CustomerOneForm = () => {
         //sending data to backend
@@ -61,60 +62,60 @@ const CustomerOneForm = () => {
         //the variables created outside the function are stated inside [] above. e eeke wdya.
 
         //Delete
-    const handleDelete = async (id) => {
-        //customers._id(in delete button) parameter is passed to id above   
-        try {
+    // const handleDelete = async (id) => {
+           
+    //     try {
 
-            const confirmed = window.confirm("Are you want to delete this customer??");
+    //         const confirmed = window.confirm("Are you want to delete this customer??");
 
-            if (confirmed) {
+    //         if (confirmed) {
 
-                //when passing a parameter or variable bactic mark is used
-                await axios.delete(`http://localhost:8000/customer/customerdelete/${id}`)
-                    .then((res) => {
-                        alert(res.data.message);
-                        console.log(res.data.message);
-                    })
-                    .catch((err) => {
-                        console.log("❌ :: Error on API URL : " + err.message);
-                    })
-
-
-            } else {
-                toast.error('Deletion Cancelled!',{
-                    position: "top-center",
-                });
-                console.log("Deletion Cancelled!")
-            }
+                
+    //             await axios.delete(`http://localhost:8000/customer/customerdelete/${id}`)
+    //                 .then((res) => {
+    //                     alert(res.data.message);
+    //                     console.log(res.data.message);
+    //                 })
+    //                 .catch((err) => {
+    //                     console.log("❌ :: Error on API URL : " + err.message);
+    //                 })
 
 
-
-
-        } catch (err) {
-            console.log("❌ :: handleDelete function failed! ERROR : " + err.message);
-        }
+    //         } else {
+    //             toast.error('Deletion Cancelled!',{
+    //                 position: "top-center",
+    //             });
+    //             console.log("Deletion Cancelled!")
+    //         }
 
 
 
-    }
+
+    //     } catch (err) {
+    //         console.log("❌ :: handleDelete function failed! ERROR : " + err.message);
+    //     }
+
+
+
+    // }
 
 
         return (
             //dynamic ekaka function wda kennoni
             //only one div is inside return. but many divs can be inside devs.
-            <div className="createFormContainer">
+            <div className="updateFormContainer">
 
-                    <div className="formBootsrap">
+                    <div className="updateformBootstrap">
                     
                      {/* can put in anyplace within main div */}
-            <ToastContainer/>
+            {/* <ToastContainer/> */}
                             
                             <form>
 
                             
                                     {/* onchange is used to store all values letter by letter */}
                                     <div className="form-group mb-3">
-                                            <label for="fullName">Full Name</label>
+                                            <label for="fullName">Full Name:</label>
                                             <input type="text" className="form-control" id="fullName" aria-describedby="emailHelp" placeholder="Enter Full Name" onChange={
                                                     (e) => {
                                                         setcustomerFullName(e.target.value)
@@ -124,7 +125,7 @@ const CustomerOneForm = () => {
                                     </div>
 
                                     <div className="form-group mb-3">
-                                            <label for="email">Email</label>
+                                            <label for="email">Email:</label>
                                             <input type="email" className="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter Email" onChange={
                                                     (e) => {
                                                         setcustomerEmail(e.target.value)
@@ -134,7 +135,7 @@ const CustomerOneForm = () => {
                                     </div>
 
                                     <div className="form-group mb-3">
-                                            <label for="contactNo">Contact No</label>
+                                            <label for="contactNo">Contact No:</label>
                                             <input type="tel" className="form-control" id="contactNo" aria-describedby="emailHelp" placeholder="071 5678987" pattern="[0-9]{3}[0-9]{7}" onChange={
                                                     (e) => {
                                                         setcustomerContactNo(e.target.value)
@@ -144,7 +145,7 @@ const CustomerOneForm = () => {
                                     </div>
 
                                     <div className="form-group mb-3">
-                                            <label for="nic">NIC</label>
+                                            <label for="nic">NIC:</label>
                                             <input type="text" className="form-control" id="nic" aria-describedby="emailHelp" placeholder="Enter NIC" onChange={
                                                     (e) => {
                                                         setcustomerNIC(e.target.value)
@@ -154,7 +155,7 @@ const CustomerOneForm = () => {
                                     </div>
 
                                     <div className="form-group mb-3">
-                                            <label for="gender">Gender</label>
+                                            <label for="gender">Gender:</label>
                                             <input type="text" className="form-control" id="gender" aria-describedby="emailHelp" placeholder="Enter Gender" onChange={
                                                     (e) => {
                                                         setcustomerGender(e.target.value)
@@ -164,7 +165,7 @@ const CustomerOneForm = () => {
                                     </div>
 
                                     <div className="form-group mb-3">
-                                            <label for="address">Address</label>
+                                            <label for="address">Address:</label>
                                             <input type="text" className="form-control" id="address" aria-describedby="emailHelp" placeholder="Enter Address" onChange={
                                                     (e) => {
                                                         setcustomerAddress(e.target.value)
@@ -174,7 +175,7 @@ const CustomerOneForm = () => {
                                     </div>
 
                                     <div className="form-group mb-3">
-                                            <label for="loyaltyPoints">Loyalty Points</label>
+                                            <label for="loyaltyPoints">Loyalty Points:</label>
                                             <input type="number" className="form-control" id="loyaltyPoints" aria-describedby="emailHelp" placeholder="Enter Loyalty Points" onChange={
                                                     (e) => {
                                                             setcustomerLoyaltyPoints(e.target.value)
@@ -184,10 +185,11 @@ const CustomerOneForm = () => {
                                     </div>
 
 
-                                    
-                                    <Link to = {`/CustomerUpdate/${id}`}>
-                                        <button type="button" class="btn btn-success">Edit</button></Link>&nbsp;&nbsp;
-                                        <button type="button" class="btn btn-danger" onClick={() => handleDelete(id)}>Delete</button>
+                                    {/* <div style={{textAlign: "center"}} className="onecusbtns">
+                                        <Link to = {`/CustomerUpdate/${id}`}>
+                                            <button type="button" class="btn btn-success">Edit</button></Link>&nbsp;&nbsp;
+                                            <button type="button" class="btn btn-danger" onClick={() => handleDelete(id)}>Delete</button>
+                                    </div> */}
 
                                     
 

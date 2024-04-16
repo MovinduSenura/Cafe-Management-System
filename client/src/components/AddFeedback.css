@@ -1,13 +1,13 @@
-.stockformContainer h1{
+/* .FeedbackformContainer h1{
     text-align: center;
 }
 
-.stockmyForm {
+.FeedbackmyForm {
     max-width: 400px;
     margin: 0 auto;
   }
   
-  .stockmyForm label {
+  .FeedbackmyForm label {
     display: block;
     margin-bottom: 5px;
   }
@@ -20,7 +20,7 @@
     border: 1px solid #ccc;
     border-radius: 4px;
   }
-  
+
   .myForm button {
     background-color: #4caf50;
     color: white;
@@ -31,10 +31,9 @@
   }
   
   .myForm button:hover {
-    background-color:#45a049;
-}
-
-.formBootstrap{
+    background-color: #45a049;
+  }
+  .formBootstrap{
     width: 500px;
     background-color: none;
     margin-right: auto;
@@ -47,4 +46,34 @@
 
   .formBootstrap h1{
     text-align: center;
+  } */
+
+  .createFormContainer2{
+    margin-top: 180px;
+    margin-bottom: 100px;
   }
+  
+  .formBootstrap2{
+      width: 500px;
+      background-color: none;
+      margin-right: auto;
+      margin-left: auto;
+      margin-top: 40px;
+      border: 1px dashed #ccc;
+      border-radius: 10px;
+      padding: 20px;
+    }
+  
+    .formBootstrap2 h2{
+      text-align: center;
+    }
+  
+    .submitbtndiv2{
+      width: fit-content;
+      margin-left: auto;
+      margin-right: auto;
+      /* background-color: red; */
+    }
+  
+  
+  

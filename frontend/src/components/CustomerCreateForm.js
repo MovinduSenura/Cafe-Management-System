@@ -6,6 +6,7 @@ import axios from 'axios';
 
 //importing css file
 //import './CustomerCreateForm.css'
+import './CreateForm.css'
 
 
 const CustomerCreateForm = () => {
@@ -83,16 +84,16 @@ const CustomerCreateForm = () => {
                 //only one div is inside return. but many divs can be inside devs.
                 <div className="createFormContainer">
 
-                        <div className="formBootsrap">
+                        <div className="formBootstrap">
                         
-                                <h3>Customer Registration Form</h3>
+                                <h2>Customer Registration Form</h2>
                                 <form onSubmit={sendData}>
 
                                 
                                         {/* onchange is used to store all values letter by letter */}
                                         <div className="form-group mb-3">
-                                                <label for="fullName">Full Name</label>
-                                                <input type="text" className="form-control" id="fullName" aria-describedby="emailHelp" placeholder="Enter Full Name" onChange={
+                                                <label for="fullName">Full Name:</label>
+                                                <input type="text" className="form-control" id="fullName" aria-describedby="emailHelp" autoComplete="off" placeholder="Enter Full Name" onChange={
                                                         (e) => {
                                                             setcustomerFullName(e.target.value)
                                                         }
@@ -101,8 +102,8 @@ const CustomerCreateForm = () => {
                                         </div>
 
                                         <div className="form-group mb-3">
-                                                <label for="email">Email</label>
-                                                <input type="email" className="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter Email" onChange={
+                                                <label for="email">Email:</label>
+                                                <input type="email" className="form-control" id="email" aria-describedby="emailHelp" autoComplete="off" placeholder="Enter Email" onChange={
                                                         (e) => {
                                                             setcustomerEmail(e.target.value)
                                                         }
@@ -111,8 +112,8 @@ const CustomerCreateForm = () => {
                                         </div>
 
                                         <div className="form-group mb-3">
-                                                <label for="contactNo">Contact No</label>
-                                                <input type="text" className="form-control" id="contactNo" aria-describedby="emailHelp" placeholder="071 5678987" onChange={
+                                                <label for="contactNo">Contact No:</label>
+                                                <input type="tel" className="form-control" id="contactNo" aria-describedby="emailHelp" autoComplete="off" placeholder="071 5678987" onChange={
                                                         (e) => {
                                                             setcustomerContactNo(e.target.value)
                                                         }
@@ -121,8 +122,8 @@ const CustomerCreateForm = () => {
                                         </div>
 
                                         <div className="form-group mb-3">
-                                                <label for="nic">NIC</label>
-                                                <input type="text" className="form-control" id="nic" aria-describedby="emailHelp" placeholder="Enter NIC" onChange={
+                                                <label for="nic">NIC:</label>
+                                                <input type="text" className="form-control" id="nic" aria-describedby="emailHelp" autoComplete="off" placeholder="Enter NIC" onChange={
                                                         (e) => {
                                                             setcustomerNIC(e.target.value)
                                                         }
@@ -131,8 +132,8 @@ const CustomerCreateForm = () => {
                                         </div>
 
                                         <div className="form-group mb-3">
-                                                <label for="gender">Gender</label>
-                                                <input type="text" className="form-control" id="gender" aria-describedby="emailHelp" placeholder="Enter Gender" onChange={
+                                                <label for="gender">Gender:</label>
+                                                <input type="text" className="form-control" id="gender" aria-describedby="emailHelp" autoComplete="off" placeholder="Enter Gender" onChange={
                                                         (e) => {
                                                             setcustomerGender(e.target.value)
                                                         }
@@ -141,8 +142,8 @@ const CustomerCreateForm = () => {
                                         </div>
 
                                         <div className="form-group mb-3">
-                                                <label for="address">Address</label>
-                                                <input type="text" className="form-control" id="address" aria-describedby="emailHelp" placeholder="Enter Address" onChange={
+                                                <label for="address">Address:</label>
+                                                <input type="text" className="form-control" id="address" aria-describedby="emailHelp" autoComplete="off" placeholder="Enter Address" onChange={
                                                         (e) => {
                                                             setcustomerAddress(e.target.value)
                                                         }
@@ -151,8 +152,8 @@ const CustomerCreateForm = () => {
                                         </div>
 
                                         <div className="form-group mb-3">
-                                                <label for="loyaltyPoints">Loyalty Points</label>
-                                                <input type="number" className="form-control" id="loyaltyPoints" aria-describedby="emailHelp" placeholder="Enter Loyalty Points" onChange={
+                                                <label for="loyaltyPoints">Loyalty Points:</label>
+                                                <input type="number" className="form-control" id="loyaltyPoints" aria-describedby="emailHelp" autoComplete="off" min={0} placeholder="Enter Loyalty Points" onChange={
                                                         (e) => {
                                                                 setcustomerLoyaltyPoints(e.target.value)
                                                         }

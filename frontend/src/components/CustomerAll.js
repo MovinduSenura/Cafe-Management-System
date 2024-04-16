@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 //import './CustomerAll.css'
 //import {ToastContainer} from 'react-toastify';
 //import 'react-toastify/dist/ReactToastify.css';
+import './DataTable.css'
+
 import { Link } from "react-router-dom";
 
 //toast=assign a message ToastContainer = call the set message
@@ -153,11 +155,11 @@ const AllCustomers = () => {
         <div className="alldiv">
 
             <div className="maintablecontainer">
-                <h3 className="mt-3">Loyalty Customers</h3>
+                {/* <h3 className="mt-3">Loyalty Customers</h3> */}
+                
 
                 <div className="tableHead">
-                    
-
+                
                     <div className="search-container">
                         <form className="searchTable" onSubmit={handleFormSubmit}>
                             <input id="searchBar" type="text" value={customerNIC} onChange={handleSearchChange} placeholder="Search.." name="search"/>
@@ -166,11 +168,16 @@ const AllCustomers = () => {
                     </div>
                 </div>
 
+                {/* <h2 style={{marginBottom: "-20px", marginTop: "-90px"}} className="mt-3">Loyalty Customers</h2> */}
+                {/* <div className="loyalcus" style={{marginTop: "0px", marginBottom: "-40px"}}>
+                    <h2 className="mt-3">Loyalty Customers</h2>
+                </div> */}
+
 
                 <div className="tablecontainer">
                     {/* <a href="/customerCreate"> */}
                     <div className="logoutdiv"><Link to='/menucreateform'><button type="button" className="btn btn-secondary btn-lg LogoutBtn">Logout</button></Link></div>
-                    <div className="addbtndiv"><Link to='/CustomerCreateForm'><button type="button" className="btn btn-secondary btn-lg AddItemBtn">Add item</button></Link></div>
+                    <div className="addbtndiv"><Link to='/customerCreate'><button type="button" className="btn btn-secondary btn-lg AddItemBtn">Add Customer</button></Link></div>
                     <div className="tablediv">
                         {/* <button type="button" className="btn btn-secondary AddItemBtn">Add New Customer</button> */}
                     {/* </a> */}
@@ -204,8 +211,7 @@ const AllCustomers = () => {
                                     <tbody>
                                         <tr>
                                           {/* a href = Link to , a = Link, href = to */}
-                                            <td><Link to={`/CustomerView/${customers._id}`}><button type="button" className="btn btn-warning">View</button></Link>&nbsp;&nbsp;
-                                            </td>  
+                                            <td><Link to={`/CustomerView2/${customers._id}`}><button style={{color: "white", backgroundColor: "#F09D00", border: "none"}} type="button" className="btn btn-warning">View</button></Link></td>  
                                         </tr>
                                     </tbody>
                                 </table>
