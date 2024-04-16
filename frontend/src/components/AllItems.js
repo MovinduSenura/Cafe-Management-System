@@ -142,8 +142,9 @@ export const AllItems = () => {
                 </div>
 
          <div className="tablecontainer">
-            <div className="logoutdiv"><Link to='/stockcreateform'><button type="button" class="btn btn-success">Logout</button></Link>&nbsp;
-            <div className="addbtndiv"><Link to='/stockcreateform'><button type="button" class="btn btn-success">Add Item</button></Link>&nbsp;
+            <div className="logoutdiv"><Link to='/stockcreateform'><button type="button" className="btn btn-secondary btn-lg LogoutBtn">Logout</button></Link>
+            <div className="addbtndiv"><Link to='/stockcreateform'><button type="button" className="btn btn-secondary btn-lg AdditemBtn">Add Item</button></Link>
+            {/* </div><div className="addbtndiv"><Link to='/stockcreateform'><button type="button" class="btn btn-success">Add Item</button></Link>&nbsp; */}
           </div>
 
           <ToastContainer/>
