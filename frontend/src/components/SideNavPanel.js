@@ -33,7 +33,7 @@ const SideNavPanel = () => {
         </div> */}
         <a href="/">Menu Management</a>
         <a href="#">Payment Management</a>
-        <a href="#">Customer Management</a>
+        <a href="/customersall2">Customer Management</a>
         <a href="/allpromotion">Promotion Management</a>
         <a href="/allfeedback">Feedback Management</a>
         <a href="/items">Stock Management</a>
