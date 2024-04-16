@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React from 'react'
+// import React, { useState } from 'react'
 
 const SideNavPanel = () => {
   // const [selectedOption,setSelectedOption] = useState(null)
@@ -34,7 +35,7 @@ const SideNavPanel = () => {
         <a href="#">Payment Management</a>
         <a href="#">Customer Management</a>
         <a href="/allpromotion">Promotion Management</a>
-        <a href="#">Feedback Management</a>
+        <a href="/allfeedback">Feedback Management</a>
         <a href="/items">Stock Management</a>
         <a href="/allstaff">Staff Management</a>
         {/* <a href="/">Order Management</a> */}

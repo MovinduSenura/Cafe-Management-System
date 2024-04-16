@@ -39,6 +39,8 @@ import StockUpdateForm2 from './components/StockUpdateForm2';
 import AllItems from './components/AllItems';
 import AllItems2 from './components/AllItems2';
 
+import AllFeedbacks from './components/AllFeedbacks';
+
 import NavBar from './components/NavBar';
 import Footer from './components/Footer';
 import SideNavPanel from './components/SideNavPanel';
@@ -59,7 +61,7 @@ function AppContent() {
   const location = useLocation();
 
     // Array of routes where the navbar should be shown
-    const showSideNavBarRoutes = ['/menucreateform', '/', '/menuupdateform/:id', '/stockcreateform', '/stockupdateform/:id', '/items', '/createform', '/updateform/:id', '/allpromotion', '/createStaff', '/allstaff', '/staffUpdateform/:id'];
+    const showSideNavBarRoutes = ['/menucreateform', '/', '/menuupdateform/:id', '/stockcreateform', '/stockupdateform/:id', '/items', '/createform', '/updateform/:id', '/allpromotion', '/createStaff', '/allstaff', '/staffUpdateform/:id', '/allfeedback'];
     const showSideNavBar2Routes = ['/cashiermenu', '/customerCreate', '/customersall', '/customerUpdate/:id', '/customerView2/:id', '/CreateOrder', '/OrdersAll', '/OrderUpdate/:id', '/allpromotion2'];
 
     // Function to determine whether to render the navbar
@@ -104,6 +106,9 @@ function AppContent() {
             <Route path='/customerUpdate/:id' element={<CustomerUpdateForm />} />
             <Route path='/customerView/:id' element={<CustomerOneManager />} />
             <Route path='/customerView2/:id' element={<CustomerOneCashier />} />
+
+            {/* Feedback */}
+            <Route path='/allfeedback' element={<AllFeedbacks/>} />
 
             {/* Promotion   */}
             <Route path='/createform' element={<PromotionCreateForm />}/>

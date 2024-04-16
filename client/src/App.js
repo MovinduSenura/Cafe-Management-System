@@ -1,23 +1,21 @@
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 
-import FeedbackCreateForm from './components/FeedbackCreateForm';
-import FeedbacksAll from './components/FeedbacksAll';
-import UpdateForm from './components/UpdateForm';
-
 import NavBar from './components/NavBar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
 import CustomerLogin from './pages/CustomerLogin';
 import MenuPage from './pages/MenuPage';
+import PromotionPage from './pages/PromotionPage';
+
+import FeedbackCreateForm from './components/FeedbackCreateForm';
+import FeedbacksAll from './components/FeedbacksAll';
+import UpdateForm from './components/UpdateForm';
 
 import Login from './components/Login';
 import UserData from './components/UserData';
 import AddFeedback from './components/AddFeedback';
 import Feedbacks from './components/Feedbacks';
-import AllFeedbacks from './components/AllFeedbacks';
-
-import PromotionPage from './pages/PromotionPage';
-
+import AllCustomerFeedbacks from './components/AllCustomerFeedbacks';
 
 function App() {
   return (
@@ -36,15 +34,15 @@ function App() {
           <Route path = '/menudisplay' element = {<MenuPage />} />
           <Route path = '/promotiondisplay' element = {<PromotionPage />} />
 
-          <Route path='/feedbackcreateform/:customerNIC' element={<FeedbackCreateForm />}/> 
-          <Route path='/feedbackupdateform/:id' element={<UpdateForm/>}/>
-          <Route path='/allfeedbacks' element={<FeedbacksAll/>}/>
+          {/* <Route path='/feedbackcreateform/:customerNIC' element={<FeedbackCreateForm />}/>  */}
+          {/* <Route path='/feedbackupdateform/:id' element={<UpdateForm/>}/> */}
+          {/* <Route path='/allfeedbacks' element={<FeedbacksAll/>}/> */}
 
-          <Route path = '/login' element = {<Login />} />
+          <Route path = '/login2' element = {<Login />} />
           <Route path="/profile/:customerNIC" element={<UserData />} />
           <Route path='/add/:userid' element={<AddFeedback/>} />
           <Route path="/feedback/:customerNIC/:feedbackId" element={<Feedbacks />} />
-          <Route path='/allfeedback' element={<AllFeedbacks/>} />
+          <Route path="/allcustomerfeedbacks" element={<AllCustomerFeedbacks />} />
 
         </Routes>
 

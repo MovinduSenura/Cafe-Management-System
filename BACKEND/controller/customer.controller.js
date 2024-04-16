@@ -209,6 +209,24 @@ const getFeedback = async(req,res) => {
     }
 }
 
+const getAllFeedbacks = async (req, res) => {
+    try {
+        const feedbacks = await customerModel.find({}, { feedbacks: 1 });
+        // console.log("feedbacks: ", feedbacks.map(customer => customer.feedbacks).flat());
+
+        return res.status(200).send({
+            status: true,
+            message: "✨ All feedbacks fetched!",
+            feedbacks: feedbacks.map(customer => customer.feedbacks).flat()
+        });
+    } catch (err) {
+        return res.status(500).send({
+            status: false,
+            message: err.message
+        });
+    }
+};
+
 const getOneFeedback = async(req,res) =>{
     try {
         const { customerNIC, feedbackId } = req.params;
@@ -240,6 +258,142 @@ const getOneFeedback = async(req,res) =>{
         res.status(500).json({ error: 'Internal server error' });
     }
 }
+
+const searchFeedback = async (req, res) => {
+    try {
+        const DayVisited = req.query.DayVisited;
+        const feedbacks = await customerModel.find({ 'feedbacks.DayVisited': { $regex: new RegExp(`^${DayVisited}`, 'i') } });
+
+        // Flatten the array of feedbacks
+        const flattenedFeedbacks = feedbacks.map(customer => customer.feedbacks[0]).flat();
+        // console.log("feedbacks", flattenedFeedbacks);
+
+        return res.status(200).send({
+            status: true,
+            message: "✨ :: Feedbacks searched and fetched!",
+            searchedFeedback: flattenedFeedbacks
+        });
+    } catch (err) {
+        return res.status(500).send({
+            status: false,
+            message: err.message
+        });
+    }
+};
+
+
+// const searchFeedback = async (req, res) => {
+
+//     try{
+
+//         const Comment = req.query.Comment;
+        
+//         const feedback = await customerModel.find(
+//             { 'feedbacks': { $elemMatch: { Comment: { $regex: new RegExp(Comment, 'i') } } } },
+//             { 'feedbacks.$': 1, '_id': 0 }
+//         );
+//         console.log("Comment: ", Comment);
+        
+//         const allComments = feedback.flatMap(item => item.feedbacks.map(feedbackItem => feedbackItem.Comment));
+
+        
+//         console.log("All Comments:", allComments);
+        
+
+//         return res.status(200).send({
+//             status: true,
+//             message: "✨ :: Project Searched and fetched!",
+//             searchedFeedback: allComments
+//         })
+
+//     }catch(err){
+
+//         return res.status(500).send({
+//             status: false,
+//             message: err.message
+//         });
+
+//     }
+
+// }
+
+// const searchFeedback = async (req, res) => {
+//     try {
+//         const Comment = req.query.Comment;
+//         const feedback = await customerModel.find({ 'feedbacks.Comment': { $regex: new RegExp(`^${Comment}`, 'i') } });
+//         console.log("Comment: ", Comment);
+//         console.log("Feeback: ", feedback);
+
+//         return res.status(200).send({
+//             status: true,
+//             message: "✨ :: Feedbacks searched and fetched!",
+//             searchedFeedback: feedback
+//         });
+//     } catch (err) {
+//         return res.status(500).send({
+//             status: false,
+//             message: err.message
+//         });
+//     }
+// };
+
+// const searchFeedback = async (req, res) => {
+//     try {
+//         const { DayVisited } = req.query;
+
+//         // Using a regular expression to match partial DayVisited
+//         const feedback = await customerModel.find({
+//             'feedbacks.DayVisited': { $regex: new RegExp(DayVisited, 'i') }
+//         });
+
+//         return res.status(200).send({
+//             status: true,
+//             message: "✨ Project Searched and fetched!",
+//             searchedFeedback: feedback
+//         });
+//     } catch (err) {
+//         return res.status(500).send({
+//             status: false,
+//             message: err.message
+//         });
+//     }
+// };
+
+// const searchFeedback = async (req, res) => {
+//     try {
+//         const { DayVisited } = req.query;
+
+//         // Using aggregation to search within nested array
+//         const feedback = await customerModel.aggregate([
+//             {
+//                 $unwind: "$feedbacks" // Deconstructs the feedbacks array
+//             },
+//             {
+//                 $match: {
+//                     "feedbacks.DayVisited": { $regex: new RegExp(DayVisited, 'i') }
+//                 }
+//             },
+//             {
+//                 $group: {
+//                     _id: "$_id",
+//                     customerFullName: { $first: "$customerFullName" }, // You can include other fields if needed
+//                     searchedFeedback: { $push: "$feedbacks" }
+//                 }
+//             }
+//         ]);
+
+//         return res.status(200).send({
+//             status: true,
+//             message: "✨ Project Searched and fetched!",
+//             searchedFeedback: feedback
+//         });
+//     } catch (err) {
+//         return res.status(500).send({
+//             status: false,
+//             message: err.message
+//         });
+//     }
+// };
 
 const updateFeedback =async(req,res) => {
     const { customerNIC, feedbackId } = req.params;
@@ -359,5 +513,7 @@ module.exports = {
     deleteFeedback,
     loginFeedback,
     allFeedbacks,
+    searchFeedback,
+    getAllFeedbacks,
 
 }
