@@ -13,7 +13,7 @@ const SideNavPanel2 = () => {
         <h4>Cashier Dashboard</h4>
         
         <a href="/cashiermenu">Menu Management</a>
-        <a href="#">Payment Management</a>
+        <a href="getAllPayment2">Payment Management</a>
         <a href="/customersall">Customer Management</a>
         <a href="/allpromotion2">Promotion Management</a>
         <a href="/OrdersAll">Order Management</a>

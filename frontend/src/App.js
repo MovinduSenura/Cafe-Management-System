@@ -24,6 +24,7 @@ import UpdatePromotionForm from './components/UpdatePromotionForm';
 
 import PaymentCreateForm from './components/PaymentCreateForm';
 import PaymentAll from './components/PaymentAll';
+import PaymentAll2 from './components/PaymentAll2';
 import PaymentUpdateForm from './components/PaymentUpdateForm';
 
 import StaffCreateForm from './components/StaffCreateForm';
@@ -62,8 +63,8 @@ function AppContent() {
   const location = useLocation();
 
     // Array of routes where the navbar should be shown
-    const showSideNavBarRoutes = ['/menucreateform', '/', '/customersall2', '/customerView/:id', '/menuupdateform/:id', '/stockcreateform', '/stockupdateform/:id', '/items', '/createform', '/updateform/:id', '/allpromotion', '/createStaff', '/allstaff', '/staffUpdateform/:id', '/allfeedback'];
-    const showSideNavBar2Routes = ['/cashiermenu', '/customerCreate', '/customersall', '/customerUpdate/:id', '/customerView2/:id', '/CreateOrder', '/OrdersAll', '/OrderUpdate/:id', '/allpromotion2'];
+    const showSideNavBarRoutes = ['/menucreateform', '/', '/customersall2', '/customerView/:id', '/menuupdateform/:id', '/stockcreateform', '/stockupdateform/:id', '/items', '/createform', '/updateform/:id', '/allpromotion', '/createStaff', '/allstaff', '/staffUpdateform/:id', '/allfeedback', '/getAllPayment'];
+    const showSideNavBar2Routes = ['/cashiermenu', '/customerCreate', '/customersall', '/customerUpdate/:id', '/customerView2/:id', '/CreateOrder', '/OrdersAll', '/OrderUpdate/:id', '/allpromotion2', '/getAllPayment2'];
 
     // Function to determine whether to render the navbar
     const renderSideNavBar = () => {
@@ -99,6 +100,7 @@ function AppContent() {
             {/* Payment */}
             <Route path='/create' element={<PaymentCreateForm/>}/>
             <Route path='/getAllPayment' element={<PaymentAll/>}/>
+            <Route path='/getAllPayment2' element={<PaymentAll2/>}/>
             <Route path='/update/:id' element={<PaymentUpdateForm/>}/>
 
             {/* Customer */}
