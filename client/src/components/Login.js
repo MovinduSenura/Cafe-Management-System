@@ -1,7 +1,8 @@
-// Login.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+
+import "./Login.css";
 
 const Login = () => {
   const [customerNIC, setCustomerNIC] = useState('');
@@ -9,18 +10,11 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-//   const handleSubmit = (e) => {
-//     e.preventDefault();
-//     // You can handle login logic here
-//     // For simplicity, let's just redirect to a dashboard page
-//     navigate(`/profile/${customerNIC}`);
-//   };
-
 const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       // Make login request
-      const response = await axios.get(`http://localhost:8000/customer/login/${customerNIC}`);
+      await axios.get(`http://localhost:8000/customer/login/${customerNIC}`);
       // Handle successful login, here redirecting to the user profile page
       navigate(`/profile/${customerNIC}`);
     } catch (error) {
@@ -31,22 +25,38 @@ const handleSubmit = async (e) => {
 
 
   return (
-    <div className="mt-5" style={{marginTop: "500px"}}>
-      <h2>Login</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="customerNIC">Customer NIC:</label>
-          <input
-            type="text"
-            id="customerNIC"
-            value={customerNIC}
-            onChange={(e) => setCustomerNIC(e.target.value)}
-          />
+    <div className="login-background">
+      <div className="login-center">
+        <div className="form-name">
+          <h2>Login</h2>
+          <div className="login-form-container">
+            <div className="loginForm">
+              {error && <p style={{ color: 'red' }}>{error}</p>}
+              <form onSubmit={handleSubmit} className="login-form">
+              <div form-group >
+                {/* <label htmlFor="customerNIC">Customer NIC:</label> */}
+                <input
+                type="text"
+                id="customerNIC"
+                placeholder='NIC'
+                value={customerNIC}
+                onChange={(e) => setCustomerNIC(e.target.value)}
+              />
+              </div>
+              <button type='submit' className="submit-button">Login</button>
+              </form>
+            </div>
+          </div>
         </div>
-        <button type='submit'>Login</button>
-       
-      </form>
+        <div className='maincopyright'> 
+          <div className='copyright'>
+            <p>©</p>
+            <p>Copyright 2024 <b>ESPRESSO ELEGANCE.</b></p>
+            <p>All Rights Reserved</p>
+            <small>Designed by <w className='daedra'>DAEDRA</w></small>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

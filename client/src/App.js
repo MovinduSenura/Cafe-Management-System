@@ -4,7 +4,6 @@ import { useLocation } from 'react-router-dom'; // Import useLocation
 import NavBar from './components/NavBar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
-import CustomerLogin from './pages/CustomerLogin';
 import MenuPage from './pages/MenuPage';
 import PromotionPage from './pages/PromotionPage';
 
@@ -42,10 +41,8 @@ function AppContent() {
           <Route path="/feedbackcreateform" element={<FeedbackCreateForm />} />
           <Route path="/feedbackupdateform/:id" element={<UpdateForm />} />
           <Route path="/allfeedbacks" element={<FeedbacksAll />} />
-          <Route exact path="/login" element={<CustomerLogin />} />
 
           <Route path = '/' element = {<Home />} />
-          <Route exact path="/login" element={<CustomerLogin/>} />
           <Route path = '/menudisplay' element = {<MenuPage />} />
           <Route path = '/promotiondisplay' element = {<PromotionPage />} />
 
@@ -61,7 +58,7 @@ function AppContent() {
 
         </Routes>
       </div>
-      {location.pathname !== '/login' && <Footer />} 
+      {location.pathname !== '/login2' && <Footer />} 
     </>
   );
 }
