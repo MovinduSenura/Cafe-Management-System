@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import axios from 'axios';
 // import './PromotionCreateForm.css'
 import './CreateForm.css'
@@ -9,19 +9,27 @@ const PromotionCreateForm = () =>{
     const[promotionName, setpromotionName]= useState('');
     const[promotionValues, setpromotionValues]= useState('');
     const[promotionDescription, setpromotionDescription]= useState('');
-    const[promotionItempic, setpromotionItempic]= useState('');
- 
+    // const[promotionItempic, setpromotionItempic]= useState('');
+    const fileInputRef = useRef(null); // Create a ref for file input
+    
     const sendData = (e) => {
         e.preventDefault();
             
+        const promotionformdata = new FormData(); // Create menuformdata object to append data
+        // menuformdata.append('menuItemImage', menuItemImage);
+        promotionformdata.append('promotionName', promotionName);
+        promotionformdata.append('promotionValues', promotionValues);
+        promotionformdata.append('promotionDescription', promotionDescription);
+        promotionformdata.append('promotionItempic', fileInputRef.current.files[0]); // Retrieve file from file input ref
+
         try{
-            let newpromotionData = {
-                promotionName: promotionName,
-                promotionValues: promotionValues,
-                promotionDescription: promotionDescription,
-                promotionItempic: promotionItempic,
-            }
-            axios.post('http://localhost:8000/promotion/create',newpromotionData)
+            // let newpromotionData = {
+            //     promotionName: promotionName,
+            //     promotionValues: promotionValues,
+            //     promotionDescription: promotionDescription,
+            //     promotionItempic: promotionItempic,
+            // }
+            axios.post('http://localhost:8000/promotion/create',promotionformdata,  {headers: {'Content-Type': 'multipart/form-data'}})
             .then((res) =>{
                 alert(res.data.message);
                 console.log(res.data.status);
@@ -35,7 +43,8 @@ const PromotionCreateForm = () =>{
             setpromotionName('');
             setpromotionValues('');
             setpromotionDescription('');
-            setpromotionItempic('');
+            // setpromotionItempic('');
+            fileInputRef.current.value = '';
            
         }catch(err){
             console.log("☠️::sendData Function failed ERROR :"+ err.message);
@@ -80,15 +89,13 @@ const PromotionCreateForm = () =>{
                        
                 }    value={promotionDescription}/>
             </div>
-            <div class="form-group mb-3">
-                <label for="promotionItempic">Item Pic:</label>
-                <input type="text" className="form-control" id="promotionItempic" placeholder="pic" autoComplete="off" onChange={
-                    (e) => {
-                        setpromotionItempic(e.target.value)
-                    }
+            <div className="form-group mb-3">
                        
-                }    value={promotionItempic}/>
+                    <label for="promotionImage">Promotion Image:</label>
+                        {/* <input type="file" accept="image/*" className="form-control" id="menuItemImage" placeholder="Enter menuItemImage" autoComplete="off" onChange={(e) => setmenuItemImage(e.target.files[0])}/> */}
+                    <input type="file" accept="image/*" className="form-control" id="promotionImage"  autoComplete="off" ref={fileInputRef} required/>
             </div>
+           
             <div className="submitbtndiv">
             <button type="submit" class="btn btn-primary submitbtn">Submit</button>
             </div>

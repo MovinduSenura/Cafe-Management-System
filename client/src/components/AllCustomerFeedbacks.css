@@ -1,0 +1,187 @@
+.feedbackitemsmaindivII{
+    /* width: 1400px; */
+    /* z-index: 0; */
+}
+
+.SectorFeedbackII{
+    position: relative;
+    background-image: url('../images/feedbackbanner.jpg');
+    height: 100vh;
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+    color: #ffffff;
+    font-family: 'Poppins';
+    /* margin-top: 100px; */
+    /* z-index: -1; */
+}
+
+.SecOverlay3II{
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.7);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.SectorAlignDiv3II{
+    width: 1400px;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: auto auto;
+    margin-top: 0px;
+}
+
+.feedbackIconsContainerII img{
+    width: 90px;
+    float: left;
+    margin-left: 245px;
+    /* text-align: left; */
+    /* align-items: center; */
+    /* text-align: center; */
+}
+
+.feedbackIconsContainerII{
+    /* align-items: center; */
+    text-align: center;
+}
+
+.feedbackInfoContainerII{
+    margin-bottom: -10px;
+}
+
+.feedbackInfoContainerII h1{
+    font-size: 2.2em;
+    font-weight: 500;
+    margin-top: 170px;
+    text-align: left;
+    margin-left: 170px;
+}
+
+.leftsideII{
+    margin-top: 245px;
+    margin-bottom: 137px;
+}
+
+.rightsideII{
+    margin-bottom: 100px;
+    margin-top: 180px;
+    width: 680px;
+    height: 580px;
+    background-color: none;
+    float: right;
+    padding: 20px;
+    /* margin-right: 0px; */
+    margin-left: 170px;
+    border-radius: 5px;
+    overflow-y: auto;
+}
+
+.commentcard{
+    background-color: white;
+    color: #161616;
+    margin-bottom: 30px;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.commentcard p{
+    font-size: 1.0rem;
+    color: #161616;
+}
+
+.commentsubcard{
+    /* background-color: red; */
+}
+
+
+
+
+
+
+
+
+
+/* .cusprof{
+    margin-top: 75px;
+    position: relative;
+    background-image: url('../images/menubanner.jpg');
+    height: 50vh;
+    width: 100%;
+    background-size:contain;
+    background-position: center;
+    color: #ffffff;
+    font-family: 'Poppins';
+} */
+
+/* .container {
+    fontFamily: 'Arial, sans-serif';
+    padding: '20px';
+} */
+
+/* .button {
+    marginBottom: '10px';
+    padding: '10px 20px';
+    backgroundColor: '#007bff';
+    color: '#fff';
+    border: 'none';
+    borderRadius: '5px';
+    cursor: 'pointer';
+    fontSize: '16px';
+}
+
+.userData {
+    marginBottom: '20px';
+    padding: '20px';
+    border: '1px solid #ccc';
+    borderRadius: '5px';
+}
+
+.feedbackContainer {
+    marginBottom: '20px';
+}
+
+.feedbackList {
+    listStyleType: 'none';
+    padding: 0;
+}
+
+.feedbackItem
+ {
+    marginBottom: '20px';
+    border: '1px solid #ccc';
+    borderRadius: '5px';
+    padding: '20px';
+}
+
+.feedbackButtons {
+    marginTop: '10px';
+}
+
+.updateButton {
+    marginRight: '10px';
+    padding: '5px 10px';
+    backgroundColor: '#28a745';
+    color: '#fff';
+    border: 'none';
+    borderRadius: '5px';
+    cursor: 'pointer';
+    fontSize: '14px';
+}
+
+.deleteButton {
+    padding: '5px 10px';
+    backgroundColor: '#dc3545';
+    color: '#fff';
+    border: 'none';
+    borderRadius: '5px';
+    cursor: 'pointer';
+    fontSize: '14px';
+} */

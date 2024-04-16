@@ -27,7 +27,7 @@ const Contact = () => {
                         <div className="contactCard">
                             <img src={Feedback} alt="Feedback" />
                             <h5>Provide Feedback</h5>
-                            <p>Click Here to Login</p>
+                            <a href='/login2'><p>Click Here to Login</p></a>
                         </div>
                     </div>
                 </div>

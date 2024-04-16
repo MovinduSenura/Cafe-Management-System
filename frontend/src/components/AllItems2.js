@@ -161,7 +161,7 @@ export const AllItems2 = () => {
                     <tbody>
                         {AllItems.map((items,index) => (
                         <tr key = {items._id}>
-                            <td>{index+1}</td>
+                            <th scope="row">{index + 1}</th>
                             <td>{items.itemName}</td>
                             <td>{items.quantity}</td>
                             <td>{items.minstocklevel}</td>
