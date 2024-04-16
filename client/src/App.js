@@ -1,4 +1,5 @@
-import {BrowserRouter, Routes, Route} from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'; // Import BrowserRouter and Routes
+import { useLocation } from 'react-router-dom'; // Import useLocation
 
 import NavBar from './components/NavBar';
 import Footer from './components/Footer';
@@ -20,14 +21,28 @@ import AllCustomerFeedbacks from './components/AllCustomerFeedbacks';
 function App() {
   return (
     <div className="App">
+      <BrowserRouter> {/* Wrap the entire component tree with BrowserRouter */}
+        <AppContent /> {/* Render the main content of the app */}
+      </BrowserRouter>
+    </div>
+  );
+}
 
-      <BrowserRouter>
+function AppContent() {
+  const location = useLocation(); // useLocation hook
 
-      <NavBar/>
-
+  return (
+    <>
+      <NavBar />  
       <div className='pages'>
-
         <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/menudisplay" element={<MenuPage />} />
+          <Route path="/promotiondisplay" element={<PromotionPage />} />
+          <Route path="/feedbackcreateform" element={<FeedbackCreateForm />} />
+          <Route path="/feedbackupdateform/:id" element={<UpdateForm />} />
+          <Route path="/allfeedbacks" element={<FeedbacksAll />} />
+          <Route exact path="/login" element={<CustomerLogin />} />
 
           <Route path = '/' element = {<Home />} />
           <Route exact path="/login" element={<CustomerLogin/>} />
@@ -45,14 +60,9 @@ function App() {
           <Route path="/allcustomerfeedbacks" element={<AllCustomerFeedbacks />} />
 
         </Routes>
-
       </div>
-
-      <Footer/>
-      
-      </BrowserRouter>
-      
-    </div>
+      {location.pathname !== '/login' && <Footer />} 
+    </>
   );
 }
 
