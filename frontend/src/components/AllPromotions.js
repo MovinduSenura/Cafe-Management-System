@@ -12,6 +12,8 @@ import './DataTable.css'
 const AllPromotions = ()=> {
 
     const [ allPromotions, setAllPromotion ] = useState([]);
+    const [ PromotionItemName , setPromotionItemName ] = useState('');
+    const [ AllOriginalPromotionItems , setAllOriginalPromotionItems ] = useState([]);
 
     useEffect(() => {
 
@@ -21,6 +23,7 @@ const AllPromotions = ()=> {
           await axios.get('http://localhost:8000/promotion/promotions')
           .then((res) => {
             setAllPromotion(res.data.Allpromotions);
+            setAllOriginalPromotionItems(res.data.Allpromotions);
             console.log(res.data.Allpromotions);
             console.log('status: ' + res.data.status);
           })
@@ -63,15 +66,71 @@ const AllPromotions = ()=> {
       }catch(err){
         console.log('☠️ :: handleDelete function failed ! ERROR:'+err.message);
       }
-       }
+      }
+
+      const SearchFunction = async (searchTerm) => {
+        // e.preventDefault();
+
+        try{
+            await axios.get('http://localhost:8000/promotion/searchPromotion', {
+            params: {
+              promotionName: searchTerm
+            }})
+            .then((res) => {
+                if(res.data.searchedPromotion.length === 0){
+                    setAllPromotion(res.data.searchedPromotion);
+                }
+                else{
+                  setAllPromotion(res.data.searchedPromotion);
+                    console.log(res.data.message);
+                }
+            })
+            .catch((error) => {
+                console.log("☠️ :: Error on response from server! ERROR : ", error.message);
+            })
+
+        }catch(err){
+            console.log("☠️ :: Error on axios API Request! ERROR : ", err.message);
+        }
+    }
+
+    const handleSearchChange = async (e) => {
+      const searchTerm = e.target.value;
+      setPromotionItemName(searchTerm);
+
+      if (searchTerm === '') { // when placeholder empty fetch all data
+          setAllPromotion(AllOriginalPromotionItems); // Fetch all data when search term is empty
+          // setSearchString("");
+      } else {
+          await SearchFunction(searchTerm);
+          // if(searchString != ''){
+          //     setSearchString("");
+          // }
+      }
+  };
+
+      const handleFormSubmit = (e) => {
+        e.preventDefault();
+        SearchFunction(PromotionItemName);
+    };
 
     return (
         
-        <div className = "alldiv" style={{marginTop: "200px"}}>
+        <div className = "alldiv">
        
         <div className = "maintablecontainer">
-         
+
          <div className = "tablecontainer">
+         <div className="tableHead">
+                {/* <h2>Controller</h2> */}
+
+                <div className="search-container">
+                    <form className="searchTable" onSubmit={handleFormSubmit}>
+                        <input id="searchBar" type="text" value={PromotionItemName} onChange={handleSearchChange} placeholder="Search..." name="search"/>
+                        <button type="submit"><i className="fa fa-search" style={{color: "#ffffff",}}></i></button> 
+                    </form>
+                </div>
+            </div>
         <div className="logoutdiv"><Link to='/menucreateform'><button type="button" className="btn btn-secondary btn-lg LogoutBtn">Logout</button></Link></div>
         <div className="addbtndiv"><Link to='/createform'><button type="button" className="btn btn-secondary btn-lg AddItemBtn">Add Promotion</button></Link></div>  
         <div className="tablediv">

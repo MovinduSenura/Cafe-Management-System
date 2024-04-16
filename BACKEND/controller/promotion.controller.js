@@ -139,7 +139,33 @@ const addpromotion = async (req, res) => {
     })
 
 }
+}
+
+//get - search particular promotion
+const searchPromotion = async (req, res) => {
+
+    try{
+
+        const promotionName = req.query.promotionName;
+        // Using a regular expression to match partial game names
+        const promotionItem = await promotionModel.find({ promotionName: { $regex: `^${promotionName}`, $options: 'i' } }); //the $regex operator in MongoDB is used to perform a regular expression search for partial matches of the game name. The i option is used to perform a case-insensitive search.
+
+        return res.status(200).send({
+            status: true,
+            message: "✨ :: Project Searched and fetched!",
+            searchedPromotion: promotionItem
+        })
+
+    }catch(err){
+
+        return res.status(500).send({
+            status: false,
+            message: err.message
+        });
+
     }
+
+}
 
     module.exports = {
         addpromotion,
@@ -147,5 +173,6 @@ const addpromotion = async (req, res) => {
         getOnepromotion,
         updatepromotion,
         deletepromotion,
+        searchPromotion,
     }
 

@@ -147,7 +147,6 @@ const deletePayment = async(req,res) =>{
     }
 }
 
-
 module.exports = {
     addPayment, 
     getAllPayments, 
