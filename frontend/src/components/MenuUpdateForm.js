@@ -76,7 +76,7 @@ const MenuUpdateForm = () => {
                 alert(res.data.message);
                 console.log(res.data.status);
                 console.log(res.data.message);
-                navigate('/')
+                navigate('/allmenuitems')
             })
             .catch((err) => {
                 console.log("☠️ :: Error on API URL or updatemenuItem object : " + err.message)

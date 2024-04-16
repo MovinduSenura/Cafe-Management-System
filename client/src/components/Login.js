@@ -33,7 +33,7 @@ const handleSubmit = async (e) => {
             <div className="loginForm">
               {error && <p style={{ color: 'red' }}>{error}</p>}
               <form onSubmit={handleSubmit} className="login-form">
-              <div form-group >
+              <div form-group>
                 {/* <label htmlFor="customerNIC">Customer NIC:</label> */}
                 <input
                 type="text"

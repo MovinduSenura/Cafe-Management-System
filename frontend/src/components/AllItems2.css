@@ -1,0 +1,112 @@
+.alldivIII{
+    margin-top: 76px;
+    margin-bottom: 76px;
+    margin-right: 200px;
+    /* background-color: red; */
+    /* text-align: center; */
+    /* margin-right: 500px; */
+    /* width: 1200px; */
+    /* align-items: left; */
+    /* text-align: left; */
+}
+
+.tableHeadIII{
+    /* background-color: red; */
+    /* width: 1400px; */
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 100px;
+}
+
+.searchTableIII {
+    display: flex;
+    align-items: center;
+  }
+  
+  #searchBar {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 5px;
+    width: 200px; /* Adjust width as needed */
+    height: 38px;
+  }
+  
+  .searchTableIII button[type="submit"] {
+    background-color: #AB845B; /* Change the background color as needed */
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 8px 15px;
+    height: 38px;
+  }
+  
+  .searchTableIII button[type="submit"]:hover {
+    background-color: #94724e; /* Change the hover background color as needed */
+  }
+  
+  .fa-search {
+    font-size: 16px; /* Adjust icon size as needed */
+  }
+
+.search-containerIII{
+    /* background-color: green; */
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.AddItemBtnIII{
+    background-color: #AB845B;
+    border: none;
+    margin-bottom: 20px;
+    margin-top: -40px;
+    float: right;
+    font-weight: 500;
+}
+
+.AddItemBtnIII:hover{
+    cursor: pointer;
+    background-color: #94724e;
+}
+
+.LogoutBtnIII{
+  background-color: #0e3acc;
+  border: none;
+  margin-bottom: 20px;
+  margin-top: -40px;
+  margin-left: 10px;
+  float: right;
+  font-weight: 500;
+}
+
+.LogoutBtnIII:hover{
+  cursor: pointer;
+  background-color: #0c30a5;
+}
+
+.tablecontainerIII{
+    width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.opIII{
+    text-align: center;
+}
+
+.EditDeleteBTNsIII{
+    width: fit-content;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+thead{
+    border: 1px solid ;
+}
+
+/* .tbl{
+  width: 1100px;
+  text-align: right;
+} */
