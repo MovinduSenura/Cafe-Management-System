@@ -62,7 +62,7 @@ function AppContent() {
   const location = useLocation();
 
     // Array of routes where the navbar should be shown
-    const showSideNavBarRoutes = ['/menucreateform', '/', '/menuupdateform/:id', '/stockcreateform', '/stockupdateform/:id', '/items', '/createform', '/updateform/:id', '/allpromotion', '/createStaff', '/allstaff', '/staffUpdateform/:id', '/allfeedback'];
+    const showSideNavBarRoutes = ['/menucreateform', '/', '/customersall2', '/customerView/:id', '/menuupdateform/:id', '/stockcreateform', '/stockupdateform/:id', '/items', '/createform', '/updateform/:id', '/allpromotion', '/createStaff', '/allstaff', '/staffUpdateform/:id', '/allfeedback'];
     const showSideNavBar2Routes = ['/cashiermenu', '/customerCreate', '/customersall', '/customerUpdate/:id', '/customerView2/:id', '/CreateOrder', '/OrdersAll', '/OrderUpdate/:id', '/allpromotion2'];
 
     // Function to determine whether to render the navbar
@@ -109,14 +109,14 @@ function AppContent() {
             <Route path='/customerView/:id' element={<CustomerOneManager />} />
             <Route path='/customerView2/:id' element={<CustomerOneCashier />} />
 
-            {/* Feedback */}
-            <Route path='/allfeedback' element={<AllFeedbacks/>} />
-
             {/* Promotion   */}
             <Route path='/createform' element={<PromotionCreateForm />}/>
             <Route path='/updateform/:id' element={<UpdatePromotionForm/>}/>
             <Route path='/allpromotion' element={<AllPromotions/>}/>
             <Route path='/allpromotion2' element={<AllPromotions2/>}/>
+
+            {/* Feedback */}
+            <Route path='/allfeedback' element={<AllFeedbacks/>} />
 
             {/* Stock */}
             <Route path='/stockcreateform' element = {<StockCreateForm />} />
