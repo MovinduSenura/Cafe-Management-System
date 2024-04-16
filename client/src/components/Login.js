@@ -14,7 +14,7 @@ const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       // Make login request
-      const response = await axios.get(`http://localhost:8000/customer/login/${customerNIC}`);
+      await axios.get(`http://localhost:8000/customer/login/${customerNIC}`);
       // Handle successful login, here redirecting to the user profile page
       navigate(`/profile/${customerNIC}`);
     } catch (error) {

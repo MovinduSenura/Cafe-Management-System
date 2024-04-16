@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Navigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+// import { Navigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import './AddFeedback.css';
 
