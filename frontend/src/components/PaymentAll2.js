@@ -8,7 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import './DataTable.css'
 
 //getAll
-export const PaymentAll = () => {
+export const PaymentAll2 = () => {
 
   const[ PaymentAll, setPaymentAll ] = useState([]);
   const[ allOriginalPayments, setallOriginalPayments] = useState([]);
@@ -189,5 +189,5 @@ const handleFormSubmit = (e) => {
   )
 };
 
-export default PaymentAll;
+export default PaymentAll2;
 
