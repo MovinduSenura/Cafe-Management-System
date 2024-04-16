@@ -185,11 +185,11 @@ const CustomerOneForm = () => {
                                     </div>
 
 
-                                    <div style={{textAlign: "center"}} className="onecusbtns">
+                                    {/* <div style={{textAlign: "center"}} className="onecusbtns">
                                         <Link to = {`/CustomerUpdate/${id}`}>
                                             <button type="button" class="btn btn-success">Edit</button></Link>&nbsp;&nbsp;
                                             <button type="button" class="btn btn-danger" onClick={() => handleDelete(id)}>Delete</button>
-                                    </div>
+                                    </div> */}
 
                                     
 
