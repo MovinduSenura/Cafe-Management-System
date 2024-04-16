@@ -264,8 +264,14 @@ const searchFeedback = async (req, res) => {
         const DayVisited = req.query.DayVisited;
         const feedbacks = await customerModel.find({ 'feedbacks.DayVisited': { $regex: new RegExp(`^${DayVisited}`, 'i') } });
 
-        // Flatten the array of feedbacks
-        const flattenedFeedbacks = feedbacks.map(customer => customer.feedbacks[0]).flat();
+        // const flattenedFeedbacks = feedbacks.map(customer => customer.feedbacks[0]).flat();
+        // const flattenedFeedbacks = feedbacks.flatMap(customer => customer.feedbacks);
+
+        const searchTerm = DayVisited; // Replace "your search term" with the term you're searching for
+        // const flattenedFeedbacks = feedbacks.flatMap(customer => customer.feedbacks.filter(feedback => feedback.DayVisited === searchTerm));
+        const flattenedFeedbacks = feedbacks.flatMap(customer => customer.feedbacks.filter(feedback => feedback.DayVisited.startsWith(searchTerm)));
+
+
         // console.log("feedbacks", flattenedFeedbacks);
 
         return res.status(200).send({

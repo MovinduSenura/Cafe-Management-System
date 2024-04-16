@@ -81,8 +81,10 @@ const searchPayment = async (req, res) => {
     try{
 
         const amount = req.query.amount;
-        // Using a regular expression to match partial game names
         const amountPayment = await paymentModel.find({ amount: parseFloat(amount) }); //the $regex operator in MongoDB is used to perform a regular expression search for partial matches of the game name. The i option is used to perform a case-insensitive search.
+
+        console.log("amount:", amount)
+        console.log("amountPayment:", amountPayment)
 
         return res.status(200).send({
             status: true,
