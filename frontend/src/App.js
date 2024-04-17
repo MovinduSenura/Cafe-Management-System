@@ -65,7 +65,7 @@ function AppContent() {
   const location = useLocation();
 
     // Array of routes where the navbar should be shown
-    const showSideNavBarRoutes = ['/menucreateform', '/allmenuitems', '/customersall2', '/customerView/:id', '/menuupdateform/:id', '/stockcreateform', '/stockupdateform/:id', '/items', '/createform', '/updateform/:id', '/allpromotion', '/createStaff', '/allstaff', '/staffUpdateform/:id', '/allfeedback', '/getAllPayment', '/getAllProfit'];
+    const showSideNavBarRoutes = ['/menucreateform', '/allmenuitems', '/customersall2', '/customerView/:id', '/menuupdateform/:id', '/stockcreateform', '/stockupdateform/:id', '/items', '/createform', '/updateform/:id', '/allpromotion', '/createStaff', '/allstaff', '/staffUpdateform/:id', '/allfeedback', '/getAllPayment', '/getAllProfit', '/createProfit'];
     const showSideNavBar2Routes = ['/cashiermenu', '/customerCreate', '/customersall', '/customerUpdate/:id', '/customerView2/:id', '/ordercreate', '/OrdersAll', '/OrderUpdate/:id', '/allpromotion2', '/getAllPayment2'];
 
     // Function to determine whether to render the navbar

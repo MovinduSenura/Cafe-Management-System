@@ -1,11 +1,11 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+// import { ToastContainer, toast } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css';
 import moment from 'moment';
 
-
+import './DataTable.css';
 
 //getAll
 const ProfitAll = () => {
@@ -47,9 +47,20 @@ const ProfitAll = () => {
 }
 
   return (
-    <div className="menualldiv" >
+    <div className="alldiv" >
 
-    <div className="maintablecontainer" style={{marginBottom: "70px"}}>
+    <div className="maintablecontainer">
+
+    <div className="tableHead">
+
+      <div className="search-container">
+          <form className="searchTable" onSubmit={'handleFormSubmit'}>
+              <input id="searchBar" type="text" value={''} onChange={'handleSearchChange'} placeholder="Search..." name="search"/>
+              <button type="submit"><i className="fa fa-search" style={{color: "#ffffff",}}></i></button>
+          </form>
+      </div>
+    </div>
+
         <div className = "tablecontainer">
             <div className="logoutdiv"><button type="button" className="btn btn-secondary btn-lg LogoutBtn" onClick={logout}>Logout</button></div>
             <div className="addbtndiv"><Link to='/createProfit'><button type="button" className="btn btn-secondary btn-lg AddItemBtn">Add Profit</button></Link></div>

@@ -1,7 +1,7 @@
 import React, { useEffect,useState } from "react";
 import axios from 'axios';
 
-
+import './ProfitCreateForm.css';
 
 
 const ProfitCreateForm = () => {
@@ -97,33 +97,30 @@ const ProfitCreateForm = () => {
   return (
     <div className="CreateOrderFormContainer">
 
-        <div className="orderFormContainer">
+        <div className="orderFormContainer profileFormContainer">
             <h1>Add Profit</h1>
-            
-        
 
-    <form onSubmit={sendData}>
-            <h2>total : {calculateTotal()}</h2>
-            <h2>Salary : {salary}</h2>
-            <h2>profit : {calculateProfit()}</h2>
-        {/* <div className="form-group mb-3">
-                    <label for="date">Date: </label>
-                    <input type="date" className="form-control" id="date" onChange={
-                            (e) => {
-                                setDate(e.target.value) 
-                            }
-                            } value={date}/>
-        </div> */}
-        <div class="form-group mb-3">
-            <label for="Other">Other</label>
-                <input type="number" class="form-control" id="other" placeholder="Enter other expenditures" onChange={(e)=>setOther(e.target.value)} value={other} />
+            <form onSubmit={sendData}>
+              <div className="profitTotal">
+                <p>Total Income: {calculateTotal()} LKR</p>
+              </div>
+              <div className="profitSalary">
+                <p>Salary: {salary} LKR</p>
+              </div>
+              <div class="form-group mb-3">
+                <label for="Other">Other Expenses</label>
+                <input type="number" class="form-control" id="other" placeholder="Enter other expenditures" min={0} onChange={(e)=>setOther(e.target.value)} value={other} />
+              </div>
+              <div className="calculateProfitDiv">
+                <h2>Profit: <span>{calculateProfit()} LKR</span></h2>
+              </div>
+
+              <button type="submit" class="btn btn-primary">Enter</button>
+
+            </form>
         </div>
 
-        <button type="submit" class="btn btn-primary">Enter</button>
-    </form>
-
-    </div>
-    </div>
+  </div>
 
     
   )

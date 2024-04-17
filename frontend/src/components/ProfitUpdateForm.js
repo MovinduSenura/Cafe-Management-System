@@ -2,7 +2,7 @@ import React, { useEffect,useState } from "react";
 import axios from 'axios';
 import { useParams, useNavigate } from "react-router-dom";
 
-
+import './ProfitCreateForm.css';
 
 const ProfitUpdateForm = () => {
 
@@ -40,8 +40,17 @@ const ProfitUpdateForm = () => {
         }
 
         getOneProfit();
+
+        const profit = calculateProfit();
+        setProfit(profit);
     
-      },[id])
+      },[id, other])
+
+      const calculateProfit = () => {
+        const profit = income - other - salary;
+
+        return profit;
+    }
 
       const updateData = (e) => {
         e.preventDefault();
@@ -72,26 +81,29 @@ const ProfitUpdateForm = () => {
 
 
   return (
-    <div className="CreateOrderFormContainer">
+    <div className="CreateOrderFormContainer" style={{marginRight: "200px"}}>
 
-        <div className="orderFormContainer">
-            <h1>Add Profit</h1>
-            
-        
+<div className="orderFormContainer profileFormContainer">
+    <h1>Update Profit</h1>
 
     <form onSubmit={updateData}>
-    <h2>total : {income}</h2>
-            <h2>profit : {profit}</h2>
-        <div class="form-group mb-3">
-            <label for="Other">Other</label>
-                <input type="number" class="form-control" id="other" placeholder="Enter other expenditures" onChange={(e)=>setOther(e.target.value)} value={other} />
-        </div>
+      <div className="profitTotal">
+        <p>Total Income: {income} LKR</p>
+      </div>
+      <div class="form-group mb-3">
+        <label for="Other">Other Expenses</label>
+        <input type="number" class="form-control" id="other" placeholder="Enter other expenditures" onChange={(e)=>setOther(e.target.value)} value={other} />
+      </div>
+      <div className="calculateProfitDiv">
+        <h2>Profit: <span>{calculateProfit()} LKR</span></h2>
+      </div>
 
-        <button type="submit" class="btn btn-primary">Update</button>
+      <button type="submit" class="btn btn-primary">Enter</button>
+
     </form>
+</div>
 
-    </div>
-    </div>
+</div>
 
     
   )
