@@ -140,7 +140,7 @@ const MenuAllItems = () => {
                                     <th scope="col">Item Name</th>
                                     <th scope="col">Description</th>
                                     <th scope="col">Category</th>
-                                    <th scope="col">Price</th>
+                                    <th scope="col">Price (LKR)</th>
                                     <th scope="col">Availability</th>
                                     <th className="op" scope="col">Operations</th>
                                 </tr>

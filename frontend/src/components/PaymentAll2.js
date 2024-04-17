@@ -161,7 +161,7 @@ const logout = (e) => {
                       <th scope="col">No</th>
                       <th scope="col">OrderID</th>
                       <th scope="col">PromotionID</th>
-                      <th scope="col">Amount</th>
+                      <th scope="col">Amount (LKR)</th>
                       <th scope="col">Date</th>
                       <th scope="col" className='op'>Operation</th>
                       

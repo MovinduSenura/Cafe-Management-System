@@ -167,7 +167,7 @@ const AllStaff = () => {
                 <th scope="col">Address</th>
                 <th scope="col">Age</th>
                 <th scope="col">Gender</th>
-                <th scope="col">Salary Per Hours</th>
+                <th scope="col">Salary Per Hours (LKR)</th>
                 <th scope="col">Worked Hours</th>
                 <th className="op" scope="col">Operations</th>
                 <th scope="col"></th> 
