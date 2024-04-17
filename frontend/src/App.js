@@ -102,7 +102,7 @@ function AppContent() {
             <Route path='/cashiermenu' element={<MenuAllItems2 />} />
 
             {/* Payment */}
-            <Route path='/create' element={<PaymentCreateForm/>}/>
+            <Route path='/payment/create/:id' element={<PaymentCreateForm/>}/>
             <Route path='/getAllPayment' element={<PaymentAll/>}/>
             <Route path='/getAllPayment2' element={<PaymentAll2/>}/>
             <Route path='/update/:id' element={<PaymentUpdateForm/>}/>

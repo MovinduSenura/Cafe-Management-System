@@ -1,0 +1,231 @@
+.PaymentContainer{
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../images/backgroundImage1.png');
+  width: 100%;
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.PaymentWidthBlanceDiv{
+  width: 1400px;
+  margin-right: auto;
+  margin-left: auto;
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: 20px;
+  /* margin-top: 50px; */
+}
+
+.paymentTableContainer{
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.075), 0 0 20px 0 rgba(0, 0, 0, 0.068);
+  overflow-x: auto;
+  max-height: 700px;
+}
+
+.orderIdDiv{
+background-color: #ab845b;
+padding: 10px;
+margin-bottom: 10px;
+border-radius: 5px;
+border: 2px dashed #695136;
+}
+
+.orderIdDiv p{
+margin: 0;
+font-weight: 500;
+color: #35291c;
+}
+
+.paymentTableWrapper { 
+  overflow-y: auto; 
+}
+
+.paymentTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.paymentTable th,
+.paymentTable td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.paymentTable th {
+  background-color: #f2f2f2;
+}
+
+.paymentTable tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.paymentTable tbody tr:hover {
+  background-color: #ddd;
+}
+
+
+
+/* payment side view css */
+
+.paymentSideView{
+  background-color: none;
+}
+
+.calculationPhase{
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.075), 0 0 20px 0 rgba(0, 0, 0, 0.068);
+}
+
+
+
+.paymentTotalPhase{
+  display: grid;
+  grid-template-columns: auto auto;
+}
+.paymentTotalPhase span{
+  color: #ff8b07;
+  font-weight: 600;
+}
+
+
+
+
+.paymentPropotionPhase{
+  /* display: grid;
+  grid-template-columns: auto auto; */
+  margin-bottom: 20px;
+}
+
+.paymentPropotionPhase p{
+  margin: 0;
+}
+
+.paymentPropotionPhase select {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: none;
+  background-color: #fff;
+  color: #333;
+}
+
+.paymentPropotionPhase select option {
+  padding: 10px;
+  font-size: 16px;
+}
+
+.paymentPropotionPhase select:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+
+
+
+
+.paymentPayableAmountPhase{
+  display: grid;
+  grid-template-columns: auto auto;
+}
+
+.paymentPayableAmountPhase p{
+  margin: 0;
+}
+
+.paymentPayableAmountPhase h3{
+  margin: 0;
+  color: #007bff;
+  font-weight: 700;
+  font-size: 1.7rem;
+}
+
+
+
+
+.balancePhase{
+  margin-top: 20px;
+}
+
+
+.paymentAmountDiv{
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.075), 0 0 20px 0 rgba(0, 0, 0, 0.068);
+}
+
+.paymentAmountDiv label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.paymentAmountDiv input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.paymentAmountDiv input[type="text"]:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+
+
+.changeDiv{
+  margin-top: 20px;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.075), 0 0 20px 0 rgba(0, 0, 0, 0.068);
+}
+
+.changeDiv p{
+  margin: 0;
+}
+.changeDiv h3{
+  margin: 0;
+  font-weight: 700;
+  color: #08a745;
+}
+
+
+
+.PaymentButtonDiv{
+  margin-top: 20px;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.075), 0 0 20px 0 rgba(0, 0, 0, 0.068);
+}
+
+.PaymentButtonDiv .custom-button {
+  width: 100%;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  background-color: #AB845B;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.PaymentButtonDiv .custom-button:hover {
+  background-color: #856348;
+}
+

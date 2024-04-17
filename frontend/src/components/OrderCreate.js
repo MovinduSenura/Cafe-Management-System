@@ -53,7 +53,7 @@ const OrderCreate = () => {
       
       alert("🍟 Order Created!");
       
-      navigate(`/payment/${response.data.Order._id}`);
+      navigate(`/payment/create/${response.data.Order._id}`);
     } catch (error) {
       console.error('Error creating order:', error);
     }

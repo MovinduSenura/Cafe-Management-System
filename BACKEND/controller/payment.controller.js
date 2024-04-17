@@ -4,13 +4,12 @@ const paymentModel = require("../models/payment.model");
 const addPayment = async(req,res) => { //async---java script is single threaded. So this cannot do two functions together that's why we use async.....await
 
     try{
-    const{orderID,promotionID,amount,date} = req.body;
+    const{orderID,promotionID,amount} = req.body;
 
     const newPaymentData = {
         orderID: orderID,
         promotionID: promotionID,
         amount: amount,
-        date: date,
     }
 
     //newPaymentObj->paymentModel object  ---assign newPaymentData object data into newPaymentObj
@@ -108,13 +107,12 @@ const updatePayment = async(req,res) => {
 
     try{
         const paymentID =  req.params.id;
-        const{ orderID,promotionID,amount,date } = req.body;
+        const{ orderID,promotionID,amount } = req.body;
 
         const paymentData = {
             orderID: orderID,
             promotionID: promotionID,
-            amount: amount,
-            date: date,
+            amount: amount
         }
 
         const updatePaymentObj = await paymentModel.findByIdAndUpdate(paymentID,paymentData);

@@ -64,7 +64,7 @@ const getAllOrders = async (req, res) => {
 const getOneOrder = async (req, res) => {
   try {
     const orderID = req.params.id;
-    const Order = await OrderModel.findById(orderID);
+    const Order = await OrderModel.findById(orderID).populate('menuItems');
 
     return res.status(200).send({
       status: true,
@@ -168,6 +168,7 @@ const deleteOrder = async (req, res) => {
     });
   }
 };
+
 
 module.exports = {
   addOrder,
