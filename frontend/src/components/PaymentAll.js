@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+// import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -14,8 +15,16 @@ export const PaymentAll = () => {
   const[ allOriginalPayments, setallOriginalPayments] = useState([]);
   const[ amount, setAmount ] = useState();
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     const getAllPayments = async () => {
+
+      const token = localStorage.getItem('token');
+        if (!token) {
+            navigate('/404'); // Redirect to 404 page if token is not present
+            return;
+        }
 
       try{
         await axios.get('http://localhost:8000/payment/getAllPayment')
@@ -34,7 +43,7 @@ export const PaymentAll = () => {
 
     getAllPayments();
 
-  },[])
+  },[navigate])
 
 
   //delete
@@ -115,6 +124,10 @@ const handleFormSubmit = (e) => {
     SearchFunction(amount);
 };
 
+const logout = (e) => {
+  localStorage.clear()
+  navigate('/')
+}
 
   return (
     <div className='alldiv'>
@@ -132,7 +145,7 @@ const handleFormSubmit = (e) => {
         </div>
 
         <div className = "tablecontainer">
-          <div className="logoutdiv"><Link to='/'><button type="button" className="btn btn-secondary btn-lg LogoutBtn">Logout</button></Link></div>
+          <div className="logoutdiv"><button type="button" className="btn btn-secondary btn-lg LogoutBtn" onClick={logout}>Logout</button></div>
           {/* <div className="addbtndiv"><Link to='/create'><button type="button" className="btn btn-secondary btn-lg AddItemBtn">Add Payment</button></Link></div> */}
           <div className="tablediv">
         {/* <div>

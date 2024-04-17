@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+// import { Link, useNavigate } from 'react-router-dom';
 import './DataTable.css'
  
 function AllFeedbacks() {
@@ -9,8 +10,16 @@ function AllFeedbacks() {
     const [appointments, setAppointments] = useState([]);
     const [name, setName] = useState('');
     const [FeedbacksAllOriginal, setFeedbacksAllOriginal]= useState([]);
- 
+    const navigate = useNavigate();
+
     useEffect(() => {
+
+        const token = localStorage.getItem('token');
+        if (!token) {
+            navigate('/404'); // Redirect to 404 page if token is not present
+            return;
+        }
+
         async function getAppointments() {
             try {
                 const response = await axios.get("http://localhost:8000/customer/feedbackall");
@@ -23,7 +32,7 @@ function AllFeedbacks() {
         }
  
         getAppointments();
-    }, []);
+    }, [navigate]);
 
     const SearchFunction = async (searchTerm) => {
         // e.preventDefault();
@@ -70,6 +79,11 @@ function AllFeedbacks() {
         e.preventDefault();
         SearchFunction(name);
     };
+
+    const logout = (e) => {
+        localStorage.clear()
+        navigate('/')
+    }
     
   return (
     <div className='alldiv'>
@@ -92,7 +106,7 @@ function AllFeedbacks() {
                     </div>
                 </div>
 
-                <div className="logoutdiv"><Link to='/'><button type="button" className="btn btn-secondary btn-lg LogoutBtn">Logout</button></Link></div>
+                <div className="logoutdiv"><button type="button" className="btn btn-secondary btn-lg LogoutBtn" onClick={logout}>Logout</button></div>
                 {/* <div className="addbtndiv"><Link to='/menucreateform'><button type="button" className="btn btn-secondary btn-lg AddItemBtn">Add Item</button></Link></div>             */}
                 <div className="tablediv">
 

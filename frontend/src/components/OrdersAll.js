@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -12,8 +12,16 @@ const OrdersAll = () => {
   const [allOriginalOrders,setAllOriginalOrders] = useState([]);
   const [OrderName, setOrderName] = useState('');
 
+  const navigate = useNavigate();
 
   useEffect(() => {
+
+    const token = localStorage.getItem('token');
+        if (!token) {
+            navigate('/404'); // Redirect to 404 page if token is not present
+            return;
+        }
+
     const getAllOrders = async () => {
       try {
         await axios
@@ -34,7 +42,7 @@ const OrdersAll = () => {
     };
 
     getAllOrders();
-  }, []);
+  }, [navigate]);
 
   const handleDelete = async (id) => {
     try {
@@ -104,6 +112,11 @@ const handleFormSubmit = (e) => {
     SearchFunction(OrderName);
 };
 
+const logout = (e) => {
+  localStorage.clear()
+  navigate('/')
+}
+
   return (
     <div className="alldiv">
       <div className="maintablecontainer">
@@ -119,7 +132,7 @@ const handleFormSubmit = (e) => {
                 </div>
 
                 <div className="tablecontainer">
-                <div className="logoutdiv"><Link to='/'><button type="button" className="btn btn-secondary btn-lg LogoutBtn">Logout</button></Link></div>
+                <div className="logoutdiv"><button type="button" className="btn btn-secondary btn-lg LogoutBtn" onClick={logout}>Logout</button></div>
                 <div className="addbtndiv"><Link to='/CreateOrder'><button type="button" className="btn btn-secondary btn-lg AddItemBtn">Add Order</button></Link></div>
       
       <div className="tablediv">
