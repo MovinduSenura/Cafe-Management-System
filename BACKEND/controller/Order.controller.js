@@ -1,31 +1,39 @@
 const OrderModel = require("../models/Order.model");
+const MenuItemModel = require("../models/menuItem.model");
 
 //add order for router controller
 const addOrder = async (req, res) => {
   try {
-    const { OrderName, OrderQuantity, OrderPrice } = req.body;
+   const { MenuitemIds } = req.body;
 
-    const newOrderData = {
-      //create a object
-      OrderName: OrderName,
-      OrderQuantity: OrderQuantity,
-      OrderPrice: OrderPrice,
-    };
+   let totalPrice = 0;
 
-    const newOrderObj = new OrderModel(newOrderData);
-    await newOrderObj.save();
-  } catch (err) {
-    return res.status(500).send({
-      status: false,
-      message: err.message,
-    });
-  }
+   const menuItems = await MenuItemModel.find({_id:{$in: MenuitemIds}});
 
-  try {
-    return res.status(200).send({
-      status: true,
-      message: "✨ :: Order created successfully!",
-    });
+   if(!menuItems) {
+    return res.status(404).json({
+      success:false,
+      error: 'Menu items not found'
+    })
+   }
+
+   menuItems.forEach(Item => {
+    totalPrice += Item.menuItemPrice;
+   })
+
+   const Order = new OrderModel({
+      menuItems:menuItems,
+      OrderPrice : totalPrice,
+   })
+
+   await Order.save();
+
+   res.status(200).json({
+    success : true,
+    Order
+   });
+
+  
   } catch (err) {
     return res.status(500).send({
       status: false,
@@ -37,7 +45,7 @@ const addOrder = async (req, res) => {
 //get all orders router control
 const getAllOrders = async (req, res) => {
   try {
-    const allOrders = await OrderModel.find();
+    const allOrders = await OrderModel.find().populate('menuItems');
 
     return res.status(200).send({
       status: true,
@@ -74,19 +82,20 @@ const getOneOrder = async (req, res) => {
 //get one order from the search function
 const searchOrder = async (req, res) => {
 
-  try{
+  try {
 
-      const orderName = req.query.OrderName;
-      // Using a regular expression to match partial order names
-      const Order = await OrderModel.find({ OrderName : { $regex: `^${orderName}`, $options: 'i' } }); //the $regex operator in MongoDB is used to perform a regular expression search for partial matches of the game name. The i option is used to perform a case-insensitive search.
+      const orderId = req.query.OrderId;
+      // Using a regular expression to match partial order IDs
+      const Order = await OrderModel.find({ _id: { $regex: `${orderId}`, $options: 'i' } });
+      // Here, the $regex operator is used to perform a regular expression search for partial matches of the order ID. The regex pattern will match any substring within the order ID.
 
       return res.status(200).send({
           status: true,
           message: "✨ :: Order Searched!",
           searchedOrder: Order
-      })
+      });
 
-  }catch(err){
+  } catch(err) {
 
       return res.status(500).send({
           status: false,
@@ -96,29 +105,42 @@ const searchOrder = async (req, res) => {
   }
 
 };
-
 //update order details router control
 
 const updateOrder = async (req, res) => {
   try {
     const orderID = req.params.id;
-    const { OrderName, OrderQuantity, OrderPrice } = req.body;
+    const { MenuitemIds } = req.body;
+    
+    const menuItems = await MenuItemModel.find({_id:{$in: MenuitemIds}});
 
-    const orderData = {
-      OrderName: OrderName,
-      OrderQuantity: OrderQuantity,
-      OrderPrice: OrderPrice,
-    };
+    if(!menuItems) {
+      return res.status(404).json({
+        success:false,
+        error: 'Menu items not found'
+      })
+     }
+
+     menuItems.forEach(Item => {
+      totalPrice += Item.menuItemPrice;
+     })
+
+
+   const Order = new OrderModel({
+    menuItems:menuItems,
+    totalPrice : totalPrice,
+ })
+
 
     const updateOrderObj = await OrderModel.findByIdAndUpdate(
       orderID,
-      orderData
+      Order,
     );
 
     return res.status(200).send({
       status: true,
       message: "✨ :: Order updated!",
-      // updateOrder: updateOrderObj,
+      // updateOrder: Order,
     });
   } catch (err) {
     return res.status(500).send({
