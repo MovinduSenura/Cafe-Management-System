@@ -16,6 +16,7 @@ import UserData from './components/UserData';
 import AddFeedback from './components/AddFeedback';
 import Feedbacks from './components/Feedbacks';
 import AllCustomerFeedbacks from './components/AllCustomerFeedbacks';
+import OrderCreate from './components/OrderCreate';
 
 function App() {
   return (
@@ -41,6 +42,8 @@ function AppContent() {
           <Route path="/feedbackcreateform" element={<FeedbackCreateForm />} />
           <Route path="/feedbackupdateform/:id" element={<UpdateForm />} />
           <Route path="/allfeedbacks" element={<FeedbacksAll />} />
+
+          <Route path="/ordercreate" element={<OrderCreate/>} />
 
           <Route path = '/' element = {<Home />} />
           <Route path = '/menudisplay' element = {<MenuPage />} />
