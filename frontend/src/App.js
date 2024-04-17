@@ -6,7 +6,7 @@ import MenuAllItems from './components/MenuAllItems';
 import MenuAllItems2 from './components/MenuAllItems2';
 import MenuUpdateForm from './components/MenuUpdateForm';
 
-// import CreateOrderForm from './components/CreateOrderForm';
+import OrderCreate from './components/OrderCreate';
 import OrdersAll from './components/OrdersAll';
 import OrderUpdateForm from './components/OrderUpdateForm';
 
@@ -63,7 +63,7 @@ function AppContent() {
 
     // Array of routes where the navbar should be shown
     const showSideNavBarRoutes = ['/menucreateform', '/allmenuitems', '/customersall2', '/customerView/:id', '/menuupdateform/:id', '/stockcreateform', '/stockupdateform/:id', '/items', '/createform', '/updateform/:id', '/allpromotion', '/createStaff', '/allstaff', '/staffUpdateform/:id', '/allfeedback', '/getAllPayment'];
-    const showSideNavBar2Routes = ['/cashiermenu', '/customerCreate', '/customersall', '/customerUpdate/:id', '/customerView2/:id', '/CreateOrder', '/OrdersAll', '/OrderUpdate/:id', '/allpromotion2', '/getAllPayment2'];
+    const showSideNavBar2Routes = ['/cashiermenu', '/customerCreate', '/customersall', '/customerUpdate/:id', '/customerView2/:id', '/ordercreate', '/OrdersAll', '/OrderUpdate/:id', '/allpromotion2', '/getAllPayment2'];
 
     // Function to determine whether to render the navbar
     const renderSideNavBar = () => {
@@ -137,7 +137,7 @@ function AppContent() {
             <Route path='/staffUpdateform/:id' element={<StaffUpdateForm/>}/>
            
             {/* Order */}
-            {/* <Route path='/CreateOrder' element={<CreateOrderForm />} /> */}
+            <Route path="/ordercreate" element={<OrderCreate/>} />
             <Route path='/OrdersAll' element={<OrdersAll />} />
             <Route path='/OrderUpdate/:id' element={<OrderUpdateForm />} />
            

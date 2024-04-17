@@ -139,7 +139,7 @@ const logout = (e) => {
 
                 <div className="tablecontainer">
                 <div className="logoutdiv"><button type="button" className="btn btn-secondary btn-lg LogoutBtn" onClick={logout}>Logout</button></div>
-                <div className="addbtndiv"><Link to='/CreateOrder'><button type="button" className="btn btn-secondary btn-lg AddItemBtn">Add Order</button></Link></div>
+                <div className="addbtndiv"><Link to='/ordercreate'><button type="button" className="btn btn-secondary btn-lg AddItemBtn">Add Order</button></Link></div>
       
       <div className="tablediv">
                
@@ -158,7 +158,7 @@ const logout = (e) => {
           <tbody>
             {OrdersAll.map((orders, index) => (
               <tr key={orders._id}>
-                <td>{index + 1}</td>
+                <th scope="row">{index + 1}</th>
                 <td>{orders._id}</td>
                 {/* <td>{orders.OrderQuantity}</td> */}
                 <td>

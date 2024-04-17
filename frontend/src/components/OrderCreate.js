@@ -1,8 +1,8 @@
-// OrderForm.js
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+
+import './CreateForm.css'
 
 const OrderCreate = () => {
 
@@ -60,25 +60,28 @@ const OrderCreate = () => {
   };
 
   return (
-    <div>
-      <h2>Add Menu items to Order</h2>
-      <form onSubmit={handleSubmit}>
-        <ul>
-          {MenuItems.map(item => (
-            <li key={item._id}>
-              <label>
-                <input
-                  type="checkbox"
-                  onChange={e => handleItemChange(item._id, e.target.checked)}
-                />
-                {item.menuItemName} - {item.menuItemPrice}LKR
-              </label>
-            </li>
-          ))}
-        </ul>
-        <p>Total Price: ${totalPrice.toFixed(2)}</p>
-        <button type="submit">Create Order</button>
-      </form>
+    <div className="createFormContainer" style={{marginBottom: "130px", marginTop: "190px"}}>
+      <div className="formBootstrap">
+        <h2>Add Menu Items to Order</h2>
+
+        <form onSubmit={handleSubmit}>
+          <ul>
+            {MenuItems.map(item => (
+              <li key={item._id}>
+                <label>
+                  <input
+                    type="checkbox"
+                    onChange={e => handleItemChange(item._id, e.target.checked)}
+                  />
+                  {item.menuItemName} - Rs.{item.menuItemPrice}
+                </label>
+              </li>
+            ))}
+          </ul>
+          <p>Total Price: ${totalPrice.toFixed(2)}</p>
+          <button type="submit">Create Order</button>
+        </form>
+      </div>
     </div>
   );
 };
