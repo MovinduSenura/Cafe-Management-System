@@ -6,7 +6,7 @@ import MenuAllItems from './components/MenuAllItems';
 import MenuAllItems2 from './components/MenuAllItems2';
 import MenuUpdateForm from './components/MenuUpdateForm';
 
-import CreateOrderForm from './components/CreateOrderForm';
+// import CreateOrderForm from './components/CreateOrderForm';
 import OrdersAll from './components/OrdersAll';
 import OrderUpdateForm from './components/OrderUpdateForm';
 
@@ -135,7 +135,7 @@ function AppContent() {
             <Route path='/staffUpdateform/:id' element={<StaffUpdateForm/>}/>
            
             {/* Order */}
-            <Route path='/CreateOrder' element={<CreateOrderForm />} />
+            {/* <Route path='/CreateOrder' element={<CreateOrderForm />} /> */}
             <Route path='/OrdersAll' element={<OrdersAll />} />
             <Route path='/OrderUpdate/:id' element={<OrderUpdateForm />} />
 

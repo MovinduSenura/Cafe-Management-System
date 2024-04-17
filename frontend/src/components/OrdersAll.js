@@ -10,7 +10,7 @@ import './DataTable.css';
 const OrdersAll = () => {
   const [OrdersAll, setOrdersAll] = useState([]);
   const [allOriginalOrders,setAllOriginalOrders] = useState([]);
-  const [OrderName, setOrderName] = useState('');
+  const [OrderId, setOrderId] = useState('');
 
 
   useEffect(() => {
@@ -21,6 +21,11 @@ const OrdersAll = () => {
           .then((res) => {
             setOrdersAll(res.data.AllOrders);
             setAllOriginalOrders(res.data.AllOrders);
+            res.data.AllOrders.forEach(order => {
+              order.menuItems.forEach(item => {
+                console.log(item.menuItemName);
+              });
+            });
           })
 
           .catch((err) => {
@@ -46,6 +51,7 @@ const OrdersAll = () => {
         await axios
           .delete(`http://localhost:8000/order/delete/${id}`)
           .then((res) => {
+            setOrdersAll(OrdersAll.filter(order => order._id !== id))
             alert(res.data.message);
             console.log(res.data.message);
           });
@@ -66,7 +72,7 @@ const OrdersAll = () => {
     try{
         await axios.get('http://localhost:8000/order/searchOrder', {
         params: {
-          OrderName: searchTerm
+          OrderId: searchTerm
         }})
         .then((res) => {
             if(res.data.searchedOrder.length === 0){
@@ -89,7 +95,7 @@ const OrdersAll = () => {
 
 const handleSearchChange = async (e) => {
     const searchTerm = e.target.value;
-    setOrderName(searchTerm);
+    setOrderId(searchTerm);
 
     if (searchTerm === '') { // when placeholder empty fetch all data
       setOrdersAll(allOriginalOrders); // Fetch all data when search term is empty
@@ -101,7 +107,7 @@ const handleSearchChange = async (e) => {
 
 const handleFormSubmit = (e) => {
     e.preventDefault();
-    SearchFunction(OrderName);
+    SearchFunction(OrderId);
 };
 
   return (
@@ -112,7 +118,7 @@ const handleFormSubmit = (e) => {
 
                     <div className="search-container">
                         <form className="searchTable" onSubmit={handleFormSubmit}>
-                            <input id="searchBar" type="text" value={OrderName} onChange={handleSearchChange} placeholder="Search.." name="search"/>
+                            <input id="searchBar" type="text" value={OrderId} onChange={handleSearchChange} placeholder="Search.." name="search"/>
                             <button type="submit"><i className="fa fa-search" style={{color: "#ffffff",}}></i></button> 
                         </form>
                     </div>
@@ -128,9 +134,10 @@ const handleFormSubmit = (e) => {
         <table className="table table-striped tbl1">
           <thead>
             <tr>
-              <th scope="col">Id</th>
-              <th scope="col">Order-Name</th>
-              <th scope="col">Quantity</th>
+              <th scope="col">No</th>
+              <th scope="col">Order-ID</th>
+              {/* <th scope="col">Quantity</th> */}
+              <th scope="col">Order-Items</th>
               <th scope="col">Full-Amount</th>
               <th className="op" scope="col">Operations</th>
             </tr>
@@ -139,8 +146,21 @@ const handleFormSubmit = (e) => {
             {OrdersAll.map((orders, index) => (
               <tr key={orders._id}>
                 <td>{index + 1}</td>
-                <td>{orders.OrderName}</td>
-                <td>{orders.OrderQuantity}</td>
+                <td>{orders._id}</td>
+                {/* <td>{orders.OrderQuantity}</td> */}
+                <td>
+                  <ul>
+                    {orders.menuItems && orders.menuItems.length > 0 ? (
+                        orders.menuItems.map(menuitem => (
+                          <li key={menuitem._id}>
+                           {menuitem.menuItemName} - {menuitem.menuItemPrice ? menuitem.menuItemPrice.toFixed(2) : 'N/A'} LKR
+                          </li>
+                        ))
+                      ) : (
+                        <li>No items</li>
+                      )}
+                  </ul>
+                </td>
                 <td>{orders.OrderPrice}</td>
                 <td>
                   <table className="EditDeleteBTNs">
