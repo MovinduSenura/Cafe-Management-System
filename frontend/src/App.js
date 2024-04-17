@@ -45,6 +45,8 @@ import Footer from './components/Footer';
 import SideNavPanel from './components/SideNavPanel';
 import SideNavPanel2 from './components/SideNavPanel2';
 
+import Page404 from './components/Page404';
+
 function App() {
   return (
     <div className="App">
@@ -138,8 +140,8 @@ function AppContent() {
             <Route path='/CreateOrder' element={<CreateOrderForm />} />
             <Route path='/OrdersAll' element={<OrdersAll />} />
             <Route path='/OrderUpdate/:id' element={<OrderUpdateForm />} />
-
-        
+           
+            <Route path='/404' element={<Page404 />} />
 
           </Routes>
 

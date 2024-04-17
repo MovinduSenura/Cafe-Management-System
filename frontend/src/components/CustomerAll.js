@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 //import 'react-toastify/dist/ReactToastify.css';
 import './DataTable.css'
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 //toast=assign a message ToastContainer = call the set message
 
@@ -17,8 +17,16 @@ const AllCustomers = () => {
     //get table after emptying search. search krddi setAllCustomers ekt serachCustomer assign wena nisa mhema ekk gnnw aye allCustomers gnna.
     const [allOriginalCustomers, setAllOriginalCustomers] = useState ([]);
 
+    const navigate = useNavigate();
+
     //useEffect is a arrow function.It runs first when running a component
     useEffect(() => {
+
+        const token = localStorage.getItem('token');
+        if (!token) {
+            navigate('/404'); // Redirect to 404 page if token is not present
+            return;
+        }
 
         //function used to get data.
         const getAllCustomers = async () => {
@@ -50,7 +58,7 @@ const AllCustomers = () => {
 
         getAllCustomers();
         //useEffect eka mulinma methna cal krpu ekt awilla eetapsse ethnin thmai implementation eka run wenne.
-    }, [])   //empty array([])= no.of times the useEffect runs.
+    }, [navigate])   //empty array([])= no.of times the useEffect runs.
     //2 arguments in useEffect - 1. arrow function  2.empty array
 
     //Delete
@@ -149,7 +157,10 @@ const AllCustomers = () => {
         SearchFunction(customerNIC);
     };
 
-
+    const logout = (e) => {
+        localStorage.clear()
+        navigate('/')
+    }
 
     return (
         <div className="alldiv">
@@ -176,7 +187,7 @@ const AllCustomers = () => {
 
                 <div className="tablecontainer">
                     {/* <a href="/customerCreate"> */}
-                    <div className="logoutdiv"><Link to='/'><button type="button" className="btn btn-secondary btn-lg LogoutBtn">Logout</button></Link></div>
+                    <div className="logoutdiv"><button type="button" className="btn btn-secondary btn-lg LogoutBtn" onClick={logout}>Logout</button></div>
                     <div className="addbtndiv"><Link to='/customerCreate'><button type="button" className="btn btn-secondary btn-lg AddItemBtn">Add Customer</button></Link></div>
                     <div className="tablediv">
                         {/* <button type="button" className="btn btn-secondary AddItemBtn">Add New Customer</button> */}

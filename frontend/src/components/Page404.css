@@ -1,0 +1,25 @@
+.pg404{
+    margin-top: 300px;
+    margin-bottom: 196px;
+}
+
+.BackToHome {
+    background-color: #0e3acc;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    text-decoration: none;
+    font-weight: 400;
+}
+
+.BackToHome:hover {
+    cursor: pointer;
+    background-color: #0c30a5;
+}
+
+/* .BackToHome a{
+    text-decoration: none;
+    color: white;
+} */
