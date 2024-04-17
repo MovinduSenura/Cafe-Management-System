@@ -16,12 +16,8 @@ const paymentSchema = new mongoose.Schema({
         required: true,
         trim:true,
     },
-    date:{
-        type:Date,
-        required:true,
-        trim:true,
-    }
-})
+    
+},{timestamps:true})
 
 const paymentModel = mongoose.model('payments',paymentSchema);
 module.exports = paymentModel;
