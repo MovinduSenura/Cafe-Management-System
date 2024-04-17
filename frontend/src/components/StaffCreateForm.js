@@ -119,7 +119,7 @@ const StaffCreateForm =() =>{
                </div>  
 
                 <div className="form-group mb-3">
-                <label for="staffSalaryPerHours">Salary Per Hours:</label>
+                <label for="staffSalaryPerHours">Salary Per Hours (LKR):</label>
                    <input type="number" className="form-control" id="staffSalaryPerHours" autoComplete="off" min={0} onChange={(e) => setstaffSalaryPerHours(e.target.value)} value={staffSalaryPerHours} />
                 </div>
                 <div className="form-group mb-3">

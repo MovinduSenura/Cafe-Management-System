@@ -123,7 +123,7 @@ const MenuPage = () => {
                         />
                     </div>
                     <h4 className="nameh4">{menuitems.menuItemName}</h4>
-                    <h2 className="priceh2">Rs.{menuitems.menuItemPrice}</h2>
+                    <h2 className="priceh2">{menuitems.menuItemPrice} LKR</h2>
                 </div>
             ))}    
                                
