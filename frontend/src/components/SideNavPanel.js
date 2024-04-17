@@ -38,6 +38,7 @@ const SideNavPanel = () => {
         <a href="/allfeedback">Feedback Management</a>
         <a href="/items">Stock Management</a>
         <a href="/allstaff">Staff Management</a>
+        <a href='/getAllProfit'>Profit Management</a>
         {/* <a href="/">Order Management</a> */}
     </div>
   )

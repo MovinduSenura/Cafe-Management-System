@@ -46,6 +46,9 @@ import SideNavPanel from './components/SideNavPanel';
 import SideNavPanel2 from './components/SideNavPanel2';
 
 import Page404 from './components/Page404';
+import ProfitCreateForm from './components/ProfitCreateForm';
+import ProfitAll from './components/ProfitAll';
+import ProfitUpdateForm from './components/ProfitUpdateForm';
 
 function App() {
   return (
@@ -62,7 +65,7 @@ function AppContent() {
   const location = useLocation();
 
     // Array of routes where the navbar should be shown
-    const showSideNavBarRoutes = ['/menucreateform', '/allmenuitems', '/customersall2', '/customerView/:id', '/menuupdateform/:id', '/stockcreateform', '/stockupdateform/:id', '/items', '/createform', '/updateform/:id', '/allpromotion', '/createStaff', '/allstaff', '/staffUpdateform/:id', '/allfeedback', '/getAllPayment'];
+    const showSideNavBarRoutes = ['/menucreateform', '/allmenuitems', '/customersall2', '/customerView/:id', '/menuupdateform/:id', '/stockcreateform', '/stockupdateform/:id', '/items', '/createform', '/updateform/:id', '/allpromotion', '/createStaff', '/allstaff', '/staffUpdateform/:id', '/allfeedback', '/getAllPayment', '/getAllProfit'];
     const showSideNavBar2Routes = ['/cashiermenu', '/customerCreate', '/customersall', '/customerUpdate/:id', '/customerView2/:id', '/ordercreate', '/OrdersAll', '/OrderUpdate/:id', '/allpromotion2', '/getAllPayment2'];
 
     // Function to determine whether to render the navbar
@@ -140,6 +143,12 @@ function AppContent() {
             <Route path="/ordercreate" element={<OrderCreate/>} />
             <Route path='/OrdersAll' element={<OrdersAll />} />
             <Route path='/OrderUpdate/:id' element={<OrderUpdateForm />} />
+
+            {/* Profit */}
+            <Route path='/createProfit' element={<ProfitCreateForm/>}/>
+            <Route path='/getAllProfit' element={<ProfitAll/>}/>
+            <Route path='/updateProfit/:id' element={<ProfitUpdateForm/>}/>
+            
            
             <Route path='/404' element={<Page404 />} />
 

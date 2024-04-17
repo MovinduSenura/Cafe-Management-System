@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 // import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import moment from 'moment';
 
 //import CSS files
 import './DataTable.css'
@@ -13,7 +14,7 @@ export const PaymentAll = () => {
 
   const[ PaymentAll, setPaymentAll ] = useState([]);
   const[ allOriginalPayments, setallOriginalPayments] = useState([]);
-  const[ amount, setAmount ] = useState();
+  const[ orderID, setorderID ] = useState();
 
   const navigate = useNavigate();
 
@@ -78,10 +79,9 @@ export const PaymentAll = () => {
     // e.preventDefault();
 
     try{
-      const searchTermAsNumber = parseFloat(searchTerm);
         await axios.get('http://localhost:8000/payment/searchPayment', {
         params: {
-          amount: searchTermAsNumber
+          orderID: searchTerm
         }})
         .then((res) => {
             if(res.data.searchPayment.length === 0){
@@ -108,7 +108,7 @@ export const PaymentAll = () => {
 
 const handleSearchChange = async (e) => {
     const searchTerm = e.target.value;
-    setAmount(searchTerm);
+    setorderID(searchTerm);
 
     if (searchTerm === '') { // when placeholder empty fetch all data
         setPaymentAll(allOriginalPayments); // Fetch all data when search term is empty
@@ -121,8 +121,19 @@ const handleSearchChange = async (e) => {
 
 const handleFormSubmit = (e) => {
     e.preventDefault();
-    SearchFunction(amount);
+    SearchFunction(orderID);
 };
+
+const calculateTotal = () => {
+  let total = 0;
+
+  // Iterate through each payment and sum up the amount
+  PaymentAll.forEach(payment => {
+      total += payment.amount;
+  });
+
+  return total;
+}
 
 const logout = (e) => {
   localStorage.clear()
@@ -138,7 +149,7 @@ const logout = (e) => {
 
           <div className="search-container">
               <form className="searchTable" onSubmit={handleFormSubmit}>
-                  <input id="searchBar" type="number" value={amount} onChange={handleSearchChange} placeholder="Search.." name="search"/>
+                  <input id="searchBar" type="text" value={orderID} onChange={handleSearchChange} placeholder="Search.." name="search"/>
                   <button type="submit"><i className="fa fa-search" style={{color: "#ffffff",}}></i></button> 
               </form>
           </div>
@@ -173,7 +184,7 @@ const logout = (e) => {
                       <td>{payments.orderID}</td>
                       <td>{payments.promotionID}</td>
                       <td>{payments.amount}</td>
-                      <td>{payments.date}</td>
+                      <td>{moment(payments.createdAt).format('MMMM Do YYYY, h:mm:ss a')}</td>
                       <td>
                         <table className='EditDeleteBTNs'>
                           <tbody>
@@ -195,6 +206,9 @@ const logout = (e) => {
                       
                   </tbody>
                   </table>
+                  <div>
+                        <p>Total: <h3>{calculateTotal()} LKR</h3></p>
+                    </div>
                   </div>
                   </div>
                 </div>
