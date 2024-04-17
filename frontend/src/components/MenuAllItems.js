@@ -38,6 +38,7 @@ const MenuAllItems = () => {
             if (confirmed) {
                 await axios.delete(`http://localhost:8000/menu/deletemenuItem/${id}`)
                     .then((res) => {
+                        setMenuAllItems(menuAllItems.filter(menuitems => menuitems._id !== id));
                         alert(res.data.message);
                         console.log(res.data.message);
                     })
@@ -161,7 +162,8 @@ const MenuAllItems = () => {
                                         <td>{menuitems.menuItemDescription}</td>
                                         <td>{menuitems.menuItemCategory}</td>
                                         <td>{menuitems.menuItemPrice}</td>
-                                        <td>{menuitems.menuItemAvailability}</td>
+                                        <td>{menuitems.menuItemAvailability ? "Yes" : "No"}</td>
+                                        {/* <td>{menuitems.menuItemAvailability}</td> */}
                                         <td>
                                             <table className="EditDeleteBTNs">
                                                 <tbody>

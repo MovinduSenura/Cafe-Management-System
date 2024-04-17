@@ -26,9 +26,10 @@ const menuItemSchema = new mongoose.Schema({
         trim: true,
     },
     menuItemAvailability: {
-        type: String,
-        required: true,
-        trim: true,
+        type: Boolean,
+        default: false,
+        // required: true,
+        // trim: true,
     },
 })
 

@@ -180,7 +180,9 @@ const MenuAllItems2 = () => {
                                 <td>{menuitems.menuItemDescription}</td>
                                 <td>{menuitems.menuItemCategory}</td>
                                 <td>{menuitems.menuItemPrice}</td>
-                                <td>{menuitems.menuItemAvailability}</td>
+                                <td>{menuitems.menuItemAvailability ? "Yes" : "No"}</td>
+
+                                {/* <td>{menuitems.menuItemAvailability}</td> */}
                                 {/* <td>
                                     <table className="EditDeleteBTNs">
                                         <tbody>
