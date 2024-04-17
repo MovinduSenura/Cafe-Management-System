@@ -129,7 +129,7 @@ const StockUpdateForm = () => {
                         />
                     </div>
                     <div className="updatebtndiv">
-                    <button type="submit" className="btn btn-primary submitbtn">Submit</button>
+                        <button type="submit" className="btn btn-primary submitbtn">Submit</button>
                     </div>
                 </form>
             
