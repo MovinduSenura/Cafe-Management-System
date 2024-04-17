@@ -14,7 +14,7 @@ const MenuUpdateForm = () => {
     const [menuItemDescription, setmenuItemDescription] = useState('');
     const [menuItemCategory, setmenuItemCategory] = useState('');
     const [menuItemPrice, setmenuItemPrice] = useState('');
-    const [menuItemAvailability, setmenuItemAvailability] = useState('');
+    const [menuItemAvailability, setmenuItemAvailability] = useState('false');
 
     //using useParams we catching id from URL and assign it to id const
     const { id } = useParams();
@@ -120,9 +120,9 @@ const MenuUpdateForm = () => {
                         <label for="menuItemPrice">Price (LKR):</label>
                         <input type="number" className="form-control" id="menuItemPrice" placeholder="Enter Price" autoComplete="off" min={0} onChange={(e) => setmenuItemPrice(e.target.value)} value={menuItemPrice}/>
                     </div>
-                    <div className="form-group mb-3">
-                        <label for="menuItemAvailability">Availability:</label>
-                        <input type="text" className="form-control" id="menuItemAvailability" placeholder="Mention Availability (Yes/No)" autoComplete="off" onChange={(e) => setmenuItemAvailability(e.target.value)} value={menuItemAvailability}/>
+                    <div className="form-check mb-3">
+                        <input type="checkbox" className="form-check-input" id="menuItemAvailability" checked={menuItemAvailability} onChange={(e) => setmenuItemAvailability(e.target.checked)}/>
+                        <label className="form-check-label" htmlFor="menuItemAvailability">Available</label>
                     </div>
                     <div className="updatebtndiv">
                     <button type="submit" className="btn btn-primary submitbtn">Update</button>
