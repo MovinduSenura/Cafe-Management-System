@@ -60,14 +60,14 @@ const OrderCreate = () => {
   };
 
   return (
-    <div className="createFormContainer" style={{marginBottom: "130px", marginTop: "190px"}}>
+    <div className="createFormContainer" style={{marginBottom: "77px", marginTop: "150px"}}>
       <div className="formBootstrap">
-        <h2>Add Menu Items to Order</h2>
+        <h2 style={{marginBottom: "20px"}}>Add Menu Items to Order</h2>
 
         <form onSubmit={handleSubmit}>
           <ul>
             {MenuItems.map(item => (
-              <li key={item._id}>
+              <li style={{marginBottom: "10px"}} key={item._id}>
                 <label>
                   <input
                     type="checkbox"
@@ -78,8 +78,10 @@ const OrderCreate = () => {
               </li>
             ))}
           </ul>
-          <p>Total Price: ${totalPrice.toFixed(2)}</p>
-          <button type="submit">Create Order</button>
+          <p style={{marginLeft: "32px", marginTop: "25px"}}>Total Price: ${totalPrice.toFixed(2)}</p>
+          <div style={{marginTop: "20px"}} className="submitbtndiv">
+            <button type="submit" class="btn btn-primary submitbtn">Create Order</button>
+          </div>
         </form>
       </div>
     </div>
