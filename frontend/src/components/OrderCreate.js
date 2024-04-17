@@ -78,7 +78,7 @@ const OrderCreate = () => {
               </li>
             ))}
           </ul>
-          <p style={{marginLeft: "32px", marginTop: "25px"}}>Total Price: ${totalPrice.toFixed(2)}</p>
+          <p style={{marginLeft: "32px", marginTop: "25px"}}>Total Price: LKR {totalPrice.toFixed(2)}</p>
           <div style={{marginTop: "20px"}} className="submitbtndiv">
             <button type="submit" class="btn btn-primary submitbtn">Create Order</button>
           </div>
