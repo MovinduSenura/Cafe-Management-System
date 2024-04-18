@@ -10,7 +10,7 @@ import './DataTable.css';
 const OrdersAll = () => {
   const [OrdersAll, setOrdersAll] = useState([]);
   const [allOriginalOrders,setAllOriginalOrders] = useState([]);
-  const [OrderId, setOrderId] = useState('');
+  const [OrderPrice, setOrderPrice] = useState('');
 
   const navigate = useNavigate();
 
@@ -74,48 +74,54 @@ const OrdersAll = () => {
 
 
   //Search Function
-  const SearchFunction = async (searchTerm) => {
-    // e.preventDefault();
+//   const SearchFunction = async (searchTerm) => {
+//     // e.preventDefault();
 
-    try{
-        await axios.get('http://localhost:8000/order/searchOrder', {
-        params: {
-          OrderId: searchTerm
-        }})
-        .then((res) => {
-            if(res.data.searchedOrder.length === 0){
-              setOrdersAll(res.data.searchedOrder);
-            }
-            else{
-              setOrdersAll(res.data.searchedOrder);
-                console.log(res.data.message);
-            }
-        })
-        .catch((error) => {
-            console.log("💀 :: Error on response from server! ERROR : ", error.message);
-        })
+//     try{
+//       const searchTermAsNumber = parseFloat(searchTerm)
+//         await axios.get('http://localhost:8000/order/searchOrder', {
+//         params: {
+//           OrderPrice: searchTermAsNumber
+//         }})
+//         .then((res) => {
+//             if(res.data.searchedOrder.length === 0){
+//               setOrdersAll(res.data.searchedOrder);
+//             }
+//             else{
+//               setOrdersAll(res.data.searchedOrder);
+//                 console.log(res.data.message);
+//             }
+//         })
+//         .catch((error) => {
+//             console.log("💀 :: Error on response from server! ERROR : ", error.message);
+//         })
 
-    }catch(err){
-        console.log("💀 :: Error on axios API Request! ERROR : ", err.message);
-    }
-}
+//     }catch(err){
+//         console.log("💀 :: Error on axios API Request! ERROR : ", err.message);
+//     }
+// }
 
 
 const handleSearchChange = async (e) => {
     const searchTerm = e.target.value;
-    setOrderId(searchTerm);
+    setOrderPrice(searchTerm);
 
     if (searchTerm === '') { // when placeholder empty fetch all data
       setOrdersAll(allOriginalOrders); // Fetch all data when search term is empty
         
     } else {
-        await SearchFunction(searchTerm);
+        // await SearchFunction(searchTerm);
+        const filteredOrders = allOriginalOrders.filter(order => {
+          // Check if any order item matches the search term
+          return order.menuItems.some(item => item.menuItemName.toLowerCase().includes(searchTerm.toLowerCase()));
+      });
+      setOrdersAll(filteredOrders);
     }
 };
 
 const handleFormSubmit = (e) => {
     e.preventDefault();
-    SearchFunction(OrderId);
+    //SearchFunction(OrderPrice);
 };
 
 const logout = (e) => {
@@ -131,7 +137,7 @@ const logout = (e) => {
 
                     <div className="search-container">
                         <form className="searchTable" onSubmit={handleFormSubmit}>
-                            <input id="searchBar" type="text" value={OrderId} onChange={handleSearchChange} placeholder="Search.." name="search"/>
+                            <input id="searchBar" type="text" value={OrderPrice} onChange={handleSearchChange} placeholder="Search.." name="search"/>
                             <button type="submit"><i className="fa fa-search" style={{color: "#ffffff",}}></i></button> 
                         </form>
                     </div>
