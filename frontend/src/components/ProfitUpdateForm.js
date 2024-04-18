@@ -5,11 +5,11 @@ import { useParams, useNavigate } from "react-router-dom";
 import './ProfitCreateForm.css';
 
 const ProfitUpdateForm = () => {
-
     const [income, setIncome] = useState('');
     const [salary, setSalary] = useState('');
     const [other, setOther] = useState('');
     const [profit, setProfit] = useState('');
+    const [error, setError] = useState('');
     const { id } = useParams();
     const navigate = useNavigate();
 
@@ -39,8 +39,24 @@ const ProfitUpdateForm = () => {
         return income - other - salary;
     }
 
+    const validateForm = () => {
+        let isValid = true;
+        setError('');
+
+        if (isNaN(other) || other < 0) {
+            setError('Other Expenses must be a positive number.');
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
     const updateData = async (e) => {
         e.preventDefault();
+
+        if (!validateForm()) {
+            return;
+        }
 
         try {
             const updatedProfit = {
@@ -74,6 +90,7 @@ const ProfitUpdateForm = () => {
                     <div className="calculateProfitDiv">
                         <h2>Profit: <span>{profit} LKR</span></h2>
                     </div>
+                    {error && <div className="alert alert-danger">{error}</div>}
                     <button type="submit" className="btn btn-primary">Enter</button>
                 </form>
             </div>
