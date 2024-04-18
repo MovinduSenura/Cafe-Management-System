@@ -80,22 +80,22 @@ const getOneOrder = async (req, res) => {
 };
 
 //get one order from the search function
+//get - search particular payment
 const searchOrder = async (req, res) => {
 
-  try {
+  try{
 
-      const orderId = req.query.OrderId;
-      // Using a regular expression to match partial order IDs
-      const Order = await OrderModel.find({ _id: { $regex: `${orderId}`, $options: 'i' } });
-      // Here, the $regex operator is used to perform a regular expression search for partial matches of the order ID. The regex pattern will match any substring within the order ID.
+      const OrderPrice = req.body;
+      // Using a regular expression to match partial game names
+      const Price = await OrderModel.find({ OrderPrice: { $regex: OrderPrice} }); //the $regex operator in MongoDB is used to perform a regular expression search for partial matches of the game name. The i option is used to perform a case-insensitive search.
 
       return res.status(200).send({
           status: true,
-          message: "✨ :: Order Searched!",
-          searchedOrder: Order
-      });
+          message: "✨ :: Project Searched and fetched!",
+          searchPayment: Price
+      })
 
-  } catch(err) {
+  }catch(err){
 
       return res.status(500).send({
           status: false,
@@ -104,7 +104,7 @@ const searchOrder = async (req, res) => {
 
   }
 
-};
+}
 //update order details router control
 
 const updateOrder = async (req, res) => {
