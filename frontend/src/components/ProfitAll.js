@@ -90,7 +90,7 @@ const ProfitAll = () => {
                       {/* <td>{profits.date}</td> */}
                       <td>{moment(profits.createdAt).format('MMMM Do YYYY, h:mm:ss a')}</td>
                       <td>{profits.income}</td>
-                      <td>{profits.salary}</td>
+                      <td>100</td>
                       <td>{profits.other}</td>
                       <td>{profits.profit}</td>
                       <td>
