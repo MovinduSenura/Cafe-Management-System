@@ -86,7 +86,7 @@ const ProfitAll = () => {
             <tbody>
             {ProfitAll.map((profits,index) => (
                       <tr key={profits._id}>
-                      <td>{index+1}</td>
+                      <th scope="row">{index+1}</th>
                       {/* <td>{profits.date}</td> */}
                       <td>{moment(profits.createdAt).format('MMMM Do YYYY, h:mm:ss a')}</td>
                       <td>{profits.income}</td>
