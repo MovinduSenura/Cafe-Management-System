@@ -47,11 +47,11 @@ const ProfitAll = () => {
 }
 
   return (
-    <div className="alldiv" >
+    <div className="alldiv" style={{marginTop: "150px"}}>
 
     <div className="maintablecontainer">
 
-    <div className="tableHead">
+    {/* <div className="tableHead">
 
       <div className="search-container">
           <form className="searchTable" onSubmit={'handleFormSubmit'}>
@@ -59,7 +59,7 @@ const ProfitAll = () => {
               <button type="submit"><i className="fa fa-search" style={{color: "#ffffff",}}></i></button>
           </form>
       </div>
-    </div>
+    </div> */}
 
         <div className = "tablecontainer">
             <div className="logoutdiv"><button type="button" className="btn btn-secondary btn-lg LogoutBtn" onClick={logout}>Logout</button></div>
