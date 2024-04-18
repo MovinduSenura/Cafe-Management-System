@@ -156,7 +156,7 @@ const AllPromotions2 = ()=> {
         <th scope="col">Image</th>
         {/* <th scope="col">PromotionID</th> */}
         <th scope="col">Name</th>
-        <th scope="col">Offer Percentage(%)</th>
+        <th scope="col">Offer Percentage (%)</th>
         <th scope="col">Description</th>
         {/* <th scope="col">Item Pic</th> */}
         {/* <th className="op" scope="col">Operations</th> */}

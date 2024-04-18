@@ -159,7 +159,7 @@ const MenuAllItems2 = () => {
                             <th scope="col">Item Name</th>
                             <th scope="col">Description</th>
                             <th scope="col">Category</th>
-                            <th scope="col">Price</th>
+                            <th scope="col">Price (LKR)</th>
                             <th scope="col">Availability</th>
                             {/* <th className="op" scope="col">Operations</th> */}
                         </tr>
@@ -180,7 +180,9 @@ const MenuAllItems2 = () => {
                                 <td>{menuitems.menuItemDescription}</td>
                                 <td>{menuitems.menuItemCategory}</td>
                                 <td>{menuitems.menuItemPrice}</td>
-                                <td>{menuitems.menuItemAvailability}</td>
+                                <td>{menuitems.menuItemAvailability ? "Yes" : "No"}</td>
+
+                                {/* <td>{menuitems.menuItemAvailability}</td> */}
                                 {/* <td>
                                     <table className="EditDeleteBTNs">
                                         <tbody>

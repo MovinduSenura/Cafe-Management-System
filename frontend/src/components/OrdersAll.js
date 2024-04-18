@@ -157,7 +157,7 @@ const logout = (e) => {
               <th scope="col">Order-ID</th>
               {/* <th scope="col">Quantity</th> */}
               <th scope="col">Order-Items</th>
-              <th scope="col">Full-Amount</th>
+              <th scope="col">Full-Amount (LKR)</th>
               <th className="op" scope="col">Operations</th>
             </tr>
           </thead>

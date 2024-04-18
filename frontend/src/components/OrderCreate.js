@@ -53,7 +53,7 @@ const OrderCreate = () => {
       
       alert("🍟 Order Created!");
       
-      navigate(`/payment/${response.data.Order._id}`);
+      navigate(`/payment/create/${response.data.Order._id}`);
     } catch (error) {
       console.error('Error creating order:', error);
     }
@@ -73,12 +73,13 @@ const OrderCreate = () => {
                     type="checkbox"
                     onChange={e => handleItemChange(item._id, e.target.checked)}
                   />
-                  {item.menuItemName} - Rs.{item.menuItemPrice}
+                  {item.menuItemName} - {item.menuItemPrice} LKR
                 </label>
               </li>
             ))}
           </ul>
           <p style={{marginLeft: "32px", marginTop: "25px"}}>Total Price: LKR {totalPrice.toFixed(2)}</p>
+          <p style={{marginLeft: "32px", marginTop: "25px"}}>Total Price: {totalPrice.toFixed(2)} LKR</p>
           <div style={{marginTop: "20px"}} className="submitbtndiv">
             <button type="submit" class="btn btn-primary submitbtn">Create Order</button>
           </div>
