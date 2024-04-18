@@ -73,7 +73,7 @@ const OrderUpdateForm = () => {
   return (
     <div className="updateFormContainer" style={{marginBottom: "109px", marginTop: "190px"}}>
       <div className="updateformBootstrap">
-        <h2>Updtae Order Details</h2>
+        <h2>Update Order Details</h2>
 
         <form onSubmit={updateData}>
           <div class="form-group mb-3">
