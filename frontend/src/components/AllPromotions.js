@@ -1,6 +1,6 @@
 import React,{ useState, useEffect } from "react";
 import axios from 'axios';
-import {Link}from"react-router-dom";
+import {Link, useNavigate}from"react-router-dom";
 
 import { ToastContainer, toast } from 'react-toastify';
  import 'react-toastify/dist/ReactToastify.css';
@@ -15,7 +15,15 @@ const AllPromotions = ()=> {
     const [ PromotionItemName , setPromotionItemName ] = useState('');
     const [ AllOriginalPromotionItems , setAllOriginalPromotionItems ] = useState([]);
 
+    const navigate = useNavigate();
+
     useEffect(() => {
+
+      const token = localStorage.getItem('token');
+        if (!token) {
+            navigate('/404'); // Redirect to 404 page if token is not present
+            return;
+        }
 
       const getAllPromotions = async () => {
         try{
@@ -39,7 +47,7 @@ const AllPromotions = ()=> {
 
       getAllPromotions();
 
-    }, [])
+    }, [navigate])
 
 
        const handledelete = async (id) =>{
@@ -114,6 +122,11 @@ const AllPromotions = ()=> {
         SearchFunction(PromotionItemName);
     };
 
+    const logout = (e) => {
+      localStorage.clear()
+      navigate('/')
+  }
+
     return (
         
         <div className = "alldiv">
@@ -131,7 +144,7 @@ const AllPromotions = ()=> {
                     </form>
                 </div>
             </div>
-        <div className="logoutdiv"><Link to='/menucreateform'><button type="button" className="btn btn-secondary btn-lg LogoutBtn">Logout</button></Link></div>
+        <div className="logoutdiv"><button type="button" className="btn btn-secondary btn-lg LogoutBtn" onClick={logout}>Logout</button></div>
         <div className="addbtndiv"><Link to='/createform'><button type="button" className="btn btn-secondary btn-lg AddItemBtn">Add Promotion</button></Link></div>  
         <div className="tablediv">
 
@@ -144,7 +157,7 @@ const AllPromotions = ()=> {
         <th scope="col">Image</th>
         {/* <th scope="col">PromotionID</th> */}
         <th scope="col">Name</th>
-        <th scope="col">Offer Percentage(%)</th>
+        <th scope="col">Offer Percentage (%)</th>
         <th scope="col">Description</th>
         {/* <th scope="col">Item Pic</th> */}
         <th className="op" scope="col">Operations</th>

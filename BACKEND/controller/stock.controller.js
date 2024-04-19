@@ -77,7 +77,7 @@ const searchItem = async (req, res) => {
 
         const ItemName = req.query.itemName;
         // Using a regular expression to match partial game names
-        const item = await itemModel.find({ itemName: { $regex: ItemName, $options: 'i' } }); //the $regex operator in MongoDB is used to perform a regular expression search for partial matches of the game name. The i option is used to perform a case-insensitive search.
+        const item = await itemModel.find({ itemName: { $regex: `^${ItemName}`, $options: 'i' } }); //the $regex operator in MongoDB is used to perform a regular expression search for partial matches of the game name. The i option is used to perform a case-insensitive search.
 
         return res.status(200).send({
             status: true,

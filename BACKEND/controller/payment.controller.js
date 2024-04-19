@@ -4,13 +4,12 @@ const paymentModel = require("../models/payment.model");
 const addPayment = async(req,res) => { //async---java script is single threaded. So this cannot do two functions together that's why we use async.....await
 
     try{
-    const{orderID,promotionID,amount,date} = req.body;
+    const{orderID,promotionID,amount} = req.body;
 
     const newPaymentData = {
         orderID: orderID,
         promotionID: promotionID,
         amount: amount,
-        date: date,
     }
 
     //newPaymentObj->paymentModel object  ---assign newPaymentData object data into newPaymentObj
@@ -80,14 +79,18 @@ const searchPayment = async (req, res) => {
 
     try{
 
-        const amount = req.query.amount;
-        // Using a regular expression to match partial game names
-        const amountPayment = await paymentModel.find({ amount: parseFloat(amount) }); //the $regex operator in MongoDB is used to perform a regular expression search for partial matches of the game name. The i option is used to perform a case-insensitive search.
+        const orderID = req.query.orderID;
+        const regex = new RegExp(`^${orderID}`, "i"); // Match from the beginning of the string
+        const payment = await paymentModel.find({ orderID: regex });
+         //the $regex operator in MongoDB is used to perform a regular expression search for partial matches of the game name. The i option is used to perform a case-insensitive search.
+
+        console.log("orderID:", orderID)
+        console.log("payment:", payment)
 
         return res.status(200).send({
             status: true,
             message: "✨ :: Project Searched and fetched!",
-            searchPayment: amountPayment
+            searchPayment: payment
         })
 
     }catch(err){
@@ -106,13 +109,12 @@ const updatePayment = async(req,res) => {
 
     try{
         const paymentID =  req.params.id;
-        const{ orderID,promotionID,amount,date } = req.body;
+        const{ orderID,promotionID,amount } = req.body;
 
         const paymentData = {
             orderID: orderID,
             promotionID: promotionID,
-            amount: amount,
-            date: date,
+            amount: amount
         }
 
         const updatePaymentObj = await paymentModel.findByIdAndUpdate(paymentID,paymentData);

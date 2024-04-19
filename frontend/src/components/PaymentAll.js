@@ -1,8 +1,10 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+// import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import moment from 'moment';
 
 //import CSS files
 import './DataTable.css'
@@ -12,10 +14,18 @@ export const PaymentAll = () => {
 
   const[ PaymentAll, setPaymentAll ] = useState([]);
   const[ allOriginalPayments, setallOriginalPayments] = useState([]);
-  const[ amount, setAmount ] = useState();
+  const[ orderID, setorderID ] = useState();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getAllPayments = async () => {
+
+      const token = localStorage.getItem('token');
+        if (!token) {
+            navigate('/404'); // Redirect to 404 page if token is not present
+            return;
+        }
 
       try{
         await axios.get('http://localhost:8000/payment/getAllPayment')
@@ -34,7 +44,7 @@ export const PaymentAll = () => {
 
     getAllPayments();
 
-  },[])
+  },[navigate])
 
 
   //delete
@@ -69,10 +79,9 @@ export const PaymentAll = () => {
     // e.preventDefault();
 
     try{
-      const searchTermAsNumber = parseFloat(searchTerm);
         await axios.get('http://localhost:8000/payment/searchPayment', {
         params: {
-          amount: searchTermAsNumber
+          orderID: searchTerm
         }})
         .then((res) => {
             if(res.data.searchPayment.length === 0){
@@ -99,7 +108,7 @@ export const PaymentAll = () => {
 
 const handleSearchChange = async (e) => {
     const searchTerm = e.target.value;
-    setAmount(searchTerm);
+    setorderID(searchTerm);
 
     if (searchTerm === '') { // when placeholder empty fetch all data
         setPaymentAll(allOriginalPayments); // Fetch all data when search term is empty
@@ -112,9 +121,24 @@ const handleSearchChange = async (e) => {
 
 const handleFormSubmit = (e) => {
     e.preventDefault();
-    SearchFunction(amount);
+    SearchFunction(orderID);
 };
 
+const calculateTotal = () => {
+  let total = 0;
+
+  // Iterate through each payment and sum up the amount
+  PaymentAll.forEach(payment => {
+      total += payment.amount;
+  });
+
+  return total;
+}
+
+const logout = (e) => {
+  localStorage.clear()
+  navigate('/')
+}
 
   return (
     <div className='alldiv'>
@@ -125,14 +149,14 @@ const handleFormSubmit = (e) => {
 
           <div className="search-container">
               <form className="searchTable" onSubmit={handleFormSubmit}>
-                  <input id="searchBar" type="number" value={amount} onChange={handleSearchChange} placeholder="Search.." name="search"/>
+                  <input id="searchBar" type="text" value={orderID} onChange={handleSearchChange} placeholder="Search.." name="search"/>
                   <button type="submit"><i className="fa fa-search" style={{color: "#ffffff",}}></i></button> 
               </form>
           </div>
         </div>
 
         <div className = "tablecontainer">
-          <div className="logoutdiv"><Link to='/menucreateform'><button type="button" className="btn btn-secondary btn-lg LogoutBtn">Logout</button></Link></div>
+          <div className="logoutdiv"><button type="button" className="btn btn-secondary btn-lg LogoutBtn" onClick={logout}>Logout</button></div>
           {/* <div className="addbtndiv"><Link to='/create'><button type="button" className="btn btn-secondary btn-lg AddItemBtn">Add Payment</button></Link></div> */}
           <div className="tablediv">
         {/* <div>
@@ -147,7 +171,7 @@ const handleFormSubmit = (e) => {
                       <th scope="col">No</th>
                       <th scope="col">OrderID</th>
                       <th scope="col">PromotionID</th>
-                      <th scope="col">Amount</th>
+                      <th scope="col">Amount (LKR)</th>
                       <th scope="col">Date</th>
                       <th scope="col" className='op'>Operation</th>
                       
@@ -160,7 +184,7 @@ const handleFormSubmit = (e) => {
                       <td>{payments.orderID}</td>
                       <td>{payments.promotionID}</td>
                       <td>{payments.amount}</td>
-                      <td>{payments.date}</td>
+                      <td>{moment(payments.createdAt).format('MMMM Do YYYY, h:mm:ss a')}</td>
                       <td>
                         <table className='EditDeleteBTNs'>
                           <tbody>
@@ -182,6 +206,9 @@ const handleFormSubmit = (e) => {
                       
                   </tbody>
                   </table>
+                  <div>
+                        <p>Total: <h3>{calculateTotal()} LKR</h3></p>
+                    </div>
                   </div>
                   </div>
                 </div>

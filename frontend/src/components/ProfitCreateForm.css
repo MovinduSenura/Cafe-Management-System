@@ -1,0 +1,56 @@
+.CreateOrderFormContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 89.1vh;
+}
+
+.profileFormContainer{
+    background-color: none;
+    width: 600px;
+    /* margin-top: 200px; */
+  }
+
+  .profitTotal{
+    background-color: #00a75493;
+    padding: 10px;
+    border-radius: 5px;
+    border: 2px dashed #00a754;
+    margin-bottom: 10px;
+  }
+
+  .profitTotal p{
+    margin: 0;
+    font-weight: 700;
+    color: #00773c;
+  }
+
+  .profitSalary{
+    background-color: #ff910093;
+    padding: 10px;
+    border-radius: 5px;
+    border: 2px dashed #ff9100;
+    margin-bottom: 10px;
+  }
+
+  .profitSalary p{
+    margin: 0;
+    font-weight: 700;
+    color: #925301;
+  }
+
+  .calculateProfitDiv{
+    background-color: #ddf0ff93;
+    padding: 10px;
+    border-radius: 5px;
+    border: 2px dashed #008cff;
+    margin-bottom: 10px;
+  }
+
+  .calculateProfitDiv h2{
+    margin: 0;
+  }
+
+  .calculateProfitDiv h2 span{
+    color: #003c8a;
+    }

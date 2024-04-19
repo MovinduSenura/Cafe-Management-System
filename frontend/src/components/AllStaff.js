@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 
 import { ToastContainer, toast } from 'react-toastify';
@@ -15,7 +15,15 @@ const AllStaff = () => {
     const[allOriginalStaff,setAllOriginalStaff]=useState([]);
     const[staffName,setStaffName] = useState('');
 
+    const navigate = useNavigate();
+
     useEffect(() => {
+
+        const token = localStorage.getItem('token');
+        if (!token) {
+            navigate('/404'); // Redirect to 404 page if token is not present
+            return;
+        }
 
         const getAllStaff = async () => {
 
@@ -43,7 +51,7 @@ const AllStaff = () => {
         getAllStaff();
            
 
-    }, [])
+    }, [navigate])
 
 
     const handleDelete = async (id)=>{
@@ -122,6 +130,11 @@ const AllStaff = () => {
         SearchFunction(staffName);
     };
 
+    const logout = (e) => {
+        localStorage.clear()
+        navigate('/')
+    }
+
     return (
      <div className="alldiv">
        <ToastContainer/>
@@ -140,7 +153,7 @@ const AllStaff = () => {
               </div>
 
               <div className="tablecontainer">
-              <div className="logoutdiv"><Link to='/createStaff'><button type="button" className="btn btn-secondary btn-lg LogoutBtn">Logout</button></Link></div>
+              <div className="logoutdiv"><button type="button" className="btn btn-secondary btn-lg LogoutBtn" onClick={logout}>Logout</button></div>
               <div className="addbtndiv"><Link to='/createStaff'><button type="button" className="btn btn-secondary btn-lg AddItemBtn">Add Member</button></Link></div>
               <div className="tablediv">
 
@@ -154,7 +167,7 @@ const AllStaff = () => {
                 <th scope="col">Address</th>
                 <th scope="col">Age</th>
                 <th scope="col">Gender</th>
-                <th scope="col">Salary Per Hours</th>
+                <th scope="col">Salary Per Hours (LKR)</th>
                 <th scope="col">Worked Hours</th>
                 <th className="op" scope="col">Operations</th>
                 <th scope="col"></th> 

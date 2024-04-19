@@ -94,7 +94,7 @@ const searchCustomer = async (req, res) => {
         const CustomerNIC = req.query.customerNIC;
         // Using a regular expression to match partial game names
         //regex- ghna akurata match wena eka enw
-        const customer = await customerModel.find({ customerNIC: { $regex: CustomerNIC, $options: 'i' } }); //the $regex operator in MongoDB is used to perform a regular expression search for partial matches of the game name. The i option is used to perform a case-insensitive search.
+        const customer = await customerModel.find({ customerNIC: { $regex: `^${CustomerNIC}`, $options: 'i' } }); //the $regex operator in MongoDB is used to perform a regular expression search for partial matches of the game name. The i option is used to perform a case-insensitive search.
                                             //customerNIC == CustomerNIC samanada kyl blnw 
 
         return res.status(200).send({
@@ -264,8 +264,14 @@ const searchFeedback = async (req, res) => {
         const DayVisited = req.query.DayVisited;
         const feedbacks = await customerModel.find({ 'feedbacks.DayVisited': { $regex: new RegExp(`^${DayVisited}`, 'i') } });
 
-        // Flatten the array of feedbacks
-        const flattenedFeedbacks = feedbacks.map(customer => customer.feedbacks[0]).flat();
+        // const flattenedFeedbacks = feedbacks.map(customer => customer.feedbacks[0]).flat();
+        // const flattenedFeedbacks = feedbacks.flatMap(customer => customer.feedbacks);
+
+        const searchTerm = DayVisited; // Replace "your search term" with the term you're searching for
+        // const flattenedFeedbacks = feedbacks.flatMap(customer => customer.feedbacks.filter(feedback => feedback.DayVisited === searchTerm));
+        const flattenedFeedbacks = feedbacks.flatMap(customer => customer.feedbacks.filter(feedback => feedback.DayVisited.startsWith(searchTerm)));
+
+
         // console.log("feedbacks", flattenedFeedbacks);
 
         return res.status(200).send({

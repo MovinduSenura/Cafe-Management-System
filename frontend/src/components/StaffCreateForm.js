@@ -15,7 +15,7 @@ const StaffCreateForm =() =>{
    const [staffGender,setstaffGender]= useState('');
    const [staffSalaryPerHours,setstaffSalaryPerHours]= useState('');
    const [staffWorkedHours,setstaffWorkedHours]= useState('');
-   const [staffRole,setstaffRole]=useState('admin');
+   const [staffRole,setstaffRole]=useState('');
    const [staffPassword,setstaffPassword]=useState('');
 
    const sendData = (e) => {
@@ -58,7 +58,7 @@ const StaffCreateForm =() =>{
          setstaffSalaryPerHours('');
          setstaffWorkedHours('');
          setstaffPassword('');
-         setstaffRole('admin');
+         setstaffRole('');
 
 
       }catch(err){
@@ -111,14 +111,15 @@ const StaffCreateForm =() =>{
                 <div className="form-group mb-3">
                 <label htmlFor="staffRole">Role:</label><br />
                     <select name="role" className="form-select" id="role" value={staffRole} onChange ={(e) => setstaffRole(e.target.value)} >
-                        <option value="admin">Admin</option>
-                        <option value="cheff">Chef</option>
+                        <option selected>-Select-</option>
+                        <option value="admin">Manager</option>
+                        <option value="chef">Chef</option>
                         <option value="cashier">Cashier</option>
                     </select>
                </div>  
 
                 <div className="form-group mb-3">
-                <label for="staffSalaryPerHours">Salary Per Hours:</label>
+                <label for="staffSalaryPerHours">Salary Per Hours (LKR):</label>
                    <input type="number" className="form-control" id="staffSalaryPerHours" autoComplete="off" min={0} onChange={(e) => setstaffSalaryPerHours(e.target.value)} value={staffSalaryPerHours} />
                 </div>
                 <div className="form-group mb-3">

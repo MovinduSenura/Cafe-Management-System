@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 
 import { ToastContainer, toast } from 'react-toastify';
@@ -18,7 +18,15 @@ export const AllItems = () => {
     const [ allOriginalItems, setAllOriginalItems ] = useState([]);
     const[ itemName, setitemName ] = useState("");
 
+    const navigate = useNavigate();
+
     useEffect(() => {
+
+        const token = localStorage.getItem('token');
+        if (!token) {
+            navigate('/404'); // Redirect to 404 page if token is not present
+            return;
+        }
 
         const getAllItems = async () => {
 
@@ -44,7 +52,7 @@ export const AllItems = () => {
 
         getAllItems();
 
-    }, [])
+    }, [navigate])
 
     const handleDelete = async (id) => {
 
@@ -124,6 +132,11 @@ export const AllItems = () => {
         SearchFunction(itemName);
     };
 
+    const logout = (e) => {
+        localStorage.clear()
+        navigate('/')
+    }
+
 
     return (
         <div className="alldiv">
@@ -143,8 +156,10 @@ export const AllItems = () => {
 
          <div className="tablecontainer">
 
-            <div className="logoutdiv"><Link to='/stockcreateform'><button type="button" class="btn btn-secondary btn-lg LogoutBtn">Logout</button></Link></div>
-            <div className="addbtndiv"><Link to='/stockcreateform'><button type="button" class="btn btn-secondary btn-lg AddItemBtn">Add Item</button></Link></div>
+
+            <div className="logoutdiv"><button type="button" class="btn btn-secondary btn-lg LogoutBtn" onClick={logout}>Logout</button></div>
+            <div className="addbtndiv"><Link to='/stockcreateform'><button type="button" className="btn btn-secondary btn-lg AddItemBtn">Add Item</button></Link></div>
+
             <div className="tablediv">
 
           <ToastContainer/>

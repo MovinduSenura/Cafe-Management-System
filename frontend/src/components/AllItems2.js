@@ -1,12 +1,12 @@
 import axios from 'axios';
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 
 // import { ToastContainer, toast } from 'react-toastify';
 // import 'react-toastify/dist/ReactToastify.css';
 //import './AllItems.css'
-import './DataTable.css'
+import './AllItems2.css'
 
 
 
@@ -18,7 +18,15 @@ export const AllItems2 = () => {
     const [ allOriginalItems, setAllOriginalItems ] = useState([]);
     const[ itemName, setitemName ] = useState("");
 
+    const navigate = useNavigate();
+
     useEffect(() => {
+
+        const token = localStorage.getItem('token');
+        if (!token) {
+            navigate('/404'); // Redirect to 404 page if token is not present
+            return;
+        }
 
         const getAllItems = async () => {
 
@@ -44,7 +52,7 @@ export const AllItems2 = () => {
 
         getAllItems();
 
-    }, [])
+    }, [navigate])
 
     // const handleDelete = async (id) => {
 
@@ -124,16 +132,20 @@ export const AllItems2 = () => {
         SearchFunction(itemName);
     };
 
+    const logout = (e) => {
+        localStorage.clear()
+        navigate('/')
+    }
 
     return (
-        <div className="alldiv">
+        <div className="alldivIII">
 
-        <div className = "maintablecontainer">
-          <h1>Stocks</h1>
+        <div className = "maintablecontainerIII">
+          {/* <h1>Stocks</h1> */}
 
           <div className="tableHead">
 
-                    <div className="search-container">
+                    <div className="search-containerIII">
                         <form className="searchTable" onSubmit={handleFormSubmit}>
                             <input id="searchBar" type="text" value={itemName} onChange={handleSearchChange} placeholder="Search.." name="search"/>
                             <button type="submit"><i className="fa fa-search" style={{color: "#ffffff",}}></i></button> 
@@ -141,13 +153,13 @@ export const AllItems2 = () => {
                     </div>
                 </div>
 
-                <div className="tablecontainer">
-                    <div className="logoutdiv"><Link to='/stockcreateform'><button type="button" class="btn btn-secondary btn-lg LogoutBtn">Logout</button></Link></div>
-                    <div className="tablediv">
+                <div className="tablecontainerIII">
+                    <div className="logoutdivIII"><button type="button" class="btn btn-secondary btn-lg LogoutBtnIII" onClick={logout}>Logout</button></div>
+                    <div className="tabledivIII">
 
           {/* <ToastContainer/> */}
 
-            <table className = "table table-striped tbl">
+            <table className = "table table-striped tblIII">
                 <thead>
                     <tr>
                         <th scope = "col">ID</th>
@@ -155,7 +167,7 @@ export const AllItems2 = () => {
                         <th scope = "col" >Quantity</th>
                         <th scope = "col">Minimum Stock Level</th>
                         <th scope = "col">Current Stock Level</th>
-                        { <th scope = "col" className='op'>Operation</th> }
+                        { <th scope = "col" className='opIII'>Operation</th> }
                     </tr>
                     </thead>
                     <tbody>
@@ -169,7 +181,7 @@ export const AllItems2 = () => {
                             
 
                             <td>
-                                <table className='EditDeleteBTNs'>
+                                <table className='EditDeleteBTNsIII'>
                                 <tbody>
                                 <tr>
                                 <td><Link to={`/stockupdateform2/${items._id}`}><button type="button" className="btn btn-success">Edit</button></Link>&nbsp;

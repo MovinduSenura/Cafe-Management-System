@@ -69,6 +69,8 @@ const StaffLogin=async(req,res) => {
             return res.status(400).json({ msg: 'Invalid Email' });
         }
 
+        const staffRole = staff.staffRole;
+
         // Check password
         const isMatch = await bcrypt.compare(staffPassword, staff.staffPassword);
         if (!isMatch) {
@@ -85,7 +87,7 @@ const StaffLogin=async(req,res) => {
 
         jwt.sign(payload, '12345', { expiresIn: 3600 }, (err, token) => {
             if (err) throw err;
-            res.json({ token });
+            res.json({ token, staffRole });
         });
     } catch (err) {
         console.error(err.message);
@@ -115,7 +117,7 @@ const StaffLogin=async(req,res) => {
             })
         }
     }
-    
+   
 
 
     //Get one-specified item router controller
@@ -203,26 +205,26 @@ const StaffLogin=async(req,res) => {
         const searchStaff = async (req, res) => {
 
             try{
-        
+       
                 const staffName = req.query.staffName;
                 // Using a regular expression to match partial game names
-                const staff = await staffModel.find({ staffName: { $regex: staffName, $options: 'i' } }); //the $regex operator in MongoDB is used to perform a regular expression search for partial matches of the game name. The i option is used to perform a case-insensitive search.
-        
+                const staff = await staffModel.find({ staffName: { $regex: `^${staffName}`, $options: 'i' } }); //the $regex operator in MongoDB is used to perform a regular expression search for partial matches of the game name. The i option is used to perform a case-insensitive search.
+       
                 return res.status(200).send({
                     status: true,
                     message: "✨ :: Project Searched and fetched!",
                     searchedStaff: staff
                 })
-        
+       
             }catch(err){
-        
+       
                 return res.status(500).send({
                     status: false,
                     message: err.message
                 });
-        
+       
             }
-        
+       
         }
 
         module.exports = {
@@ -234,7 +236,3 @@ const StaffLogin=async(req,res) => {
             searchStaff,
             StaffLogin,
         }
-
-
-
-    

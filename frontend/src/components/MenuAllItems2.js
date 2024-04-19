@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+// import { Link, useNavigate } from "react-router-dom";
 
 // import { ToastContainer, toast } from 'react-toastify';
 // import 'react-toastify/dist/ReactToastify.css';
@@ -14,7 +15,15 @@ const MenuAllItems2 = () => {
     const [ MenuItemName , setMenuItemName ] = useState('');
     const [ AllOriginalMenuItems , setAllOriginalMenuItems ] = useState([]);
 
+    const navigate = useNavigate();
+
     useEffect(() => {
+
+        const token = localStorage.getItem('token');
+        if (!token) {
+            navigate('/404'); // Redirect to 404 page if token is not present
+            return;
+        }
 
         const getMenuAllItems = async () => {
 
@@ -39,7 +48,7 @@ const MenuAllItems2 = () => {
 
         getMenuAllItems();
 
-    }, [])
+    }, [navigate])
 
     // const handleDelete = async (id) => {
 
@@ -114,6 +123,11 @@ const MenuAllItems2 = () => {
         SearchFunction(MenuItemName);
     };
 
+    const logout = (e) => {
+        localStorage.clear()
+        navigate('/')
+    }
+
     return(
         <div className="menualldiv" >
 
@@ -131,7 +145,7 @@ const MenuAllItems2 = () => {
             </div>
             
                 <div className = "tablecontainer">
-                    <div className="logoutdiv"><Link to='/menucreateform'><button type="button" className="btn btn-secondary btn-lg LogoutBtn">Logout</button></Link></div>
+                    <div className="logoutdiv"><button type="button" className="btn btn-secondary btn-lg LogoutBtn" onClick={logout}>Logout</button></div>
                     {/* <div className="addbtndiv"><Link to='/menucreateform'><button type="button" className="btn btn-secondary btn-lg AddItemBtn">Add item</button></Link></div> */}
                 <div className="tablediv">
 
@@ -145,7 +159,7 @@ const MenuAllItems2 = () => {
                             <th scope="col">Item Name</th>
                             <th scope="col">Description</th>
                             <th scope="col">Category</th>
-                            <th scope="col">Price</th>
+                            <th scope="col">Price (LKR)</th>
                             <th scope="col">Availability</th>
                             {/* <th className="op" scope="col">Operations</th> */}
                         </tr>
@@ -166,7 +180,9 @@ const MenuAllItems2 = () => {
                                 <td>{menuitems.menuItemDescription}</td>
                                 <td>{menuitems.menuItemCategory}</td>
                                 <td>{menuitems.menuItemPrice}</td>
-                                <td>{menuitems.menuItemAvailability}</td>
+                                <td>{menuitems.menuItemAvailability ? "Yes" : "No"}</td>
+
+                                {/* <td>{menuitems.menuItemAvailability}</td> */}
                                 {/* <td>
                                     <table className="EditDeleteBTNs">
                                         <tbody>

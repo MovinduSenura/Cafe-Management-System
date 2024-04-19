@@ -6,7 +6,7 @@ import MenuAllItems from './components/MenuAllItems';
 import MenuAllItems2 from './components/MenuAllItems2';
 import MenuUpdateForm from './components/MenuUpdateForm';
 
-import CreateOrderForm from './components/CreateOrderForm';
+import OrderCreate from './components/OrderCreate';
 import OrdersAll from './components/OrdersAll';
 import OrderUpdateForm from './components/OrderUpdateForm';
 
@@ -30,9 +30,6 @@ import PaymentUpdateForm from './components/PaymentUpdateForm';
 import StaffCreateForm from './components/StaffCreateForm';
 import AllStaff from './components/AllStaff';
 import StaffLogin from './components/StaffLogin';
-import Admin from './pages/admindash';
-import Chef from './pages/cheffdash';
-import Cashier from './pages/cashierdash';
 import StaffUpdateForm from './components/StaffUpdateForm';
 
 import StockCreateForm from './components/StockCreateForm';
@@ -47,6 +44,11 @@ import NavBar from './components/NavBar';
 import Footer from './components/Footer';
 import SideNavPanel from './components/SideNavPanel';
 import SideNavPanel2 from './components/SideNavPanel2';
+
+import Page404 from './components/Page404';
+import ProfitCreateForm from './components/ProfitCreateForm';
+import ProfitAll from './components/ProfitAll';
+import ProfitUpdateForm from './components/ProfitUpdateForm';
 
 function App() {
   return (
@@ -63,8 +65,8 @@ function AppContent() {
   const location = useLocation();
 
     // Array of routes where the navbar should be shown
-    const showSideNavBarRoutes = ['/menucreateform', '/', '/customersall2', '/customerView/:id', '/menuupdateform/:id', '/stockcreateform', '/stockupdateform/:id', '/items', '/createform', '/updateform/:id', '/allpromotion', '/createStaff', '/allstaff', '/staffUpdateform/:id', '/allfeedback', '/getAllPayment'];
-    const showSideNavBar2Routes = ['/cashiermenu', '/customerCreate', '/customersall', '/customerUpdate/:id', '/customerView2/:id', '/CreateOrder', '/OrdersAll', '/OrderUpdate/:id', '/allpromotion2', '/getAllPayment2'];
+    const showSideNavBarRoutes = ['/menucreateform', '/allmenuitems', '/customersall2', '/customerView/:id', '/menuupdateform/:id', '/stockcreateform', '/stockupdateform/:id', '/items', '/createform', '/updateform/:id', '/allpromotion', '/createStaff', '/allstaff', '/staffUpdateform/:id', '/allfeedback', '/getAllPayment', '/getAllProfit', '/createProfit'];
+    const showSideNavBar2Routes = ['/cashiermenu', '/customerCreate', '/customersall', '/customerUpdate/:id', '/customerView2/:id', '/ordercreate', '/OrdersAll', '/OrderUpdate/:id', '/allpromotion2', '/getAllPayment2'];
 
     // Function to determine whether to render the navbar
     const renderSideNavBar = () => {
@@ -76,6 +78,7 @@ function AppContent() {
     };
 
   return (
+    <>
     <div className="App">
 
       <NavBar />
@@ -86,6 +89,10 @@ function AppContent() {
           {renderSideNavBar() && <SideNavPanel />}
           {renderSideNavBar2() && <SideNavPanel2 />}
         </div>
+
+        <Routes>
+          <Route path='/' element={<StaffLogin />} />
+        </Routes>
     
         <div className='pages'>
 
@@ -93,12 +100,12 @@ function AppContent() {
 
             {/* Menu */}
             <Route path='/menucreateform' element={<MenuCreateForm />} />
-            <Route path='/' element={<MenuAllItems />} />     
+            <Route path='/allmenuitems' element={<MenuAllItems />} />     
             <Route path='/menuupdateform/:id' element={<MenuUpdateForm />} />
             <Route path='/cashiermenu' element={<MenuAllItems2 />} />
 
             {/* Payment */}
-            <Route path='/create' element={<PaymentCreateForm/>}/>
+            <Route path='/payment/create/:id' element={<PaymentCreateForm/>}/>
             <Route path='/getAllPayment' element={<PaymentAll/>}/>
             <Route path='/getAllPayment2' element={<PaymentAll2/>}/>
             <Route path='/update/:id' element={<PaymentUpdateForm/>}/>
@@ -131,17 +138,19 @@ function AppContent() {
             <Route path='/createStaff' element = {<StaffCreateForm/>}/>
             <Route path='/allstaff' element={<AllStaff/>}/>
             <Route path='/staffUpdateform/:id' element={<StaffUpdateForm/>}/>
-            <Route path='/StaffLogin' element={<StaffLogin />} />      
-            <Route path="/admin" element={<Admin />} />
-            <Route path="/cheff" element={< Chef/>} />
-            <Route path="/cashier" element={<Cashier />} />
            
             {/* Order */}
-            <Route path='/CreateOrder' element={<CreateOrderForm />} />
+            <Route path="/ordercreate" element={<OrderCreate/>} />
             <Route path='/OrdersAll' element={<OrdersAll />} />
             <Route path='/OrderUpdate/:id' element={<OrderUpdateForm />} />
 
-        
+            {/* Profit */}
+            <Route path='/createProfit' element={<ProfitCreateForm/>}/>
+            <Route path='/getAllProfit' element={<ProfitAll/>}/>
+            <Route path='/updateProfit/:id' element={<ProfitUpdateForm/>}/>
+            
+           
+            <Route path='/404' element={<Page404 />} />
 
           </Routes>
 
@@ -149,9 +158,11 @@ function AppContent() {
 
       </div>
 
-        <Footer />
+        {/* <Footer /> */}
 
     </div>
+    {location.pathname !== '/' && <Footer />}
+    </>
   );
 }
 

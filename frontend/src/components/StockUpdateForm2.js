@@ -76,9 +76,9 @@ const StockUpdateForm2 = () => {
     };
     
     return (
-        <div className="updateFormContainer">
+        <div className="updateFormContainer" style={{marginBottom: "75px", marginTop: "150px"}}>
             <div className="updateformBootstrap">
-                <h2 className="mb-4">Update Form</h2>
+                <h2>Update Form</h2>
 
                 <form onSubmit={updateData}>
                     <div className="form-group mb-3">
@@ -128,8 +128,9 @@ const StockUpdateForm2 = () => {
                             required
                         />
                     </div>
-                    <div className="updatebtndiv"></div>
-                    <button type="submit" className="btn btn-primary submitbtn">Submit</button>
+                    <div className="updatebtndiv">
+                        <button type="submit" className="btn btn-primary submitbtn">Submit</button>
+                    </div>
                 </form>
             
            
