@@ -156,8 +156,10 @@ export const AllItems = () => {
 
          <div className="tablecontainer">
 
+
             <div className="logoutdiv"><button type="button" class="btn btn-secondary btn-lg LogoutBtn" onClick={logout}>Logout</button></div>
             <div className="addbtndiv"><Link to='/stockcreateform'><button type="button" className="btn btn-secondary btn-lg AddItemBtn">Add Item</button></Link></div>
+
             <div className="tablediv">
 
           <ToastContainer/>
