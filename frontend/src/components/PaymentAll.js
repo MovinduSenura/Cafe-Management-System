@@ -140,6 +140,36 @@ const logout = (e) => {
   navigate('/')
 }
 
+//generate Invoice
+const downloadInvoice = async (e) => {
+  e.preventDefault();
+  try {
+    const response = await axios.get(
+      "http://localhost:8000/payment/payment-generate-invoice"
+    );
+
+    const { filepath } = response.data;
+
+    // Create a new <a> element to simulate a download link
+    const link = document.createElement("a");
+    // Set the href attribute of the link to the filepath of the generated invoice
+    link.href = filepath;
+    // Set the "download" attribute to specify the default file name for the downloaded file
+    link.setAttribute("download", "invoice.pdf");
+    link.setAttribute("target", "_blank");
+    // Append the link to the document body
+    document.body.appendChild(link);
+
+    // Simulate a click on the link to trigger the download
+    link.click();
+
+    // Remove the link from the document body after the download is complete
+    document.body.removeChild(link);
+  } catch (error) {
+    console.error("Error downloading invoice:", error.message);
+  }
+};
+
   return (
     <div className='alldiv'>
 
@@ -156,6 +186,13 @@ const logout = (e) => {
         </div>
 
         <div className = "tablecontainer">
+        <button
+              type="button"
+              className="btn btn-primary addItemBtn"
+              onClick={downloadInvoice}
+            >
+              Download Invoice
+            </button>
           <div className="logoutdiv"><button type="button" className="btn btn-secondary btn-lg LogoutBtn" onClick={logout}>Logout</button></div>
           {/* <div className="addbtndiv"><Link to='/create'><button type="button" className="btn btn-secondary btn-lg AddItemBtn">Add Payment</button></Link></div> */}
           <div className="tablediv">
