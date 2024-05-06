@@ -5,6 +5,10 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 require("dotenv").config();
 const app = express();
+const path = require('path');
+
+// Serve static files from the 'docs' directory
+app.use('/docs', express.static(path.join(__dirname, 'docs')));
 
 //MongoDB Connection
 const { ConnectDB } = require("./utils/connection");

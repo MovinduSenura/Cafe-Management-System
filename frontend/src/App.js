@@ -149,7 +149,7 @@ function AppContent() {
             <Route path='/getAllProfit' element={<ProfitAll/>}/>
             <Route path='/updateProfit/:id' element={<ProfitUpdateForm/>}/>
             
-           
+            
             <Route path='/404' element={<Page404 />} />
 
           </Routes>
