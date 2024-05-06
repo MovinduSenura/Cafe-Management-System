@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 const PaymentCreateForm = () => {
 
+    const [promotions, setPromotions] = useState([]);
     const [orderID, setorderID] = useState('');
     const [promotionID, setpromotionID] = useState('ehjd');
     const [amount, setamount] = useState('');
@@ -52,6 +53,19 @@ const PaymentCreateForm = () => {
         getOneOrder();
     }, [id]);
 
+    useEffect(() => {
+        const fetchPromotions = async () => {
+            try {
+                const res = await axios.get('http://localhost:8000/promotion/promotions');
+                setPromotions(res.data.Allpromotions);
+            } catch (error) {
+                console.error('Error fetching promotions:', error);
+            }
+        };
+    
+        fetchPromotions();
+    }, []);
+    
 
     const handleChange = (event) => {
         const { value } = event.target;
@@ -73,31 +87,25 @@ const PaymentCreateForm = () => {
     const handlePromotionChange = (event) => {
         setSelectedPromotion(event.target.value);
         
-        let newTotalPrice = total; // Sample total price
-        
-        switch (event.target.value) {
-        case "No discount":
-            newTotalPrice -= 0;  
-            break;
-        case "Morning Brew Discount":
-            newTotalPrice -= 10;
-            break;
-        case "Happy Hour Specials":
-            newTotalPrice -= 15;
-            break;
-        case "Daily Roast Deals":
-            newTotalPrice -= 20;
-            break;
-        case "Loyalty Bean Bonus":
-            newTotalPrice -= 25;
-            break;
-        default:
-            break;
+        // Retrieve the selected promotion object from the promotions array
+        const selectedPromotion = promotions.find(promotion => promotion._id === event.target.value);
+    
+        if (selectedPromotion) {
+            // Calculate the discount amount based on the promotionValues (assumed to be percentage)
+            const discountPercentage = selectedPromotion.promotionValues;
+            const discountAmount = (total * discountPercentage) / 100;
+            
+            // Subtract the discount amount from the total to get the new total price
+            const newTotalPrice = total - discountAmount;
+    
+            // Update the payable amount with the new total price
+            setPayableAmount(newTotalPrice);
+        } else {
+            // If the selected promotion is not found, reset the payable amount to the original total
+            setPayableAmount(total);
         }
-
-        console.log(newTotalPrice);
-        setPayableAmount(newTotalPrice);
     };
+    
 
     const sendData = async(e) => {
         e.preventDefault();
@@ -106,7 +114,7 @@ const PaymentCreateForm = () => {
 
             let newPaymentData = {
                 orderID: orderID,
-                promotionID: promotionID,
+                promotionID: selectedPromotion,
                 amount: payableAmount,
             }
 
@@ -186,12 +194,12 @@ const PaymentCreateForm = () => {
                     <div className="paymentPropotionPhase">
                         <p>Add Promotion: </p>
                         <select name="promotion" id="promotion" value={selectedPromotion} onChange={handlePromotionChange}>
-                            <option value="No discount">No discount</option>
-                            <option value="Morning Brew Discount">Morning Brew Discount</option>
-                            <option value="Happy Hour Specials">Happy Hour Specials</option>
-                            <option value="Daily Roast Deals">Daily Roast Deals</option>
-                            <option value="Loyalty Bean Bonus">Loyalty Bean Bonus</option>
+                            {promotions.map(promotion => (
+                                <option key={promotion._id} value={promotion._id}>{promotion.promotionName}</option>
+                            ))}
+                             {console.log("Promotions:", promotions)}
                         </select>
+
                     </div>
                     <div className="paymentPayableAmountPhase">
                         <p>Payable Amount: <h3>{payableAmount} LKR</h3></p>
