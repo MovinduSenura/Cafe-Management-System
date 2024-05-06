@@ -8,6 +8,7 @@ const {
   updateOrder,
   deleteOrder,
   searchOrder,
+  OrdergenerateInvoice,
   
 } = require("../controller/Order.controller");
 
@@ -17,5 +18,6 @@ OrderRouter.get("/oneOrder/:id" , getOneOrder);
 OrderRouter.patch("/Update/:id", updateOrder);
 OrderRouter.delete("/delete/:id", deleteOrder);
 OrderRouter.get("/searchOrder" , searchOrder);
+OrderRouter.get('/generate-Order-invoice', OrdergenerateInvoice);
 
 module.exports = OrderRouter;
