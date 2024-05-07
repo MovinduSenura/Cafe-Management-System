@@ -7,13 +7,16 @@ const PaymentCreateForm = () => {
 
     const [promotions, setPromotions] = useState([]);
     const [orderID, setorderID] = useState('');
-    const [promotionID, setpromotionID] = useState('ehjd');
     const [amount, setamount] = useState('');
-    const [date, setdate] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
+    const [customerData, setCustomerData] = useState('');
+    const [searchInput, setSearchInput] = useState('');
 
     const [total, setTotal] = useState(0);
     const [paymentAmount, setPaymentAmount] = useState(0); 
     const [payableAmount, setPayableAmount] = useState(0);
+    const [redeemedPoints, setRedeemedPoints] = useState(0);
+    const [redeemPointsInput, setRedeemPointsInput] = useState(0);
     // const [order,setOrder] = useState([]);
     const [selectedPromotion, setSelectedPromotion] = useState("");
 
@@ -118,10 +121,6 @@ const PaymentCreateForm = () => {
                 amount: payableAmount,
             }
 
-            console.log("OrderID : ",orderID)
-            console.log("promotionID : ",promotionID)
-            console.log("amount : ",amount)
-
             axios.post('http://localhost:8000/payment/create',newPaymentData)
             .then((res) => {
                 alert(res.data.message);
@@ -137,6 +136,79 @@ const PaymentCreateForm = () => {
             console.log("💀 :: sendData function failed! ERROR : "+err.message);
         }
     }
+
+    const handleInputChange = (event) => {
+        setSearchInput(event.target.value);
+    };
+
+    const fetchCustomerData = async () => {
+        try {
+            const response = await axios.get(`http://localhost:8000/customer/customerByFind/${searchInput}`);
+            setCustomerData(response.data);
+            console.log('Customer : ',customerData)
+        } catch (error) {
+            console.error('Error fetching customer data:', error);
+        }
+    };
+
+    const addLoyaltyPoints = async () => {
+        try {
+            const loyaltyPointsToAdd = Math.floor(payableAmount / 100); // Calculate loyalty points based on payable amount
+            
+            // Convert existing loyalty points to a number
+            const existingLoyaltyPoints = parseInt(customerData.customerLoyaltyPoints);
+            
+            // Perform numeric addition
+            const updatedLoyaltyPoints = existingLoyaltyPoints + loyaltyPointsToAdd;
+        
+            // Update customer data in the database
+            const response = await axios.patch(`http://localhost:8000/customer/customerUpdateLoyaltyPoints/${customerData._id}`, {
+                customerLoyaltyPoints: updatedLoyaltyPoints
+            });
+        
+            // Update customer data in the state
+            setCustomerData({ ...customerData, customerLoyaltyPoints: updatedLoyaltyPoints });
+            setErrorMessage('');
+        } catch (error) {
+            console.error('Error adding loyalty points:', error);
+            setErrorMessage('Error adding loyalty points');
+        }
+    };
+
+    const handleRedeemPointsInputChange = (event) => {
+        setRedeemPointsInput(event.target.value);
+    };
+
+    const redeemLoyaltyPoints = async () => {
+        try {
+            let loyaltyPointsToRedeem = redeemPointsInput;
+
+            if (loyaltyPointsToRedeem === "all") {
+                loyaltyPointsToRedeem = customerData.customerLoyaltyPoints;
+            } else {
+                loyaltyPointsToRedeem = parseInt(loyaltyPointsToRedeem);
+            }
+
+            if (loyaltyPointsToRedeem <= 0 || loyaltyPointsToRedeem > customerData.customerLoyaltyPoints) {
+                console.error('Invalid loyalty points to redeem.');
+                return;
+            }
+
+            const updatedLoyaltyPoints = customerData.customerLoyaltyPoints - loyaltyPointsToRedeem;
+            await axios.patch(`http://localhost:8000/customer/customerUpdateLoyaltyPoints/${customerData._id}`, {
+                customerLoyaltyPoints: updatedLoyaltyPoints
+            });
+
+            setPayableAmount(payableAmount - (loyaltyPointsToRedeem * 0.5)); // Deduct from payable amount
+            setRedeemedPoints(redeemedPoints + loyaltyPointsToRedeem);
+            setCustomerData({ ...customerData, customerLoyaltyPoints: updatedLoyaltyPoints });
+        } catch (error) {
+            console.error('Error redeeming loyalty points:', error);
+        }
+    };
+    
+    
+    
 
   return (
     <div className="PaymentContainer">
@@ -194,10 +266,10 @@ const PaymentCreateForm = () => {
                     <div className="paymentPropotionPhase">
                         <p>Add Promotion: </p>
                         <select name="promotion" id="promotion" value={selectedPromotion} onChange={handlePromotionChange}>
+                            <option value="">Select Promotion</option>
                             {promotions.map(promotion => (
                                 <option key={promotion._id} value={promotion._id}>{promotion.promotionName}</option>
                             ))}
-                             {console.log("Promotions:", promotions)}
                         </select>
 
                     </div>
@@ -213,6 +285,35 @@ const PaymentCreateForm = () => {
                     <div className="changeDiv">
                         <p>Change: <h3>{calculateChange()} LKR</h3></p>
                     </div>
+                    <div className="changeDiv">
+                        <input
+                            type="text"
+                            value={searchInput}
+                            onChange={handleInputChange}
+                            placeholder="Enter customer phone number or name"
+                        />
+                        <button onClick={fetchCustomerData}>Search</button>
+                    </div>
+                    {customerData && (
+                        <div className="changeDiv">
+                            <p>Customer Name: {customerData.customerFullName}</p>
+                            <p>Loyalty Points: {customerData.customerLoyaltyPoints}</p>
+                        </div>
+                    )}
+                    <div className="PaymentButtonDiv">
+                        <button onClick={addLoyaltyPoints}>Add Loyalty Points</button>
+                    </div>
+                    <div className="changeDiv">
+                        <input
+                            type="text"
+                            value={redeemPointsInput}
+                            onChange={handleRedeemPointsInputChange}
+                            placeholder="Enter points to redeem or 'all'"
+                        />
+                    </div>
+                    <div className="PaymentButtonDiv">
+                            <button onClick={redeemLoyaltyPoints}>Redeem Loyalty Points</button>
+                        </div>
                     <div className="PaymentButtonDiv">
                         <button class="custom-button" onClick={sendData}>Done</button>
                     </div>
