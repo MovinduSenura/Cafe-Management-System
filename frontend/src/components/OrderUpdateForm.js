@@ -56,13 +56,13 @@ const OrderUpdateForm = () => {
 
   const updateData = async (e) => {
     e.preventDefault();
-
+  
     try {
       const updateOrderItem = {
-        menuItems: selectedItems,
-        OrderPrice: totalPrice,
+        menuItems: selectedItems, // Pass selectedItems array
+        OrderPrice: totalPrice, // Pass totalPrice
       };
-
+  
       const response = await axios.patch(`http://localhost:8000/order/Update/${id}`, updateOrderItem);
       alert(response.data.message);
       console.log(response.data.status);
@@ -73,6 +73,7 @@ const OrderUpdateForm = () => {
       alert("Failed to update order. Please try again.");
     }
   };
+  
 
   return (
     <div className="updateFormContainer" style={{marginBottom: "109px", marginTop: "190px"}}>

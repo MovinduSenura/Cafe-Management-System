@@ -169,37 +169,26 @@ const searchOrder = async (req, res) => {
 const updateOrder = async (req, res) => {
   try {
     const orderID = req.params.id;
-    const { MenuitemIds } = req.body;
+    const { menuItems, OrderPrice } = req.body; // Destructure menuItems and OrderPrice from req.body
     
-    const menuItems = await MenuItemModel.find({_id:{$in: MenuitemIds}});
-
-    if(!menuItems) {
-      return res.status(404).json({
-        success:false,
-        error: 'Menu items not found'
-      })
-     }
-
-     menuItems.forEach(Item => {
-      totalPrice += Item.menuItemPrice;
-     })
-
-
-   const Order = new OrderModel({
-    menuItems:menuItems,
-    totalPrice : totalPrice,
- })
-
-
-    const updateOrderObj = await OrderModel.findByIdAndUpdate(
+    // Update the order
+    const updatedOrder = await OrderModel.findByIdAndUpdate(
       orderID,
-      Order,
+      { menuItems: menuItems, OrderPrice: OrderPrice }, // Update menuItems and OrderPrice
+      { new: true } // Return the updated document
     );
+
+    if (!updatedOrder) {
+      return res.status(404).json({
+        success: false,
+        error: 'Order not found'
+      });
+    }
 
     return res.status(200).send({
       status: true,
       message: "✨ :: Order updated!",
-      // updateOrder: Order,
+      updatedOrder: updatedOrder
     });
   } catch (err) {
     return res.status(500).send({
@@ -208,6 +197,8 @@ const updateOrder = async (req, res) => {
     });
   }
 };
+
+
 
 //delete order details route control
 const deleteOrder = async (req, res) => {
