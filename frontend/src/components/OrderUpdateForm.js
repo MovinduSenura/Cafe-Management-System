@@ -5,69 +5,72 @@ import { useParams, useNavigate } from "react-router-dom";
 import './UpdateForm.css';
 
 const OrderUpdateForm = () => {
-  //   return (
-  //     <div>OrderUpdateForm</div>
-  //   )
+  const [allMenuItems, setAllMenuItems] = useState([]);
+  const [selectedItems, setSelectedItems] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
 
-  // const [OrderName, setOrderName] = useState("");
-  // const [OrderQuantity, setOrderQuantity] = useState("");
-  const [MenuItems,setMenuItems] = useState("");
-  const [OrderPrice, setOrderPrice] = useState("");
-
-  //using useParams to catch the id from url and assign it to the id
   const { id } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8000/menu/menuItems`);
+        setAllMenuItems(response.data.AllmenuItems);
+      } catch (err) {
+        console.log("💀 :: Error fetching menu items: " + err.message);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
     const getOneData = async () => {
       try {
-        await axios
-          .get(`http://localhost:8000/order/oneOrder/${id}`)
-          .then((res) => {
-            // setOrderName(res.data.order.OrderName);
-            // setOrderQuantity(res.data.order.OrderQuantity);
-            setMenuItems(res.data.order.menuItemName);
-            setOrderPrice(res.data.order.OrderPrice);
-            console.log("✨ :: Item fetched successfully!");
-          })
-
-          .catch((err) => {
-            console.log("💀 :: Error on API URL : " + err.message);
-          });
+        const response = await axios.get(`http://localhost:8000/order/oneOrder/${id}`);
+        const items = response.data.order.menuItems;
+        setSelectedItems(items);
+        const price = items.reduce((acc, item) => acc + item.menuItemPrice, 0);
+        setTotalPrice(price);
+        console.log("✨ :: Item fetched successfully!");
       } catch (err) {
-        console.log(
-          "💀 :: Get one data function failed! Error : " + err.message
-        );
+        console.log("💀 :: Get one data function failed! Error : " + err.message);
       }
     };
 
     getOneData();
   }, [id]);
 
-  const updateData = (e) => {
+  const handleItemChange = (itemId, isChecked) => {
+    const selectedItem = allMenuItems.find(item => item._id === itemId);
+    if (isChecked) {
+      setSelectedItems([...selectedItems, selectedItem]);
+      setTotalPrice(totalPrice + selectedItem.menuItemPrice);
+    } else {
+      const updatedItems = selectedItems.filter(item => item._id !== itemId);
+      setSelectedItems(updatedItems);
+      setTotalPrice(totalPrice - selectedItem.menuItemPrice);
+    }
+  };
+
+  const updateData = async (e) => {
     e.preventDefault();
 
     try {
-      let updateOrderItem = {
-        MenuItems : MenuItems,
-        OrderPrice: OrderPrice,
+      const updateOrderItem = {
+        menuItems: selectedItems,
+        OrderPrice: totalPrice,
       };
 
-      axios
-        .patch(`http://localhost:8000/order/Update/${id}`, updateOrderItem)
-        .then((res) => {
-          alert(res.data.message);
-          console.log(res.data.status);
-          console.log(res.data.message);
-          navigate("/OrdersAll");
-        })
-        .catch((err) => {
-          console.log(
-            "💀 :: Error on API URL or updateOrderItem object  : " + err.message
-          );
-        });
+      const response = await axios.patch(`http://localhost:8000/order/Update/${id}`, updateOrderItem);
+      alert(response.data.message);
+      console.log(response.data.status);
+      console.log(response.data.message);
+      navigate("/OrdersAll");
     } catch (err) {
-      console.log("💀 :: updateData Function failed Error : " + err.message);
+      console.log("💀 :: Update data function failed! Error : " + err.message);
+      alert("Failed to update order. Please try again.");
     }
   };
 
@@ -77,49 +80,35 @@ const OrderUpdateForm = () => {
         <h2>Update Order Details</h2>
 
         <form onSubmit={updateData}>
-          <div class="form-group mb-3">
-            <label for="Order_name">Order Name:</label>
-            <input
-              type="text"
-              class="form-control"
-              id="Order_name"
-              placeholder="Choose Order Items"
-              autoComplete="off"
-              onChange={(e) => setMenuItems(e.target.value)}
-              value={MenuItems}
-            />
+          <div className="form-group mb-3">
+            <label htmlFor="Order_name">Select Menu Items:</label>
+            {allMenuItems.map(item => (
+              <div key={item._id}>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={selectedItems.some(selectedItem => selectedItem._id === item._id)}
+                    onChange={e => handleItemChange(item._id, e.target.checked)}
+                  />
+                  {item.menuItemName} - {item.menuItemPrice} LKR
+                </label>
+              </div>
+            ))}
           </div>
 
-          {/* <div class="form-group mb-3">
-            <label for="Order_quantity">Quantity:</label>
-            <inputwdAD 
-              type="number"
-              class="form-control"
-              id="Order_quantity"
-              placeholder="Choose the quantity"
-              autoComplete="off"
-              min={0}
-              onChange={(e) => setOrderQuantity(e.target.value)}
-              value={OrderQuantity}
-            />
-          </div> */}
-
-          <div class="form-group mb3">
-            <label for="Order_amount">Full Amount(Rs):</label>
+          <div className="form-group mb3">
+            <label htmlFor="Order_amount">Total Amount(Rs):</label>
             <input
-              type="number"
-              class="form-control"
+              type="text"
+              className="form-control"
               id="AmountExample"
-              placeholder="Choose the amount"
-              autoComplete="off"
-              min={0}
-              onChange={(e) => setOrderPrice(e.target.value)}
-              value={OrderPrice}
+              value={totalPrice.toFixed(2)}
+              readOnly
             />
           </div>
 
           <div style={{marginTop: "20px"}} className="updatebtndiv">
-          <button type="submit" class="btn btn-primary submitbtn">Update</button>
+            <button type="submit" className="btn btn-primary submitbtn">Update</button>
           </div>
         </form>
       </div>
