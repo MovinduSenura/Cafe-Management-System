@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Invoice</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f5ff;
+            margin: 0;
+            padding: 0;
+        }
+        .logoContainer{
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .m-0{
+            margin: 0;
+            font-size: 0.8rem;
+        }
+        .templateContainer {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        .headerContainer {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .headerContainer h2 {
+            color: #0B4B8F;
+            font-weight: bold;
+            margin-top: 0;
+        }
+        .invoiceContainer {
+            margin-bottom: 20px;
+        }
+        .invoiceContainer p {
+            margin: 5px 0;
+            line-height: 1.5; /* Adjust line height as needed */
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        .table th, .table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .table th {
+            background-color: #0B4B8F;
+            color: #fff;
+        }
+        .table tfoot th {
+            text-align: right;
+            background-color: #0B4B8F;
+            color: #fff;
+        }
+        .infoContainer {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+        .infoContainer h5 {
+            color: #0B4B8F;
+            font-weight: bold;
+            margin-top: 0;
+        }
+        .noticeContainer p {
+            color: #6c757d;
+            text-align: center;
+        }
+        .footerContainer p {
+            color: #6c757d;
+            margin: 0;
+        }
+        .semiboldtext{
+            font-weight: 700;
+            color: #0B4B8F;
+        }
+        .copyright{
+            margin-top: 40px;
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+            font-size: 0.8rem;
+        }
+        .copyright a{
+            text-decoration: none;
+        }
+        .total{
+            font-weight: 700;
+        }
+        .total span{
+            font-weight: 700;
+            color: #0B4B8F;
+        }
+        .grandTotal{
+            color: #0B4B8F;
+        }
+        .centered-logo {
+            display: block;
+            margin: 0 auto; /* This will center the image horizontally */
+        }
+
+        .signatureContainer {
+            margin-top: 40px;
+            margin-bottom: 20px;
+            text-align: right;
+        }
+
+        .signatureLine {
+            border-bottom: 1px dotted #000;
+            width: 200px;
+            display: inline-block;
+            margin: 0;
+        }
+
+        .signatureText {
+            margin: 0;
+            font-size: 0.9rem;
+            color: #0B4B8F;
+        }
+
+    </style>
+</head>
+
+<body>
+    <section id="invoice">
+        <div class="templateContainer">
+            <div class="logoContainer">
+                <img src="data:image/png;base64,{{logoBuffer}}" alt="Logo" class="centered-logo" /> <!-- Use the logoBuffer variable -->
+            </div>
+            <div class="headerContainer">
+                <h2 class="display-5 fw-bold">Item Management Summery</h2>
+                <p class="m-0">Invoice No: 12345</p>
+                <p class="m-0">Invoice Date: 20 May, 2024</p>
+            </div>
+            <!-- <div class="invoiceContainer">
+                <div>
+                    <p class="text-primary">Invoice From</p>
+                    <h4>Ravi Indiwara</h4>
+                    <ul class="list-unstyled">
+                        <li>Cafe Espresso Elegance Pvt Ltd</li>
+                        <li>ravi.espresso@mail.com</li>
+                        <li>No 121/4, Marine Drive,</li>
+                        <li>Colombo</li>
+                    </ul>
+                </div>
+            </div> -->
+            <div class="invoiceContainer">
+                <div>
+                    <p class="text-primary">Invoice From</p>
+                    <h4>Ravi Indiwara</h4>
+                    <p>Cafe Espresso Elegance Pvt Ltd<br>
+                    ravi.espresso@mail.com<br>
+                    No 121/4, Marine Drive,<br>
+                    Colombo</p>
+                </div>
+            </div>            
+            <table class="table">
+                <thead>
+                    <tr class="tableRow">
+                        <th scope="col">No.</th>
+                        <th scope="col">Promotion Name</th>
+                        <th scope="col">Promotion Values</th>
+                        <th scope="col">Promotion Description</th>
+                        <!-- <th scope="col">Price</th>
+                        <th scope="col">Total</th> -->
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each promotionArray}}
+                    <tr>
+                        <td>{{@index}}</td>
+                        <td>{{this.promotionName}}</td>
+                        <td>{{this.promotionValues}}</td>
+                        <td>{{this.promotionDescription}}</td>
+                        <!-- <td>{{this.itemPrice}} LKR</td>
+                        <td>{{this.totalPrice}} LKR</td> -->
+                    </tr>
+                    {{/each}}
+                </tbody>
+                <!-- <tfoot>
+                    <tr>
+                        <td colspan="5" class="total grandTotal">Grand-Total:</td>
+                        <td class="total">{{grandTotal}} LKR</td>
+                    </tr>
+                </tfoot> -->
+            </table>
+
+            <div class="signatureContainer">
+                <p class="signatureLine"></p>
+                <p class="signatureText">Manager Signature</p>
+            </div>
+
+            <div class="infoContainer">
+                <div>
+                    <h5 class="fw-bold my-4">Contact Us</h5>
+                    <ul class="list-unstyled">
+                        <li>
+                            <iconify-icon class="social-icon text-primary fs-5 me-2" icon="mdi:location"
+                                style="vertical-align: text-bottom"></iconify-icon>
+                            Cafe Espresso Elegance Pvt Ltd, No 121/4, Marine Drive, Colombo
+                        </li>
+                        <li>
+                            <iconify-icon class="social-icon text-primary fs-5 me-2" icon="solar:phone-bold"
+                                style="vertical-align: text-bottom"></iconify-icon>
+                            (+94) 71-3464111
+                        </li>
+                        <li>
+                            <iconify-icon class="social-icon text-primary fs-5 me-2" icon="ic:baseline-email"
+                                style="vertical-align: text-bottom"></iconify-icon>
+                            cafe.espresso@mail.com
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="fw-bold my-4">Payment Info</h5>
+                    <ul class="list-unstyled">
+                        <li>
+                            <span class="fw-semibold">Account No: </span> 102 3345 56938
+                        </li>
+                        <li>
+                            <span class="fw-semibold">Account Name: </span> Ravi Indiwara
+                        </li>
+                        <li><span class="fw-semibold">Branch Name: </span> XYZ</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="noticeContainer">
+                <p class="text-muted">
+                    <span class="semiboldtext">NOTICE: </span> Invoice data may be
+                    inaccurate. Exercise discretion.
+                </p>
+            </div>
+            <div id="footer-bottom">
+                <div class="footerContainer">
+                    <div class="row mt-3">
+                        <div class="copyright">
+                            <p>
+                                © 2024 Cafe Espresso Elegance Pvt Ltd.
+                                <a href="#" target="_blank">Terms & Conditions</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>
