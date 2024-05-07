@@ -238,6 +238,9 @@ const MenuAllItems = () => {
                         <button type="button" className="btn btn-secondary btn-lg LogoutBtn" onClick={logout}>Logout</button>
                     </div>
                     <div className="addbtndiv"><Link to='/menucreateform'><button type="button" className="btn btn-secondary btn-lg AddItemBtn">Add Item</button></Link></div>
+                    <div className="reportbtndiv">
+                        <button type="button" className="btn btn-secondary btn-lg ReportBtn" onClick={downloadInvoice}>Download Menu Leaflet</button>        
+                    </div>
                     {/* <div className="logoutdiv">
                         <button type="button" className="btn btn-secondary btn-lg LogoutBtn" onClick={downloadInvoice}>Download Menu Leaflet</button>
                     </div> */}
@@ -292,10 +295,10 @@ const MenuAllItems = () => {
                             </tbody>
                         </table>
                     </div>
-                        <div className="reportbtndiv" style={{marginTop: "55px"}}>
+                        {/* <div className="reportbtndiv" style={{marginTop: "55px"}}>
                             <button type="button" className="btn btn-secondary btn-lg ReportBtn" onClick={downloadInvoice}>Download Menu Leaflet</button>
                             
-                        </div>
+                        </div> */}
                 </div>
             </div>
         </div>
