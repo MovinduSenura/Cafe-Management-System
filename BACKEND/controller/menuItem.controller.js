@@ -1,4 +1,5 @@
 const menuItemModel = require("../models/menuItem.model");
+const OrderModel = require("../models/Order.model");
 const pdfCreator = require('pdf-creator-node');
 const fs = require('fs'); //Use Node.js's fs module to delete the file from the filesystem.
 const path = require('path');
@@ -6,39 +7,6 @@ const moment = require("moment"); //Use for format date and time
 
 
 //Add/Create item router controller
-// const addmenuItem = async (req, res) => {
-
-//     try{
-
-//         const {menuItemName, menuItemDescription, menuItemCategory, menuItemPrice, menuItemAvailability } = req.body;
-
-//         const menuItemImage = req.file.filename; //Extract the filename from the uploaded file
-
-//         const newmenuItem = {
-//             menuItemImage: menuItemImage,
-//             menuItemName: menuItemName,
-//             menuItemDescription: menuItemDescription,
-//             menuItemCategory: menuItemCategory,
-//             menuItemPrice: menuItemPrice,
-//             menuItemAvailability: menuItemAvailability,
-//         }
-
-//         const newmenuItemObj = new menuItemModel(newmenuItem);
-//         await newmenuItemObj.save();
-
-//         return res.status(200).send({
-//             status: true,
-//             message: "✨ :: Data saved successfully!"
-//         })
-
-//     }catch(err){
-//         return res.status(500).send({
-//             status: false,
-//             message: err.message
-//         })
-//     }
-// }
-
 const addmenuItem = async (req, res) => {
     try {
         const { menuItemName, menuItemDescription, menuItemCategory, menuItemPrice, menuItemAvailability } = req.body;
@@ -122,18 +90,72 @@ const addmenuItem = async (req, res) => {
     }
 }
 
+//Get most popular item router controller - this function needed in getAllMenuItems router controller function
+const getMostPopularItems = async () => {
+    try {
+        const popularItems = await OrderModel.aggregate([
+            // Unwind the menuItems array to get individual menu items
+            { $unwind: "$menuItems" },
+            // Group by menuItem and count occurrences
+            {
+                $group: {
+                    _id: "$menuItems",
+                    count: { $sum: 1 }
+                }
+            },
+            // Sort by count in descending order
+            { $sort: { count: -1 } },
+            // Limit to the top 4 most popular items
+            { $limit: 1 }
+        ]);
+
+        // Retrieve details of the most popular items from the MenuItemModel
+        const mostPopularItemsDetails = await Promise.all(popularItems.map(async item => {
+            const menuItem = await menuItemModel.findById(item._id);
+            return {
+                menuItemId: menuItem._id,
+                menuItemName: menuItem ? menuItem.menuItemName : "Unknown",
+                count: item.count
+            };
+        }));    
+
+        return mostPopularItemsDetails;
+
+    } catch (err) {
+        console.error('Error retrieving most popular item:', err);
+        throw err; // Let the error propagate up to the caller
+    }
+};
+
 
 //Get all items router controller
 const getAllmenuItems = async (req, res) => {
 
     try{
 
+        // Fetch all menu items
         const allmenuItems = await menuItemModel.find();
+       
+
+        // Get the most popular items
+        const popularItems = await getMostPopularItems();
+       
+
+        // Create a map to store popular item IDs
+        const popularItemIDs = new Set(popularItems.map(item => item.menuItemId.toString()));
+       
+
+        // Add a 'popular' field to each menu item indicating popularity
+        const menuItemsWithPopularity = allmenuItems.map(item => ({
+            ...item.toObject(),
+            popular: popularItemIDs.has(item._id.toString())
+        }));
+       
 
         return res.status(200).send({
             status: true,
             message: "✨ :: All items are fetched",
-            AllmenuItems: allmenuItems,
+            AllmenuItems: menuItemsWithPopularity,
         })
 
     }catch(err){
@@ -198,7 +220,7 @@ const searchmenuItem = async (req, res) => {
 
 //Update item details router controller
 const updatemenuItem = async (req, res) => {
-    
+   
     try{
 
     const menuItemID = req.params.id;
@@ -267,7 +289,7 @@ const updatemenuItem = async (req, res) => {
 
     // Check if file exists in the request then only send image with itemData object
     if (req.file) {
-        existingmenuItem.menuItemImage = req.file.filename; // Extract the filename from the uploaded file
+        existingmenuItem.menuItemImage = req.file.filename; // Extract the filename from the uploaded file
     }
 
     const updatemenuItemObj = await menuItemModel.findByIdAndUpdate(menuItemID, existingmenuItem);
