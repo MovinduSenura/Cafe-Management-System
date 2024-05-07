@@ -105,11 +105,11 @@ const getMostPopularItems = async () => {
             },
             // Sort by count in descending order
             { $sort: { count: -1 } },
-            // Limit to the top 4 most popular items
+            // Limit to most popular item
             { $limit: 1 }
         ]);
 
-        // Retrieve details of the most popular items from the MenuItemModel
+        // Retrieve details of the most popular item from the MenuItemModel
         const mostPopularItemsDetails = await Promise.all(popularItems.map(async item => {
             const menuItem = await menuItemModel.findById(item._id);
             return {
