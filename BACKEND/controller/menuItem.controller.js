@@ -1,4 +1,9 @@
 const menuItemModel = require("../models/menuItem.model");
+const pdfCreator = require('pdf-creator-node');
+const fs = require('fs'); //Use Node.js's fs module to delete the file from the filesystem.
+const path = require('path');
+const moment = require("moment"); //Use for format date and time
+
 
 //Add/Create item router controller
 // const addmenuItem = async (req, res) => {
@@ -302,6 +307,85 @@ const deletemenuItem = async (req, res) => {
     }
 }
 
+
+// Function to generate and serve the PDF invoice
+const menuItemgenerateInvoice = async (req, res) => {
+    try {
+        // Read the HTML template for the invoice
+        const htmlTemplate = fs.readFileSync(path.join(__dirname, '../template/menu-invoice-template.html'), 'utf-8');
+
+        // Generate a timestamp for the filename
+        const timestamp = moment().format('YYYY_MMMM_DD_HH_mm_ss');
+        const filename = `Menu_Item_Management_${timestamp}_doc.pdf`;
+
+        // Fetch all menu items from the database
+        const menuItems = await menuItemModel.find({});
+
+        // Initialize an array to hold the transformed menu items
+        let menuItemArray = [];
+
+        // Transform each menu item and add it to the array
+        menuItems.forEach(i => {
+            // Convert menuItemAvailability from true/false to "Yes"/"No"
+            const menuItemAvailability = i.menuItemAvailability ? "Yes" : "No";
+
+            const menit = {
+                menuItemName: i.menuItemName,
+                menuItemCategory: i.menuItemCategory,
+                menuItemPrice: i.menuItemPrice,
+                menuItemAvailability: menuItemAvailability, // Use "Yes" or "No" instead of true or false
+            };
+
+            // Push the transformed menu item into the array
+            menuItemArray.push(menit);
+        });
+
+        // Calculate the logo path and load the logo image asynchronously
+        const logoPath = path.join(__dirname, '../template/images/logo.png');
+        const logoBuffer = await fs.promises.readFile(logoPath);
+        // Encode the logo buffer to base64
+        const logoBase64 = logoBuffer.toString('base64');
+
+        // Set the PDF options
+        const options = {
+            format: 'A4',
+            orientation: 'portrait',
+            border: '10mm',
+            header: {
+                height: '0mm',
+            },
+            footer: {
+                height: '0mm',
+            },
+            zoomFactor: '1.0',
+            type: 'buffer',
+        };
+
+        // Create the document object with the HTML template, data, and file path
+        const document = {
+            html: htmlTemplate,
+            data: {
+                menuItemArray,
+                logoBuffer: logoBase64, // Pass the logo buffer to the HTML template
+            },
+            path: `./docs/${filename}`,
+        };
+
+        // Generate the PDF and save it to the specified path
+        const pdfBuffer = await pdfCreator.create(document, options);
+
+        // Build the file path URL for the response
+        const filepath = `http://localhost:8000/docs/${filename}`;
+
+        // Send the file path in the response
+        res.status(200).json({ filepath });
+    } catch (error) {
+        console.error('Error generating PDF invoice:', error);
+        res.status(500).send('Internal Server Error');
+    }
+};
+
+
 module.exports = {
     addmenuItem,
     getAllmenuItems,
@@ -309,4 +393,5 @@ module.exports = {
     searchmenuItem,
     updatemenuItem,
     deletemenuItem,
+    menuItemgenerateInvoice,
 }
