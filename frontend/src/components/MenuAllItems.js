@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './DataTable.css'
+//import { saveAs } from 'file-saver';
 
 const MenuAllItems = () => {
     const [menuAllItems, setMenuAllItems] = useState([]);
@@ -109,6 +110,114 @@ const MenuAllItems = () => {
         navigate('/')
     }
 
+    //generate Invoice
+  const downloadInvoice = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.get(
+        "http://localhost:8000/menu/generate-menu-invoice",
+        
+      );
+
+      const { filepath } = response.data;
+
+      // Create a new <a> element to simulate a download link
+      const link = document.createElement("a");
+      // Set the href attribute of the link to the filepath of the generated invoice
+      link.href = filepath;
+      // Set the "download" attribute to specify the default file name for the downloaded file
+      link.setAttribute("download", "invoice.pdf");
+      // Append the link to the document body
+      document.body.appendChild(link);
+
+      // Simulate a click on the link to trigger the download
+      link.click();
+
+       // Remove the link from the document body after the download is complete
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Error downloading invoice:", error.message);
+    }
+  };
+
+// const downloadInvoice = async (e) => {
+//     e.preventDefault();
+//     try {
+//       const response = await axios.get("http://localhost:8000/menu/generate-menu-invoice", {
+//         responseType: 'blob', // Set the response type to 'blob' to receive the file
+//       });
+  
+//       const blob = new Blob([response.data], { type: 'application/pdf' });
+//       const url = window.URL.createObjectURL(blob);
+//       const link = document.createElement('a');
+//       link.href = url;
+//       link.setAttribute('download', 'menu-invoice.pdf');
+//       document.body.appendChild(link);
+//       link.click();
+//       document.body.removeChild(link);
+//       window.URL.revokeObjectURL(url);
+//     } catch (error) {
+//       console.error("Error downloading invoice:", error.message);
+//     }
+//   };
+// const downloadInvoice = async (e) => {
+//     e.preventDefault();
+//     try {
+//       const response = await axios.get("http://localhost:8000/menu/generate-menu-invoice", {
+//         responseType: 'text', // Set the response type to 'blob' to receive the file
+//       });
+  
+//       const blob = new Blob([response.data], { type: 'application/pdf' });
+//       console.log(response)
+//       const url = window.URL.createObjectURL(blob);
+//       const link = document.createElement('a');
+//       link.href = url;
+//       link.setAttribute('download', 'Menu_Item_Management_2024_May_05_03_50_51_doc.pdf');
+//       document.body.appendChild(link);
+//       link.click();
+//       document.body.removeChild(link);
+//       window.URL.revokeObjectURL(url);
+//     } catch (error) {
+//       console.error("Error downloading invoice:", error.message);
+//     }
+//   };
+
+// const downloadInvoice = async (e) => {
+//     e.preventDefault();
+//     try {
+//         // Send a GET request and set response type to 'text'
+//         const response = await axios.get("http://localhost:8000/menu/generate-menu-invoice", {
+//             responseType: 'text', // Use 'text' because the server response is a JSON string
+//         });
+        
+//         // Parse the response data as JSON
+//         const responseData = JSON.parse(response.data);
+        
+//         // Extract the filepath from the parsed JSON object
+//         const filepath = responseData.filepath;
+        
+//         // Now you can use the filepath as needed
+//         console.log('Filepath:', filepath);
+        
+//         // Download the file from the filepath URL
+//         const downloadResponse = await axios.get(filepath, {
+//             responseType: 'blob', // Set response type to 'blob' to receive the file
+//         });
+
+//         const blob = new Blob([downloadResponse.data], { type: 'application/pdf' });
+//         const url = window.URL.createObjectURL(blob);
+//         const link = document.createElement('a');
+//         link.href = url;
+//         link.setAttribute('download', 'Menu Leaflet.pdf'); // Specify your desired file name
+//         document.body.appendChild(link);
+//         link.click();
+//         document.body.removeChild(link);
+//         window.URL.revokeObjectURL(url);
+//     } catch (error) {
+//         console.error("Error downloading invoice:", error.message);
+//     }
+// };
+
     return (
         <div className="alldiv">
 
@@ -129,6 +238,9 @@ const MenuAllItems = () => {
                         <button type="button" className="btn btn-secondary btn-lg LogoutBtn" onClick={logout}>Logout</button>
                     </div>
                     <div className="addbtndiv"><Link to='/menucreateform'><button type="button" className="btn btn-secondary btn-lg AddItemBtn">Add Item</button></Link></div>
+                    {/* <div className="logoutdiv">
+                        <button type="button" className="btn btn-secondary btn-lg LogoutBtn" onClick={downloadInvoice}>Download Menu Leaflet</button>
+                    </div> */}
                     <div className="tablediv">
 
                         <ToastContainer/>
@@ -180,6 +292,10 @@ const MenuAllItems = () => {
                             </tbody>
                         </table>
                     </div>
+                        <div className="reportbtndiv" style={{marginTop: "55px"}}>
+                            <button type="button" className="btn btn-secondary btn-lg ReportBtn" onClick={downloadInvoice}>Download Menu Leaflet</button>
+                            
+                        </div>
                 </div>
             </div>
         </div>
