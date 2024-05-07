@@ -8,6 +8,7 @@ const {
     getOneCustomer,
     updateCustomer,
     deleteCustomer,
+    customerGenerateInvoice,
     searchCustomer,
     addFeedback,
     getFeedback,
@@ -27,6 +28,7 @@ CustomerRouter.get('/customer/:id', getOneCustomer);
 CustomerRouter.patch('/customerUpdate/:id', updateCustomer);
 CustomerRouter.delete('/customerdelete/:id', deleteCustomer);
 CustomerRouter.get('/customersearch', searchCustomer);
+CustomerRouter.get('/customer-generate-invoice', customerGenerateInvoice)
 
 //Sithmi
 CustomerRouter.post('/addfeedback/:userid', addFeedback);
