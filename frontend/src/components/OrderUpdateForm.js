@@ -9,8 +9,9 @@ const OrderUpdateForm = () => {
   //     <div>OrderUpdateForm</div>
   //   )
 
-  const [OrderName, setOrderName] = useState("");
-  const [OrderQuantity, setOrderQuantity] = useState("");
+  // const [OrderName, setOrderName] = useState("");
+  // const [OrderQuantity, setOrderQuantity] = useState("");
+  const [MenuItems,setMenuItems] = useState("");
   const [OrderPrice, setOrderPrice] = useState("");
 
   //using useParams to catch the id from url and assign it to the id
@@ -23,8 +24,9 @@ const OrderUpdateForm = () => {
         await axios
           .get(`http://localhost:8000/order/oneOrder/${id}`)
           .then((res) => {
-            setOrderName(res.data.order.OrderName);
-            setOrderQuantity(res.data.order.OrderQuantity);
+            // setOrderName(res.data.order.OrderName);
+            // setOrderQuantity(res.data.order.OrderQuantity);
+            setMenuItems(res.data.order.menuItemName);
             setOrderPrice(res.data.order.OrderPrice);
             console.log("✨ :: Item fetched successfully!");
           })
@@ -47,8 +49,7 @@ const OrderUpdateForm = () => {
 
     try {
       let updateOrderItem = {
-        OrderName: OrderName,
-        OrderQuantity: OrderQuantity,
+        MenuItems : MenuItems,
         OrderPrice: OrderPrice,
       };
 
@@ -84,14 +85,14 @@ const OrderUpdateForm = () => {
               id="Order_name"
               placeholder="Choose Order Items"
               autoComplete="off"
-              onChange={(e) => setOrderName(e.target.value)}
-              value={OrderName}
+              onChange={(e) => setMenuItems(e.target.value)}
+              value={MenuItems}
             />
           </div>
 
-          <div class="form-group mb-3">
+          {/* <div class="form-group mb-3">
             <label for="Order_quantity">Quantity:</label>
-            <input
+            <inputwdAD 
               type="number"
               class="form-control"
               id="Order_quantity"
@@ -101,7 +102,7 @@ const OrderUpdateForm = () => {
               onChange={(e) => setOrderQuantity(e.target.value)}
               value={OrderQuantity}
             />
-          </div>
+          </div> */}
 
           <div class="form-group mb3">
             <label for="Order_amount">Full Amount(Rs):</label>
