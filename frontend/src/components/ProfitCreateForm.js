@@ -5,7 +5,6 @@ import './ProfitCreateForm.css';
 
 const ProfitCreateForm = () => {
     const [PaymentAll, setPaymentAll] = useState([]);
-    const [staffSalary, setStaffSalary] = useState(''); // State to store total staff salary
     const [income, setIncome] = useState('');
     const [salary, setSalary] = useState();
     const [other, setOther] = useState('');
@@ -37,7 +36,6 @@ const ProfitCreateForm = () => {
                 console.log("💀 :: Error fetching staff data! ERROR : ", err.message);
             }
         }
-        
 
         const totalIncome = calculateTotal();
         setIncome(totalIncome);
@@ -59,6 +57,7 @@ const ProfitCreateForm = () => {
         try {
             let newProfitData = {
                 income: income,
+                salary:salary,
                 other: other,
                 profit: profit
             }

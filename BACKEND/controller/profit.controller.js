@@ -1,34 +1,58 @@
 const profitModel = require("../models/profit.model");
 
-//Add item router controller
-const addProfit = async(req,res) => { //async---java script is single threaded. So this cannot do two functions together that's why we use async.....await
+// Add item router controller with validation
+const addProfit = async (req, res) => {
+    try {
+        // Request body has already been validated by the middleware
+        const { income, salary, other, profit } = req.body;
 
-    try{
-    const{income,salary,other,profit} = req.body;
+        const newProfitData = {
+            income: income,
+            salary: salary,
+            other: other,
+            profit: profit
+        }
 
-    const newProfitData = {
-        income:income,
-        // salary:salary,
-        other:other,
-        profit:profit
+        const newProfitObj = new profitModel(newProfitData);
+        await newProfitObj.save();
+
+        return res.status(200).send({
+            status: true,
+            message: "🌟 :: Data saved successfully!"
+        })
+    } catch (err) {
+        return res.status(500).send({
+            status: false,
+            message: err.message
+        })
     }
-
-    //newProfitObj->ProfitModel object  ---assign newProfitData object data into newProfitObj
-    const newProfitObj = new profitModel(newProfitData);
-    await newProfitObj.save();//until async part done this part will be hold
-
-    //static codes(alsways like this in res. Only change the number)
-    return res.status(200).send({
-        status: true,
-        message:"🌟 :: Data saved successfuly!"
-    })
-}catch(err){
-    return res.status(500).send({
-        status: false,
-        message: err.message
-    })
 }
 
+// Update item details router controller with validation
+const updateProfit = async (req, res) => {
+    try {
+        const profitID = req.params.id;
+        const { income, salary, other, profit } = req.body;
+
+        const ProfitData = {
+            income: income,
+            salary: salary,
+            other: other,
+            profit: profit
+        }
+
+        const updateProfitObj = await profitModel.findByIdAndUpdate(profitID, ProfitData);
+
+        return res.status(200).send({
+            status: true,
+            message: "🌟 :: Profit updated!"
+        })
+    } catch (err) {
+        return res.status(500).send({
+            status: false,
+            message: err.message,
+        })
+    }
 }
 
 
@@ -74,35 +98,6 @@ const getOneProfit = async(req,res) => {
 
     }               
 }
-
-//Update item details router controller
-const updateProfit = async(req,res) => {
-
-    try{
-        const profitID =  req.params.id;
-        const{ income,salary,other,profit } = req.body;
-
-        const ProfitData = {
-            income:income,
-            salary:salary,
-            other:other,
-            profit:profit
-        }
-
-        const updateProfitObj = await profitModel.findByIdAndUpdate(profitID,ProfitData);
-
-        return res.status(200).send({
-            status:true,
-            message:"🌟 :: Profit updated!"
-        })
-    }catch(err){
-        return res.status(500).send({
-            status:false,
-            message:err.message,
-        })
-    }
-}
-
 
 module.exports = {
     addProfit, 

@@ -10,16 +10,15 @@ const PaymentCreateForm = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [customerData, setCustomerData] = useState('');
     const [searchInput, setSearchInput] = useState('');
-
     const [total, setTotal] = useState(0);
     const [paymentAmount, setPaymentAmount] = useState(0);
     const [payableAmount, setPayableAmount] = useState(0);
     const [redeemedPoints, setRedeemedPoints] = useState(0);
     const [redeemPointsInput, setRedeemPointsInput] = useState(0);
     const [selectedPromotion, setSelectedPromotion] = useState("");
-
     const [orderItem, setorderItem] = useState([]);
     const [orderPrice, setorderPrice] = useState();
+    const [loyaltyButtonDisabled, setLoyaltyButtonDisabled] = useState(false); // State variable to track if loyalty button is disabled
 
     const { id } = useParams();
     const navigate = useNavigate();
@@ -32,17 +31,11 @@ const PaymentCreateForm = () => {
                 setorderItem(res.data.order.menuItems);
                 setorderID(res.data.order._id);
 
-                console.log("Order", res.data.order);
-
                 const data = res.data.order;
-                let totalPrice = 0;
-
-                totalPrice = data.OrderPrice;
+                let totalPrice = data.OrderPrice;
 
                 setTotal(totalPrice);
                 setPayableAmount(totalPrice);
-
-                console.log("Total price : ", total);
             } catch (err) {
                 console.log("Error fetching last document:", err.message);
             }
@@ -69,6 +62,14 @@ const PaymentCreateForm = () => {
         setPaymentAmount(value);
     };
 
+    const validatePaymentAmount = (value) => {
+        if (!value || isNaN(value) || value <= 0) {
+            alert("Invalid payment amount. Please enter a valid amount.");
+            return false;
+        }
+        return true;
+    };
+    
 
     const calculateChange = () => {
         let change;
@@ -84,28 +85,26 @@ const PaymentCreateForm = () => {
     const handlePromotionChange = (event) => {
         setSelectedPromotion(event.target.value);
 
-        // Retrieve the selected promotion object from the promotions array
         const selectedPromotion = promotions.find(promotion => promotion._id === event.target.value);
 
         if (selectedPromotion) {
-            // Calculate the discount amount based on the promotionValues 
             const discountPercentage = selectedPromotion.promotionValues;
             const discountAmount = (total * discountPercentage) / 100;
 
-            // Subtract the discount amount from the total to get the new total price
             const newTotalPrice = total - discountAmount;
 
-            // Update the payable amount with the new total price
             setPayableAmount(newTotalPrice);
         } else {
-            // If the selected promotion is not found, reset the payable amount to the original total
             setPayableAmount(total);
         }
     };
 
-
     const sendData = async (e) => {
         e.preventDefault();
+
+        if (!validatePaymentAmount(paymentAmount)) {
+            return;
+        }
 
         try {
 
@@ -118,16 +117,14 @@ const PaymentCreateForm = () => {
             axios.post('http://localhost:8000/payment/create', newPaymentData)
                 .then((res) => {
                     alert(res.data.message);
-                    console.log(res.data.status);
-                    console.log(res.data.message);
                     navigate('/ordercreate');
                 })
                 .catch((err) => {
-                    console.log("💀 :: Error on API URL or newPaymentData object : " + err.message);
+                    console.log("Error on API URL or newPaymentData object : " + err.message);
                 })
 
         } catch (err) {
-            console.log("💀 :: sendData function failed! ERROR : " + err.message);
+            console.log("sendData function failed! ERROR : " + err.message);
         }
     }
 
@@ -139,7 +136,6 @@ const PaymentCreateForm = () => {
         try {
             const response = await axios.get(`http://localhost:8000/customer/customerByFind/${searchInput}`);
             setCustomerData(response.data);
-            console.log('Customer : ', customerData)
         } catch (error) {
             console.error('Error fetching customer data:', error);
         }
@@ -193,7 +189,7 @@ const PaymentCreateForm = () => {
                 customerLoyaltyPoints: updatedLoyaltyPoints
             });
 
-            setPayableAmount(payableAmount - (loyaltyPointsToRedeem * 0.5)); // Deduct from payable amount
+            setPayableAmount(payableAmount - (loyaltyPointsToRedeem * 0.5));
             setRedeemedPoints(redeemedPoints + loyaltyPointsToRedeem);
             setCustomerData({ ...customerData, customerLoyaltyPoints: updatedLoyaltyPoints });
         } catch (error) {
@@ -201,57 +197,51 @@ const PaymentCreateForm = () => {
         }
     };
 
-
-
+    // Function to handle loyalty button click
+    const handleLoyaltyButtonClick = async () => {
+        setLoyaltyButtonDisabled(true); // Disable the button
+        try {
+            await addLoyaltyPoints();
+        } catch (error) {
+            console.error('Error adding loyalty points:', error);
+            setErrorMessage('Error adding loyalty points');
+        }
+    };
 
     return (
         <div className="PaymentContainer">
-
             <div className="PaymentWidthBlanceDiv">
-
                 <div className="paymentTableContainer">
                     <div className="orderIdDiv">
                         <p>OrderID: {orderID}</p>
                     </div>
-
                     <div className="paymentTableWrapper">
-                        <table class="paymentTable">
+                        <table className="paymentTable">
                             <thead>
                                 <tr>
                                     <th scope="col">No</th>
                                     <th scope="col">Order Items</th>
-                                    {/* <th scope="col">Quantity</th> */}
                                     <th scope="col">Price</th>
                                 </tr>
                             </thead>
                             <tbody>
-
-
                                 <tr>
                                     <th scope="row">1</th>
                                     <td>
                                         <ul>
-
                                             {orderItem.map(item => (
                                                 <li key={item._id}>
                                                     {item.menuItemName} - {item.menuItemPrice ? item.menuItemPrice.toFixed(2) : 'N/A'}LKR
                                                 </li>
                                             ))}
-
                                         </ul>
                                     </td>
-                                    {/* <td>{order.OrderQuantity}</td> */}
                                     <td>{orderPrice}</td>
                                 </tr>
-
-
-
-
                             </tbody>
                         </table>
                     </div>
                 </div>
-
                 <div className="paymentSideView">
                     <div className="calculationPhase">
                         <div className="paymentTotalPhase">
@@ -265,7 +255,6 @@ const PaymentCreateForm = () => {
                                     <option key={promotion._id} value={promotion._id}>{promotion.promotionName}</option>
                                 ))}
                             </select>
-
                         </div>
                         <div className="paymentPayableAmountPhase">
                             <p>Payable Amount: <h3>{payableAmount} LKR</h3></p>
@@ -273,7 +262,7 @@ const PaymentCreateForm = () => {
                     </div>
                     <div className="balancePhase">
                         <div className="paymentAmountDiv">
-                            <label for="paymentAmount">Payment Amount(LKR):</label>
+                            <label htmlFor="paymentAmount">Payment Amount(LKR):</label>
                             <input type="text" id="paymentAmount" name="paymentAmount" value={paymentAmount} onChange={handleChange} placeholder="Enter amount tendered" />
                         </div>
                         <div className="changeDiv">
@@ -283,18 +272,18 @@ const PaymentCreateForm = () => {
                 </div>
                 <div className="loyalityPhase">
                     <div className="loyalityChangeDiv">
-                        <div class="input-group mb-3 loyalitysearch">
+                        <div className="input-group mb-3 loyalitysearch">
                             <input 
                                 type="text"
                                 value={searchInput}
                                 onChange={handleInputChange}
-                                class="form-control"
+                                className="form-control"
                                 placeholder="Enter customer phone number or name"
                                 aria-label="Enter customer phone number or name"
                                 aria-describedby="basic-addon2"
                             />
-                            <div class="input-group-append">
-                                <button onClick={fetchCustomerData} class="btn btn-outline-secondary" type="button">Search</button>
+                            <div className="input-group-append">
+                                <button onClick={fetchCustomerData} className="btn btn-outline-secondary" type="button">Search</button>
                             </div>
                         </div>
                     </div>
@@ -305,27 +294,25 @@ const PaymentCreateForm = () => {
                         </div>
                     )}
                     <div className="PaymentButtonDiv">
-                        <button onClick={addLoyaltyPoints} class="btn btn-success">Add Loyalty Points</button>
+                        <button onClick={handleLoyaltyButtonClick} className="btn btn-success" disabled={loyaltyButtonDisabled}>Add Loyalty Points</button>
                     </div>
                     <div className="changeDiv">
                         <input
                             type="text"
                             value={redeemPointsInput}
-                            class="form-control"
+                            className="form-control"
                             onChange={handleRedeemPointsInputChange}
                             placeholder="Enter points to redeem or 'all'"
                         />
                     </div>
                     <div className="PaymentButtonDiv">
-                        <button onClick={redeemLoyaltyPoints} class="btn btn-danger">Redeem Loyalty Points</button>
+                        <button onClick={redeemLoyaltyPoints} className="btn btn-danger">Redeem Loyalty Points</button>
                     </div>
                     <div className="PaymentButtonDiv">
-                        <button class="custom-button" onClick={sendData}>Done</button>
+                        <button className="custom-button" onClick={sendData}>Done</button>
                     </div>
                 </div>
-
             </div>
-
         </div>
     )
 };
