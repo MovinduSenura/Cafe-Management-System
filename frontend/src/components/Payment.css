@@ -134,10 +134,6 @@ color: #35291c;
   border-color: #007bff;
 }
 
-
-
-
-
 .paymentPayableAmountPhase{
   display: grid;
   grid-template-columns: auto auto;
