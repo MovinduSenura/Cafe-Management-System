@@ -4,7 +4,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './DataTable.css'
-//import { saveAs } from 'file-saver';
 
 const MenuAllItems = () => {
     const [menuAllItems, setMenuAllItems] = useState([]);
@@ -58,7 +57,6 @@ const MenuAllItems = () => {
     //search function
 
     const SearchFunction = async (searchTerm) => {
-        // e.preventDefault();
 
         try {
             await axios.get('http://localhost:8000/menu/searchmenuItem', {
@@ -91,12 +89,8 @@ const MenuAllItems = () => {
 
         if (searchTerm === '') { // when placeholder empty fetch all data
             setMenuAllItems(allOriginalMenuItems); // Fetch all data when search term is empty
-            // setSearchString("");
         } else {
             await SearchFunction(searchTerm);
-            // if(searchString != ''){
-            //     setSearchString("");
-            // }
         }
     };
 
@@ -140,91 +134,10 @@ const MenuAllItems = () => {
     }
   };
 
-// const downloadInvoice = async (e) => {
-//     e.preventDefault();
-//     try {
-//       const response = await axios.get("http://localhost:8000/menu/generate-menu-invoice", {
-//         responseType: 'blob', // Set the response type to 'blob' to receive the file
-//       });
-  
-//       const blob = new Blob([response.data], { type: 'application/pdf' });
-//       const url = window.URL.createObjectURL(blob);
-//       const link = document.createElement('a');
-//       link.href = url;
-//       link.setAttribute('download', 'menu-invoice.pdf');
-//       document.body.appendChild(link);
-//       link.click();
-//       document.body.removeChild(link);
-//       window.URL.revokeObjectURL(url);
-//     } catch (error) {
-//       console.error("Error downloading invoice:", error.message);
-//     }
-//   };
-// const downloadInvoice = async (e) => {
-//     e.preventDefault();
-//     try {
-//       const response = await axios.get("http://localhost:8000/menu/generate-menu-invoice", {
-//         responseType: 'text', // Set the response type to 'blob' to receive the file
-//       });
-  
-//       const blob = new Blob([response.data], { type: 'application/pdf' });
-//       console.log(response)
-//       const url = window.URL.createObjectURL(blob);
-//       const link = document.createElement('a');
-//       link.href = url;
-//       link.setAttribute('download', 'Menu_Item_Management_2024_May_05_03_50_51_doc.pdf');
-//       document.body.appendChild(link);
-//       link.click();
-//       document.body.removeChild(link);
-//       window.URL.revokeObjectURL(url);
-//     } catch (error) {
-//       console.error("Error downloading invoice:", error.message);
-//     }
-//   };
-
-// const downloadInvoice = async (e) => {
-//     e.preventDefault();
-//     try {
-//         // Send a GET request and set response type to 'text'
-//         const response = await axios.get("http://localhost:8000/menu/generate-menu-invoice", {
-//             responseType: 'text', // Use 'text' because the server response is a JSON string
-//         });
-        
-//         // Parse the response data as JSON
-//         const responseData = JSON.parse(response.data);
-        
-//         // Extract the filepath from the parsed JSON object
-//         const filepath = responseData.filepath;
-        
-//         // Now you can use the filepath as needed
-//         console.log('Filepath:', filepath);
-        
-//         // Download the file from the filepath URL
-//         const downloadResponse = await axios.get(filepath, {
-//             responseType: 'blob', // Set response type to 'blob' to receive the file
-//         });
-
-//         const blob = new Blob([downloadResponse.data], { type: 'application/pdf' });
-//         const url = window.URL.createObjectURL(blob);
-//         const link = document.createElement('a');
-//         link.href = url;
-//         link.setAttribute('download', 'Menu Leaflet.pdf'); // Specify your desired file name
-//         document.body.appendChild(link);
-//         link.click();
-//         document.body.removeChild(link);
-//         window.URL.revokeObjectURL(url);
-//     } catch (error) {
-//         console.error("Error downloading invoice:", error.message);
-//     }
-// };
-
     return (
         <div className="alldiv">
-
             <div className="maintablecontainer">
-
                 <div className="tableHead">
-
                     <div className="search-container">
                         <form className="searchTable" onSubmit={handleFormSubmit}>
                             <input id="searchBar" type="text" value={menuItemName} onChange={handleSearchChange} placeholder="Search..." name="search"/>
@@ -241,9 +154,7 @@ const MenuAllItems = () => {
                     <div className="reportbtndiv">
                         <button type="button" className="btn btn-secondary btn-lg ReportBtn" onClick={downloadInvoice}>Download Menu Leaflet</button>        
                     </div>
-                    {/* <div className="logoutdiv">
-                        <button type="button" className="btn btn-secondary btn-lg LogoutBtn" onClick={downloadInvoice}>Download Menu Leaflet</button>
-                    </div> */}
+
                     <div className="tablediv">
 
                         <ToastContainer/>
@@ -278,7 +189,6 @@ const MenuAllItems = () => {
                                         <td>{menuitems.menuItemCategory}</td>
                                         <td>{menuitems.menuItemPrice}</td>
                                         <td>{menuitems.menuItemAvailability ? "Yes" : "No"}</td>
-                                        {/* <td>{menuitems.menuItemAvailability}</td> */}
                                         <td>
                                             <table className="EditDeleteBTNs">
                                                 <tbody>
@@ -291,14 +201,9 @@ const MenuAllItems = () => {
                                         </td>
                                     </tr>
                                 ))}
-
                             </tbody>
                         </table>
                     </div>
-                        {/* <div className="reportbtndiv" style={{marginTop: "55px"}}>
-                            <button type="button" className="btn btn-secondary btn-lg ReportBtn" onClick={downloadInvoice}>Download Menu Leaflet</button>
-                            
-                        </div> */}
                 </div>
             </div>
         </div>

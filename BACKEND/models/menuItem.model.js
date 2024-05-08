@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const menuItemSchema = new mongoose.Schema({
     menuItemImage: {
         type: String,
-        // required: true,
     },
     menuItemName: {
         type: String,
@@ -28,8 +27,6 @@ const menuItemSchema = new mongoose.Schema({
     menuItemAvailability: {
         type: Boolean,
         default: false,
-        // required: true,
-        // trim: true,
     },
 })
 

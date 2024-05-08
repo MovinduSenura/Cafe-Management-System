@@ -146,18 +146,6 @@
                 <p class="m-0">Invoice No: M001</p>
                 <p class="m-0">Invoice Date: 09 May, 2024</p>
             </div>
-            <!-- <div class="invoiceContainer">
-                <div>
-                    <p class="text-primary">Invoice From</p>
-                    <h4>Ravi Indiwara</h4>
-                    <ul class="list-unstyled">
-                        <li>Cafe Espresso Elegance Pvt Ltd</li>
-                        <li>ravi.espresso@mail.com</li>
-                        <li>No 121/4, Marine Drive,</li>
-                        <li>Colombo</li>
-                    </ul>
-                </div>
-            </div> -->
             <div class="invoiceContainer">
                 <div>
                     <p class="text-primary">Invoice From</p>
@@ -173,7 +161,6 @@
                     <tr class="tableRow">
                         <th scope="col">Item No.</th>
                         <th scope="col">Item Name</th>
-                        <!-- <th scope="col">Description</th> -->
                         <th scope="col">Category</th>
                         <th scope="col">Price</th>
                         <th scope="col">Availability</th>
@@ -184,19 +171,12 @@
                     <tr>
                         <td>{{@index}}</td>
                         <td>{{this.menuItemName}}</td>
-                        <!-- <td>{{this.menuItemDescription}}</td> -->
                         <td>{{this.menuItemCategory}}</td>
                         <td>{{this.menuItemPrice}} LKR</td>
                         <td>{{this.menuItemAvailability}}</td>
                     </tr>
                     {{/each}}
                 </tbody>
-                <!-- <tfoot>
-                    <tr>
-                        <td colspan="5" class="total grandTotal">Grand-Total:</td>
-                        <td class="total">{{grandTotal}} LKR</td>
-                    </tr>
-                </tfoot> -->
             </table>
 
             <div class="signatureContainer">

@@ -7,7 +7,6 @@ import './UpdateForm.css'
 
 const MenuUpdateForm = () => {
 
-    // const [menuItemImage, setmenuItemImage] = useState('');
     const fileInputRef = useRef(null); // Create a ref for file input
     const [uploadedFileName, setUploadedFileName] = useState(''); // State to store uploaded file name
     const [menuItemName, setmenuItemName] = useState('');
