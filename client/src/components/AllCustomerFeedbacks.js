@@ -24,6 +24,10 @@ function AllCustomerFeedbacks() {
  
         getAppointments();
     }, []);
+    const Star = ({ selected = false }) => (
+        <span style={{ color: selected ? 'gold' : 'grey' }}>★</span>
+    );
+    
     
   return (
     <div className="feedbackitemsmaindivII">
@@ -44,7 +48,14 @@ function AllCustomerFeedbacks() {
                             
                                 {appointments.map((appointment) => (
                                     <div className='commentcard' key={appointment._id}>
-                                        <p className='commentsubcard'>{appointment.Comment}</p>    
+                                        <p className='commentsubcard'>{appointment.Comment}</p> 
+                                        <p>
+            Rating: 
+            {[1, 2, 3, 4, 5].map(star => (
+                <Star key={star} selected={star <= appointment.rating} />
+            ))}
+        </p>
+                                       
                                     </div>
                                 ))}
                                 
