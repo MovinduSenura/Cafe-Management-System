@@ -11,7 +11,6 @@ import './DataTable.css';
 const ProfitAll = () => {
 
   const[ ProfitAll, setProfitAll ] = useState([]);
-  const[ amount, setAmount ] = useState();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,6 +34,7 @@ const ProfitAll = () => {
         console.log("💀 :: getAllProfits function failed!"+err.message);
       }
     }
+    
 
     getAllProfits();
 
@@ -46,29 +46,17 @@ const ProfitAll = () => {
     navigate('/')
 }
 
+
   return (
     <div className="alldiv" style={{marginTop: "150px"}}>
 
     <div className="maintablecontainer">
 
-    {/* <div className="tableHead">
-
-      <div className="search-container">
-          <form className="searchTable" onSubmit={'handleFormSubmit'}>
-              <input id="searchBar" type="text" value={''} onChange={'handleSearchChange'} placeholder="Search..." name="search"/>
-              <button type="submit"><i className="fa fa-search" style={{color: "#ffffff",}}></i></button>
-          </form>
-      </div>
-    </div> */}
 
         <div className = "tablecontainer">
             <div className="logoutdiv"><button type="button" className="btn btn-secondary btn-lg LogoutBtn" onClick={logout}>Logout</button></div>
             <div className="addbtndiv"><Link to='/createProfit'><button type="button" className="btn btn-secondary btn-lg AddItemBtn">Add Profit</button></Link></div>
-
-            {/* <div className="addbtndiv"><Link to='/menucreateform'><button type="button" className="btn btn-secondary btn-lg AddItemBtn">Add item</button></Link></div> */}
         <div className="tablediv">
-
-        {/* <ToastContainer/> */}
 
         <table className="table table-striped tbl">
             <thead>
@@ -80,17 +68,16 @@ const ProfitAll = () => {
                       <th scope="col">Other</th>
                       <th scope="col">Profit</th>
                       <th scope="col" className='op'>Operations</th>
-                    {/* <th className="op" scope="col">Operations</th> */}
+
                 </tr>
             </thead>
             <tbody>
             {ProfitAll.map((profits,index) => (
                       <tr key={profits._id}>
                       <th scope="row">{index+1}</th>
-                      {/* <td>{profits.date}</td> */}
                       <td>{moment(profits.createdAt).format('MMMM Do YYYY, h:mm:ss a')}</td>
                       <td>{profits.income}</td>
-                      <td>100</td>
+                      <td>{profits.salary}</td>
                       <td>{profits.other}</td>
                       <td>{profits.profit}</td>
                       <td>

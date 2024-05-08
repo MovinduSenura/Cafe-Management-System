@@ -17,10 +17,12 @@ const ProfitUpdateForm = () => {
         const getOneProfit = async () => {
             try {
                 const res = await axios.get(`http://localhost:8000/profit/getOneProfit/${id}`);
-                const { income, other, profit } = res.data.Profit;
+                const { income,salary,other,profit } = res.data.Profit;
                 setIncome(income);
+                setSalary(salary);
                 setOther(other);
                 setProfit(profit);
+                
                 console.log("🌟 :: Profit details fetched successfully!");
             } catch (err) {
                 console.log("💀 :: Error fetching profit details: " + err.message);
@@ -61,6 +63,7 @@ const ProfitUpdateForm = () => {
         try {
             const updatedProfit = {
                 income: income,
+                salary: salary,
                 other: other,
                 profit: profit
             }
@@ -82,6 +85,9 @@ const ProfitUpdateForm = () => {
                 <form onSubmit={updateData}>
                     <div className="profitTotal">
                         <p>Total Income: {income} LKR</p>
+                    </div>
+                    <div className="profitSalary">
+                        <p>Salary: {salary} LKR</p>
                     </div>
                     <div className="form-group mb-3">
                         <label htmlFor="other">Other Expenses</label>
