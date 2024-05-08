@@ -94,7 +94,7 @@ const PaymentCreateForm = () => {
         const selectedPromotion = promotions.find(promotion => promotion._id === event.target.value);
     
         if (selectedPromotion) {
-            // Calculate the discount amount based on the promotionValues (assumed to be percentage)
+            // Calculate the discount amount based on the promotionValues 
             const discountPercentage = selectedPromotion.promotionValues;
             const discountAmount = (total * discountPercentage) / 100;
             
