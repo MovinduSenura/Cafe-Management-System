@@ -83,6 +83,20 @@
   background-color: #0c30a5;
 }
 
+.ReportBtn{
+  background-color: #AB845B;
+  border: none;
+  margin-bottom: 20px;
+  margin-top: -40px;
+  float: left;
+  font-weight: 500;
+}
+
+.ReportBtn:hover{
+  cursor: pointer;
+  background-color: #94724e;
+}
+
 .tablecontainer{
     width: 90%;
     margin-left: 5%;
@@ -102,6 +116,39 @@
 thead{
     border: 1px solid ;
 }
+.makeReservationButton {
+  display: inline-block; 
+  margin-left: 10px;
+  /* display: flex; */
+  /* justify-content: flex-end; Align items to the right */
+  /* margin-top: 10px; Optional: Adjust spacing */
+  /* Ensure the container only takes up necessary space */
+}
+
+.makeReservationButton .addItemBtn {
+  /* Base styles */
+  background-color: #007bff; /* Button color */
+  color: #fff; /* Text color */
+  padding: 7px 20px; /* Padding */
+  
+  border: none; /* Remove default border */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Cursor style */
+  
+
+  /* Hover effect */
+  transition: background-color 0.3s ease;
+}
+
+.makeReservationButton .addItemBtn:hover {
+  background-color: #0056b3; /* Darker color on hover */
+}
+
+/* Optional: If you want to remove the default link styles */
+.makeReservationButton .addItemBtn {
+  text-decoration: none;
+}
+
 
 /* .tbl{
   width: 1100px;

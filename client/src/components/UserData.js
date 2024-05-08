@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
-import menuicons from '../images/menuicons.png'
+import menuicons from '../images/menuicons.png';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPen } from '@fortawesome/free-solid-svg-icons';
-import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
-import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
+import { faPen, faTrashAlt, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 
-//import AddFeedback from './AddFeedback';
-import './UserData.css'
+import './UserData.css';
 
 const UserData = () => {
     const [userData, setUserData] = useState({});
@@ -28,13 +25,16 @@ const UserData = () => {
                 setLoading(false);
             }
         };
-
         fetchUserData();
     }, [customerNIC]);
 
     if (loading) {
         return <div>Loading...</div>;
     }
+
+    const Star = ({ selected = false }) => (
+        <span style={{ color: selected ? 'gold' : 'grey' }}>★</span>
+    );
 
     const handleDeleteFeedback = async (feedbackId) => {
         try {
@@ -53,7 +53,6 @@ const UserData = () => {
 
     return (
         <div className="feedbackitemsmaindiv">
-
             <div className="SectorFeedback">
                 <div className="SecOverlay3">
                     <div className="SectorAlignDiv3">
@@ -62,10 +61,9 @@ const UserData = () => {
                                 <h1>Feedback</h1>
                             </div>
                             <div className="feedbackIconsContainer">
-                                <img src={menuicons} alt="menuicons" />
+                                <img src={menuicons} alt="menu icons" />
                             </div>
                         </div>
-
                         <div className='rightside'>
                             <div className='cusdetails'>
                                 <h4>User Data for NIC: {customerNIC}</h4>
@@ -78,23 +76,24 @@ const UserData = () => {
                                 <p>Customer Loyalty Points: {userData.customerLoyaltyPoints}</p> 
                             </div>
                             <div className='addfeedbackbtn'>
-                                <button onClick={() => handleAddFeedback(userData._id)} className="btn btn-primary feedbackbtn">Send Feedback</button>
+                                <button onClick={handleAddFeedback} className="btn btn-primary feedbackbtn">Send Feedback</button>
                             </div>
                             <div className='arrowbtndiv'>
                                 <a href='/allcustomerfeedbacks'>
-                                    <o className='otag'>Ratings & Reviews</o> <button className="btn btn-success arrowbtn"><FontAwesomeIcon icon={faAngleRight} /></button>
+                                    <o className='otag'>Ratings & Reviews</o>
+                                    <button className="btn btn-success arrowbtn">
+                                        <FontAwesomeIcon icon={faAngleRight} />
+                                    </button>
                                 </a>
                             </div>
-                        </div>    
-
+                        </div>
                     </div>
-                </div>    
+                </div>
             </div>
-
             <div className='cusprof'>
                 <div className='ownfeedbackdiv'>
                     <h2>YOUR FEEDBACKS</h2>
-                    {userData.feedbacks.length > 0 ? (
+                    {userData.feedbacks && userData.feedbacks.length > 0 ? (
                         <div className='onefeeddiv'>
                             {userData.feedbacks.map((feedback) => (
                                 <div className='onefeedsubdiv' key={feedback._id}>
@@ -102,12 +101,22 @@ const UserData = () => {
                                         <p>Day Visited: {feedback.DayVisited}</p>
                                         <p>Time Visited: {feedback.TimeVisited}</p>
                                         <p>Comment: {feedback.Comment}</p>
+                                        <p>
+                                            Rating: 
+                                            {[1, 2, 3, 4, 5].map(star => (
+                                                <Star key={star} selected={star <= feedback.rating} />
+                                            ))}
+                                        </p>
                                     </div>
                                     <div className='feededitdelbtns'>
                                         <a href={`/feedback/${userData.customerNIC}/${feedback._id}`}>
-                                            <button className="btn btn-success feedbtn1"><FontAwesomeIcon icon={faPen} /></button>
+                                            <button className="btn btn-success feedbtn1">
+                                                <FontAwesomeIcon icon={faPen} />
+                                            </button>
                                         </a>
-                                        <button className="btn btn-danger feedbtn2" onClick={() => handleDeleteFeedback(feedback._id)}><FontAwesomeIcon icon={faTrashAlt} /></button>
+                                        <button className="btn btn-danger feedbtn2" onClick={() => handleDeleteFeedback(feedback._id)}>
+                                            <FontAwesomeIcon icon={faTrashAlt} />
+                                        </button>
                                     </div>
                                 </div>
                             ))}
@@ -120,63 +129,5 @@ const UserData = () => {
         </div>
     );
 };
-
-// const styles = {
-    // container: {
-    //     fontFamily: 'Arial, sans-serif',
-    //     padding: '20px',
-    // },
-    // button: {
-    //     marginBottom: '10px',
-    //     padding: '10px 20px',
-    //     backgroundColor: '#007bff',
-    //     color: '#fff',
-    //     border: 'none',
-    //     borderRadius: '5px',
-    //     cursor: 'pointer',
-    //     fontSize: '16px',
-    // },
-    // userData: {
-    //     marginBottom: '20px',
-    //     padding: '20px',
-    //     border: '1px solid #ccc',
-    //     borderRadius: '5px',
-    // },
-    // feedbackContainer: {
-    //     marginBottom: '20px',
-    // },
-    // feedbackList: {
-    //     listStyleType: 'none',
-    //     padding: 0,
-    // },
-    // feedbackItem: {
-    //     marginBottom: '20px',
-    //     border: '1px solid #ccc',
-    //     borderRadius: '5px',
-    //     padding: '20px',
-    // },
-    // feedbackButtons: {
-    //     marginTop: '10px',
-    // },
-    // updateButton: {
-    //     marginRight: '10px',
-    //     padding: '5px 10px',
-    //     backgroundColor: '#28a745',
-    //     color: '#fff',
-    //     border: 'none',
-    //     borderRadius: '5px',
-    //     cursor: 'pointer',
-    //     fontSize: '14px',
-    // },
-    // deleteButton: {
-    //     padding: '5px 10px',
-    //     backgroundColor: '#dc3545',
-    //     color: '#fff',
-    //     border: 'none',
-    //     borderRadius: '5px',
-    //     cursor: 'pointer',
-    //     fontSize: '14px',
-    // },
-// };
 
 export default UserData;
