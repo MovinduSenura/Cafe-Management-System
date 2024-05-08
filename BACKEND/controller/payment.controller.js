@@ -1,4 +1,9 @@
+const pdfCreator = require('pdf-creator-node');
+const fs = require('fs'); //Use Node.js's fs module to delete the file from the filesystem.
+const path = require('path');
+const moment = require("moment"); //Use for format date and time
 const paymentModel = require("../models/payment.model");
+
 
 //Add item router controller
 const addPayment = async(req,res) => { //async---java script is single threaded. So this cannot do two functions together that's why we use async.....await
@@ -149,11 +154,96 @@ const deletePayment = async(req,res) =>{
     }
 }
 
+// Function to generate and serve the PDF invoice
+const PaymentGenerateInvoice = async (req, res) => {
+    try {
+        const htmlTemplate = fs.readFileSync(path.join(__dirname, '../template/payment_invoice_template.html'), 'utf-8');
+       
+        const CreatedDate = moment().format('YYYY MMMM DD');
+        const timestamp = moment().format('YYYY_MMMM_DD_HH_mm_ss');
+        const filename = 'Payment_Management_' + timestamp + '_doc' + '.pdf';
+     
+        const payments = await paymentModel.find({});
+
+        let paymentArray = [];
+
+        payments.forEach(i => {
+
+            const formattedDate = new Intl.DateTimeFormat('en-US', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            }).format(i.createdAt);
+            
+            const it = {
+                date: formattedDate,
+                orderID: i.orderID,
+                promotionID: i.promotionID,
+                amount: i.amount
+            }
+            paymentArray.push(it);
+        })
+       
+        // Calculate the total amount by reducing the items array
+        const grandTotal = paymentArray.reduce((amount, payment) => amount + payment.amount, 0); //0: This is the initial value of total. In this case, it starts at 0.
+
+        // Taking logo path
+        const logoPath = path.join(__dirname, '../template/images/logo.png');
+        // Load the logo image asynchronously
+        const logoBuffer = await fs.promises.readFile(logoPath);
+        // Encode the logo buffer to base64
+        const logoBase64 = logoBuffer.toString('base64');
+
+        const options = {
+            format: 'A4',
+            orientation: 'portrait',
+            border: '10mm',
+            header: {
+                height: '0mm',
+            },
+            footer: {
+                height: '0mm',
+            },
+            zoomFactor: '1.0',
+            type: 'buffer',
+        };
+
+        const document = {
+            html: htmlTemplate,
+            data: {
+                CreatedDate,
+                paymentArray,
+                grandTotal,
+                logoBuffer: logoBase64, // Pass the logo buffer to the HTML template
+            },
+            path: './docs/' + filename,
+        };
+
+        const pdfBuffer = await pdfCreator.create(document, options);
+
+        const filepath = 'http://localhost:8000/docs/' + filename;
+
+        // Send the file path in the response
+        res.status(200).json({ filepath });
+        // res.contentType('application/pdf');
+        // res.status(200).send(pdfBuffer);
+    } catch (error) {
+        console.error('Error generating PDF invoice:', error);
+        res.status(500).send('Internal Server Error');
+    }
+};
+
+
+
 module.exports = {
     addPayment, 
     getAllPayments, 
     getOnePayment, 
     updatePayment, 
     deletePayment,
-    searchPayment,                    
+    searchPayment,  
+    PaymentGenerateInvoice,                  
 }

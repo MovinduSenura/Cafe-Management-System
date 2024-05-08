@@ -1,5 +1,64 @@
 const OrderModel = require("../models/Order.model");
 const MenuItemModel = require("../models/menuItem.model");
+const pdfCreator = require('pdf-creator-node')
+const fs = require('fs'); //Use node.js fs module to delete the files from the filesystem
+const path = require('path');
+const moment = require("moment");
+
+
+// Function to generate and serve the PDF invoice
+const OrdergenerateInvoice = async (req, res) => {
+  try {
+    const htmlTemplate = fs.readFileSync(path.join(__dirname, '../template/invoice-template.html'), 'utf-8');
+    const timestamp = moment().format('YYYY_MMMM_DD_HH_mm_ss');
+    const filename = 'Item_Management_' + timestamp + '_doc' + '.pdf';
+
+    // Fetch all orders and populate the 'menuItems' field
+    const orders = await OrderModel.find({}).populate('menuItems');
+
+    const OrderArray = orders.map(order => ({
+      orderID: order._id,
+      menuItemName: order.menuItems.map(item => item.menuItemName).join(', '),
+      menuItemPrice: order.OrderPrice
+    }));
+
+    const logoPath = path.join(__dirname, '../template/images/logo.png');
+    const logoBuffer = await fs.promises.readFile(logoPath);
+    const logoBase64 = logoBuffer.toString('base64');
+
+    const options = {
+      format: 'A4',
+      orientation: 'portrait',
+      border: '10mm',
+      header: {
+        height: '0mm',
+      },
+      footer: {
+        height: '0mm',
+      },
+      zoomFactor: '1.0',
+      type: 'buffer',
+    };
+
+    const document = {
+      html: htmlTemplate,
+      data: {
+        OrderArray,
+        logoBuffer: logoBase64,
+      },
+      path: './docs/' + filename,
+    };
+
+    const pdfBuffer = await pdfCreator.create(document, options);
+    const filepath = 'http://localhost:8000/docs/' + filename;
+
+    res.status(200).json({ filepath });
+  } catch (error) {
+    console.error('Error generating PDF invoice:', error);
+    res.status(500).send('Internal Server Error');
+  }
+};
+
 
 //add order for router controller
 const addOrder = async (req, res) => {
@@ -110,37 +169,26 @@ const searchOrder = async (req, res) => {
 const updateOrder = async (req, res) => {
   try {
     const orderID = req.params.id;
-    const { MenuitemIds } = req.body;
+    const { menuItems, OrderPrice } = req.body; // Destructure menuItems and OrderPrice from req.body
     
-    const menuItems = await MenuItemModel.find({_id:{$in: MenuitemIds}});
-
-    if(!menuItems) {
-      return res.status(404).json({
-        success:false,
-        error: 'Menu items not found'
-      })
-     }
-
-     menuItems.forEach(Item => {
-      totalPrice += Item.menuItemPrice;
-     })
-
-
-   const Order = new OrderModel({
-    menuItems:menuItems,
-    totalPrice : totalPrice,
- })
-
-
-    const updateOrderObj = await OrderModel.findByIdAndUpdate(
+    // Update the order
+    const updatedOrder = await OrderModel.findByIdAndUpdate(
       orderID,
-      Order,
+      { menuItems: menuItems, OrderPrice: OrderPrice }, // Update menuItems and OrderPrice
+      { new: true } // Return the updated document
     );
+
+    if (!updatedOrder) {
+      return res.status(404).json({
+        success: false,
+        error: 'Order not found'
+      });
+    }
 
     return res.status(200).send({
       status: true,
       message: "✨ :: Order updated!",
-      // updateOrder: Order,
+      updatedOrder: updatedOrder
     });
   } catch (err) {
     return res.status(500).send({
@@ -149,6 +197,8 @@ const updateOrder = async (req, res) => {
     });
   }
 };
+
+
 
 //delete order details route control
 const deleteOrder = async (req, res) => {
@@ -177,5 +227,5 @@ module.exports = {
   updateOrder,
   deleteOrder,
   searchOrder,
-
+  OrdergenerateInvoice,
 };

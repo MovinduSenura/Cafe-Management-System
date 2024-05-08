@@ -1,13 +1,15 @@
+// 
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import './AddFeedback.css'
+import './AddFeedback.css';
 
 const AddFeedback = () => {
     const [feedbackData, setFeedbackData] = useState({
         DayVisited: '',
         TimeVisited: '',
-        Comment: ''
+        Comment: '',
+        rating: 0
     });
 
     const { userid } = useParams();
@@ -20,6 +22,10 @@ const AddFeedback = () => {
         }));
     };
 
+    const handleRatingChange = newRating => {
+        setFeedbackData({ ...feedbackData, rating: newRating });
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -28,7 +34,8 @@ const AddFeedback = () => {
             setFeedbackData({
                 DayVisited: '',
                 TimeVisited: '',
-                Comment: ''
+                Comment: '',
+                rating: 0
             });
             // Optionally, redirect the user to another page after successful feedback submission
         } catch (error) {
@@ -37,32 +44,54 @@ const AddFeedback = () => {
         }
     };
 
+    const getMaxDate = () => {
+        const today = new Date();
+        const dd = String(today.getDate()).padStart(2, '0');
+        const mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        const yyyy = today.getFullYear();
+        return `${yyyy}-${mm}-${dd}`;
+    };
+
     return (
         <div className="createFormContainer2">
             <div className="formBootstrap2">
                 <h2>Create Form</h2>
-
-            
                 <form onSubmit={handleSubmit}>
-                <div class="form-group mb-3">
+                    <div className="form-group mb-3">
                         <label htmlFor="DayVisited">Day Visited</label>
-                        <input type="date" className="form-control" id="DayVisited" name="DayVisited" value={feedbackData.DayVisited} onChange={handleInputChange} />
+                        <input type="date" className="form-control" id="DayVisited" name="DayVisited" value={feedbackData.DayVisited} onChange={handleInputChange} max={getMaxDate()} />
                     </div>
-                    <div class="form-group mb-3">
+                    <div className="form-group mb-3">
                         <label htmlFor="TimeVisited">Time Visited</label>
-                        <input type="time" className="form-control" id="TimeVisited" name="TimeVisited" value={feedbackData.TimeVisited} onChange={handleInputChange} />
+                        <input type="time" className="form-control" id="TimeVisited" name="TimeVisited" value={feedbackData.TimeVisited} onChange={handleInputChange} min="08:00" max="21:00" />
                     </div>
-                    <div class="form-group mb-3">
+                    <div className="form-group mb-3">
                         <label htmlFor="Comment">Comment</label>
                         <textarea id="Comment" className="form-control" name="Comment" value={feedbackData.Comment} onChange={handleInputChange}></textarea>
                     </div>
+                    <div className="rating">
+                        <p>Rate us:</p>
+                        {[1, 2, 3, 4, 5].map(star => (
+                            <Star
+                                key={star}
+                                selected={star <= feedbackData.rating}
+                                onClick={() => handleRatingChange(star)}
+                            />
+                        ))}
+                    </div>
                     <div className="submitbtndiv2">
-                        <button type="submit" class="btn btn-primary submitbtn2">Submit Feedback</button>
+                        <button type="submit" className="btn btn-primary submitbtn2">Submit Feedback</button>
                     </div>
                 </form>
             </div>
         </div>
     );
 };
+
+const Star = ({ selected = false, onClick }) => (
+    <span className={selected ? 'star selected' : 'star'} onClick={onClick}>
+        ★
+    </span>
+);
 
 export default AddFeedback;
