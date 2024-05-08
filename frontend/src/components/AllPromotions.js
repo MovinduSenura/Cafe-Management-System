@@ -183,6 +183,8 @@ const AllPromotions = ()=> {
             >
               Download Invoice
         </button>
+
+
         
         <div className="tablediv">
 

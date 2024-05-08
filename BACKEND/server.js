@@ -57,6 +57,8 @@ const CustomerRouter = require('./routes/customer.routes');
 const staffRouter = require('./routes/staff.routes');
 const stockRouter = require('./routes/stock.routes');
 const profitRouter = require("./routes/profit.routes");
+const tablesRouter = require("./routes/tables.routes");
+const reservationRouter = require('./routes/reservation.routes')
 // const FeedbackRouter = require('./routes/feedback.routes');
 
 
@@ -69,6 +71,8 @@ app.use('/payment/',paymentRouter);
 app.use('/staff/', staffRouter);
 app.use('/stock/', stockRouter);
 app.use('/profit/',profitRouter);
+app.use('/table', tablesRouter);
+app.use('/reservation/', reservationRouter)
 
 // app.use('/feedback/',FeedbackRouter);
 
