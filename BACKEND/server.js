@@ -9,7 +9,6 @@ const path = require('path');
 
 app.use('/docs', express.static(path.join(__dirname, 'docs')));
 
-
 //MongoDB Connection
 const { ConnectDB } = require("./utils/connection");
 

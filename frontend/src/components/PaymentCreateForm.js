@@ -5,14 +5,18 @@ import { useNavigate, useParams } from "react-router-dom";
 
 const PaymentCreateForm = () => {
 
+    const [promotions, setPromotions] = useState([]);
     const [orderID, setorderID] = useState('');
-    const [promotionID, setpromotionID] = useState('ehjd');
     const [amount, setamount] = useState('');
-    const [date, setdate] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
+    const [customerData, setCustomerData] = useState('');
+    const [searchInput, setSearchInput] = useState('');
 
     const [total, setTotal] = useState(0);
     const [paymentAmount, setPaymentAmount] = useState(0); 
     const [payableAmount, setPayableAmount] = useState(0);
+    const [redeemedPoints, setRedeemedPoints] = useState(0);
+    const [redeemPointsInput, setRedeemPointsInput] = useState(0);
     // const [order,setOrder] = useState([]);
     const [selectedPromotion, setSelectedPromotion] = useState("");
 
@@ -52,6 +56,19 @@ const PaymentCreateForm = () => {
         getOneOrder();
     }, [id]);
 
+    useEffect(() => {
+        const fetchPromotions = async () => {
+            try {
+                const res = await axios.get('http://localhost:8000/promotion/promotions');
+                setPromotions(res.data.Allpromotions);
+            } catch (error) {
+                console.error('Error fetching promotions:', error);
+            }
+        };
+    
+        fetchPromotions();
+    }, []);
+    
 
     const handleChange = (event) => {
         const { value } = event.target;
@@ -73,31 +90,25 @@ const PaymentCreateForm = () => {
     const handlePromotionChange = (event) => {
         setSelectedPromotion(event.target.value);
         
-        let newTotalPrice = total; // Sample total price
-        
-        switch (event.target.value) {
-        case "No discount":
-            newTotalPrice -= 0;  
-            break;
-        case "Morning Brew Discount":
-            newTotalPrice -= 10;
-            break;
-        case "Happy Hour Specials":
-            newTotalPrice -= 15;
-            break;
-        case "Daily Roast Deals":
-            newTotalPrice -= 20;
-            break;
-        case "Loyalty Bean Bonus":
-            newTotalPrice -= 25;
-            break;
-        default:
-            break;
+        // Retrieve the selected promotion object from the promotions array
+        const selectedPromotion = promotions.find(promotion => promotion._id === event.target.value);
+    
+        if (selectedPromotion) {
+            // Calculate the discount amount based on the promotionValues 
+            const discountPercentage = selectedPromotion.promotionValues;
+            const discountAmount = (total * discountPercentage) / 100;
+            
+            // Subtract the discount amount from the total to get the new total price
+            const newTotalPrice = total - discountAmount;
+    
+            // Update the payable amount with the new total price
+            setPayableAmount(newTotalPrice);
+        } else {
+            // If the selected promotion is not found, reset the payable amount to the original total
+            setPayableAmount(total);
         }
-
-        console.log(newTotalPrice);
-        setPayableAmount(newTotalPrice);
     };
+    
 
     const sendData = async(e) => {
         e.preventDefault();
@@ -106,13 +117,9 @@ const PaymentCreateForm = () => {
 
             let newPaymentData = {
                 orderID: orderID,
-                promotionID: promotionID,
+                promotionID: selectedPromotion,
                 amount: payableAmount,
             }
-
-            console.log("OrderID : ",orderID)
-            console.log("promotionID : ",promotionID)
-            console.log("amount : ",amount)
 
             axios.post('http://localhost:8000/payment/create',newPaymentData)
             .then((res) => {
@@ -129,6 +136,79 @@ const PaymentCreateForm = () => {
             console.log("💀 :: sendData function failed! ERROR : "+err.message);
         }
     }
+
+    const handleInputChange = (event) => {
+        setSearchInput(event.target.value);
+    };
+
+    const fetchCustomerData = async () => {
+        try {
+            const response = await axios.get(`http://localhost:8000/customer/customerByFind/${searchInput}`);
+            setCustomerData(response.data);
+            console.log('Customer : ',customerData)
+        } catch (error) {
+            console.error('Error fetching customer data:', error);
+        }
+    };
+
+    const addLoyaltyPoints = async () => {
+        try {
+            const loyaltyPointsToAdd = Math.floor(payableAmount / 100); // Calculate loyalty points based on payable amount
+            
+            // Convert existing loyalty points to a number
+            const existingLoyaltyPoints = parseInt(customerData.customerLoyaltyPoints);
+            
+            // Perform numeric addition
+            const updatedLoyaltyPoints = existingLoyaltyPoints + loyaltyPointsToAdd;
+        
+            // Update customer data in the database
+            const response = await axios.patch(`http://localhost:8000/customer/customerUpdateLoyaltyPoints/${customerData._id}`, {
+                customerLoyaltyPoints: updatedLoyaltyPoints
+            });
+        
+            // Update customer data in the state
+            setCustomerData({ ...customerData, customerLoyaltyPoints: updatedLoyaltyPoints });
+            setErrorMessage('');
+        } catch (error) {
+            console.error('Error adding loyalty points:', error);
+            setErrorMessage('Error adding loyalty points');
+        }
+    };
+
+    const handleRedeemPointsInputChange = (event) => {
+        setRedeemPointsInput(event.target.value);
+    };
+
+    const redeemLoyaltyPoints = async () => {
+        try {
+            let loyaltyPointsToRedeem = redeemPointsInput;
+
+            if (loyaltyPointsToRedeem === "all") {
+                loyaltyPointsToRedeem = customerData.customerLoyaltyPoints;
+            } else {
+                loyaltyPointsToRedeem = parseInt(loyaltyPointsToRedeem);
+            }
+
+            if (loyaltyPointsToRedeem <= 0 || loyaltyPointsToRedeem > customerData.customerLoyaltyPoints) {
+                console.error('Invalid loyalty points to redeem.');
+                return;
+            }
+
+            const updatedLoyaltyPoints = customerData.customerLoyaltyPoints - loyaltyPointsToRedeem;
+            await axios.patch(`http://localhost:8000/customer/customerUpdateLoyaltyPoints/${customerData._id}`, {
+                customerLoyaltyPoints: updatedLoyaltyPoints
+            });
+
+            setPayableAmount(payableAmount - (loyaltyPointsToRedeem * 0.5)); // Deduct from payable amount
+            setRedeemedPoints(redeemedPoints + loyaltyPointsToRedeem);
+            setCustomerData({ ...customerData, customerLoyaltyPoints: updatedLoyaltyPoints });
+        } catch (error) {
+            console.error('Error redeeming loyalty points:', error);
+        }
+    };
+    
+    
+    
 
   return (
     <div className="PaymentContainer">
@@ -186,12 +266,12 @@ const PaymentCreateForm = () => {
                     <div className="paymentPropotionPhase">
                         <p>Add Promotion: </p>
                         <select name="promotion" id="promotion" value={selectedPromotion} onChange={handlePromotionChange}>
-                            <option value="No discount">No discount</option>
-                            <option value="Morning Brew Discount">Morning Brew Discount</option>
-                            <option value="Happy Hour Specials">Happy Hour Specials</option>
-                            <option value="Daily Roast Deals">Daily Roast Deals</option>
-                            <option value="Loyalty Bean Bonus">Loyalty Bean Bonus</option>
+                            <option value="">Select Promotion</option>
+                            {promotions.map(promotion => (
+                                <option key={promotion._id} value={promotion._id}>{promotion.promotionName}</option>
+                            ))}
                         </select>
+
                     </div>
                     <div className="paymentPayableAmountPhase">
                         <p>Payable Amount: <h3>{payableAmount} LKR</h3></p>
@@ -205,6 +285,35 @@ const PaymentCreateForm = () => {
                     <div className="changeDiv">
                         <p>Change: <h3>{calculateChange()} LKR</h3></p>
                     </div>
+                    <div className="changeDiv">
+                        <input
+                            type="text"
+                            value={searchInput}
+                            onChange={handleInputChange}
+                            placeholder="Enter customer phone number or name"
+                        />
+                        <button onClick={fetchCustomerData}>Search</button>
+                    </div>
+                    {customerData && (
+                        <div className="changeDiv">
+                            <p>Customer Name: {customerData.customerFullName}</p>
+                            <p>Loyalty Points: {customerData.customerLoyaltyPoints}</p>
+                        </div>
+                    )}
+                    <div className="PaymentButtonDiv">
+                        <button onClick={addLoyaltyPoints}>Add Loyalty Points</button>
+                    </div>
+                    <div className="changeDiv">
+                        <input
+                            type="text"
+                            value={redeemPointsInput}
+                            onChange={handleRedeemPointsInputChange}
+                            placeholder="Enter points to redeem or 'all'"
+                        />
+                    </div>
+                    <div className="PaymentButtonDiv">
+                            <button onClick={redeemLoyaltyPoints}>Redeem Loyalty Points</button>
+                        </div>
                     <div className="PaymentButtonDiv">
                         <button class="custom-button" onClick={sendData}>Done</button>
                     </div>

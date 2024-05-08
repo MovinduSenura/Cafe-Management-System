@@ -471,6 +471,62 @@ const allFeedbacks = async(req,res) => {
 
 }
 
+//Chethmi payment loyaltyPoint 
+const getNameAndLoyaltyPoints = async (req, res) => {
+    try {
+        const { identifier } = req.params;
+
+        // Find the customer by customerNIC or customerFullName
+        const customer = await customerModel.findOne({
+            $or: [{ customerContactNo: identifier }, { customerFullName: identifier }]
+        });
+
+        if (!customer) {
+            return res.status(404).json({ error: 'Customer not found' });
+        }
+
+        // Extract name and loyalty points
+        const { _id,customerFullName, customerLoyaltyPoints } = customer;
+
+        // Return name and loyalty points
+        res.status(200).json({ _id,customerFullName, customerLoyaltyPoints });
+    } catch (error) {
+        console.error('Error fetching customer details:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
+//Chethmi - update loyalty points
+const updateLoyaltyPoints = async (req, res) => {
+    try {
+        // Extract the customer ID and new loyalty points from the request parameters and body
+        const customerId = req.params.id;
+        const { customerLoyaltyPoints } = req.body;
+
+        // Find the customer by ID
+        const customer = await customerModel.findById(customerId);
+
+        if (!customer) {
+            return res.status(404).json({ error: 'Customer not found' });
+        }
+
+        // Update the loyalty points
+        customer.customerLoyaltyPoints = customerLoyaltyPoints;
+
+        // Save the updated customer data
+        await customer.save();
+
+        // Return success response
+        res.status(200).json({ status: 'Loyalty points updated successfully', customerLoyaltyPoints: customer.customerLoyaltyPoints });
+    } catch (error) {
+        console.error('Error updating loyalty points:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
+
+
+
 //exporting, get all item router controller
 module.exports = {
     addCustomer,
@@ -489,5 +545,8 @@ module.exports = {
     allFeedbacks,
     searchFeedback,
     getAllFeedbacks,
+
+    getNameAndLoyaltyPoints,
+    updateLoyaltyPoints,
 
 }

@@ -5,8 +5,9 @@ import './ProfitCreateForm.css';
 
 const ProfitCreateForm = () => {
     const [PaymentAll, setPaymentAll] = useState([]);
+    const [staffSalary, setStaffSalary] = useState(''); // State to store total staff salary
     const [income, setIncome] = useState('');
-    const [salary, setSalary] = useState(100);
+    const [salary, setSalary] = useState();
     const [other, setOther] = useState('');
     const [profit, setProfit] = useState('');
     const [error, setError] = useState('');
@@ -23,6 +24,21 @@ const ProfitCreateForm = () => {
             }
         }
 
+        const calculateStaffSalary = async () => {
+            try {
+                const res = await axios.get('http://localhost:8000/staff/staff');
+                const staffData = res.data.AllStaff; // Access the AllStaff property
+                let totalSalary = 0;
+                staffData.forEach(staff => {
+                    totalSalary += staff.staffSalaryPerHours * staff.staffWorkedHours;
+                });
+                setSalary(totalSalary); // Update the salary state
+            } catch (err) {
+                console.log("💀 :: Error fetching staff data! ERROR : ", err.message);
+            }
+        }
+        
+
         const totalIncome = calculateTotal();
         setIncome(totalIncome);
 
@@ -30,6 +46,7 @@ const ProfitCreateForm = () => {
         setProfit(profit);
 
         getAllPayments();
+        calculateStaffSalary();
     }, [other]);
 
     const sendData = (e) => {

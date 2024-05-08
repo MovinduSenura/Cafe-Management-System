@@ -8,7 +8,6 @@ const paymentSchema = new mongoose.Schema({
     },
     promotionID:{
         type: String,
-        required: true,
         trim: true,
     },
     amount:{
