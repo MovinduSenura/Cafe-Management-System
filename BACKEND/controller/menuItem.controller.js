@@ -279,7 +279,6 @@ const updatemenuItem = async (req, res) => {
         }
 
     const existingmenuItem = {
-        // menuItemImage: menuItemImage,
         menuItemName: menuItemName,
         menuItemDescription: menuItemDescription,
         menuItemCategory: menuItemCategory,

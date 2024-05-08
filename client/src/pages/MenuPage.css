@@ -1,7 +1,3 @@
-.menuitemsmaindiv{
-    /* width: 1400px; */
-}
-
 .SectorMenu{
     position: relative;
     background-image: url('../images/menubanner.jpg');
@@ -20,26 +16,21 @@
     left: 0;
     width: 100%;
     height: 100%;
-    
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .SectorAlignDiv{
-    /* background-color: red; */
     width: 1400px;
     padding: 10px;
 }
 
 .menuIconsContainer img{
     width: 90px;
-    /* align-items: center; */
-    /* text-align: center; */
 }
 
 .menuIconsContainer{
-    /* align-items: center; */
     text-align: center;
 }
 
@@ -61,8 +52,6 @@
     grid-template-columns: auto auto auto auto;
     margin-left: auto;
     margin-right: auto;
-    /* background-color: red; */
-    /* align-items: center; */
 }
 
 .menucard{
@@ -72,9 +61,7 @@
     border-radius: 5px;
     margin-left: auto;
     margin-right: auto;
-    /* row-gap: 20px; */
     margin-bottom: 150px;
-    /* padding: 20px; */
     text-align: center;
     
 }
@@ -86,9 +73,7 @@
     border-radius: 5px;
     margin-left: auto;
     margin-right: auto;
-    /* row-gap: 20px; */
     margin-bottom: 20px;
-    /* margin-top: 20px; */
     padding: 20px;
     text-align: center;
 }
@@ -135,12 +120,10 @@
   }
 
 .search-container{
-    /* background-color: green; */
     width: fit-content;
     margin-left: 41.7%;
     margin-right: 41.7%;
     margin-top: 400px;
-    /* margin-bottom: 10px; */
     position: absolute;
 }
 

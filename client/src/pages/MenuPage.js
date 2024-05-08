@@ -39,7 +39,6 @@ const MenuPage = () => {
     //search function
 
     const SearchFunction = async (searchTerm) => {
-        // e.preventDefault();
 
         try{
             await axios.get('http://localhost:8000/menu/searchmenuItem', {
@@ -71,12 +70,8 @@ const MenuPage = () => {
 
         if (searchTerm === '') { // when placeholder empty fetch all data
             setMenuAllItems(AllOriginalMenuItems); // Fetch all data when search term is empty
-            // setSearchString("");
         } else {
             await SearchFunction(searchTerm);
-            // if(searchString != ''){
-            //     setSearchString("");
-            // }
         }
     };
 
@@ -88,15 +83,13 @@ const MenuPage = () => {
   return (
     <div className="menuitemsmaindiv">
         <div className="tableHead">
-                {/* <h2>Controller</h2> */}
-
-                <div className="search-container">
-                    <form className="searchTable" onSubmit={handleFormSubmit}>
-                        <input id="searchBar" type="text" value={MenuItemName} onChange={handleSearchChange} placeholder="Search..." name="search"/>
-                        <button type="submit"><i className="fa fa-search" style={{color: "#ffffff",}}></i></button> 
-                    </form>
-                </div>
+            <div className="search-container">
+                <form className="searchTable" onSubmit={handleFormSubmit}>
+                    <input id="searchBar" type="text" value={MenuItemName} onChange={handleSearchChange} placeholder="Search..." name="search"/>
+                    <button type="submit"><i className="fa fa-search" style={{color: "#ffffff",}}></i></button> 
+                </form>
             </div>
+        </div>
         <div className="SectorMenu">
             <div className="SecOverlay">
                 <div className="SectorAlignDiv">
