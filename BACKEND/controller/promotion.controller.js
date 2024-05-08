@@ -3,6 +3,7 @@ const pdfCreator = require('pdf-creator-node');
 const fs = require('fs'); //Use Node.js's fs module to delete the file from the filesystem.
 const path = require('path');
 const moment = require("moment"); //Use for format date and time
+const paymentModel = require("../models/payment.model");//payment model
 
 //Add / Create promotion router controller
 const addpromotion = async (req, res) => {
@@ -36,6 +37,25 @@ const addpromotion = async (req, res) => {
             })
         }
     }
+    
+    //Calculating most used promotion in payments
+    const calculateMostUsedPromotion = async () => {
+        try {
+            const mostUsedPromotion = await paymentModel.aggregate([
+                { $match: { promotionID: { $exists: true, $ne: "" } } },
+                { $group: { _id: "$promotionID", count: { $sum: 1 } } },
+                { $sort: { count: -1 } },
+                { $limit: 1 }
+            ]);
+    
+            return mostUsedPromotion[0]._id;
+        } catch (error) {
+            console.error("Error calculating most used promotion:", error);
+            throw error;
+        }
+    };
+       
+
 
     //get all promotion router controller
     const getAllpromotions = async (req,res)=> {
@@ -44,10 +64,22 @@ const addpromotion = async (req, res) => {
 
         const allpromotions = await promotionModel.find();
 
+        // Calculate most used promotion
+        const mostUsedPromotionID = await calculateMostUsedPromotion();
+        
+
+        // Add a flag to each promotion indicating if it's the most used promotion
+        const promotionsWithFlags = allpromotions.map(promotion => ({
+            ...promotion.toObject(),
+            isMostUsed: promotion._id.toString() === mostUsedPromotionID
+        }));
+        
+
         return res.status(200).send({
             status: true,
             message:"✨::All items are fetched!",
-            Allpromotions: allpromotions,
+            Allpromotions: promotionsWithFlags,
+            mostUsedPromotionID
         })
 
         }catch(err){
@@ -58,6 +90,27 @@ const addpromotion = async (req, res) => {
     }
 
     }
+    // //get all promotion router controller
+    // const getAllpromotions = async (req,res)=> {
+    
+    //    try{
+
+    //     const allpromotions = await promotionModel.find();
+
+    //     return res.status(200).send({
+    //         status: true,
+    //         message:"✨::All items are fetched!",
+    //         Allpromotions: allpromotions,
+    //     })
+
+    //     }catch(err){
+    //         return res.status(500).send({
+    //             status: false,
+    //             message:err.message,
+    //     })
+    // }
+
+    // }
     //get one specified promotion router controller
     const getOnepromotion = async (req, res) => {
 

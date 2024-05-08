@@ -218,7 +218,9 @@ const AllPromotions = ()=> {
                 />
             </td>
             {/* <td>{promotion._id}</td> */}
-            <td>{promotion.promotionName}</td>
+            <td>{promotion.promotionName} <br/>
+              {promotion.isMostUsed && <span className="popularLabel">Most Used</span>}
+            </td>
             <td>{promotion.promotionValues}</td>
             <td>{promotion.promotionDescription}</td>
             {/* <td>{promotion.promotionItempic}</td> */}
