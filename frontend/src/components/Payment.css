@@ -17,7 +17,7 @@
   margin-right: auto;
   margin-left: auto;
   display: grid;
-  grid-template-columns: 3fr 1fr;
+  grid-template-columns: 2fr 1fr 1fr;
   gap: 20px;
   margin-top: 60px;
   /* margin-top: 50px; */
@@ -198,6 +198,17 @@ color: #35291c;
   box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.075), 0 0 20px 0 rgba(0, 0, 0, 0.068);
 }
 
+.loyalityChangeDiv{
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.075), 0 0 20px 0 rgba(0, 0, 0, 0.068);
+}
+
+.loyalitysearch{
+  margin-bottom: 0!important;
+}
+
 .changeDiv p{
   margin: 0;
 }
@@ -231,5 +242,9 @@ color: #35291c;
 
 .PaymentButtonDiv .custom-button:hover {
   background-color: #856348;
+}
+
+.loyalityChangeDiv input{
+  font-size: 0.7rem;
 }
 
