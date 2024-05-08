@@ -7,7 +7,6 @@ const PaymentCreateForm = () => {
 
     const [promotions, setPromotions] = useState([]);
     const [orderID, setorderID] = useState('');
-    const [amount, setamount] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [customerData, setCustomerData] = useState('');
     const [searchInput, setSearchInput] = useState('');
@@ -17,7 +16,6 @@ const PaymentCreateForm = () => {
     const [payableAmount, setPayableAmount] = useState(0);
     const [redeemedPoints, setRedeemedPoints] = useState(0);
     const [redeemPointsInput, setRedeemPointsInput] = useState(0);
-    // const [order,setOrder] = useState([]);
     const [selectedPromotion, setSelectedPromotion] = useState("");
 
     const [orderItem, setorderItem] = useState([]);
@@ -38,10 +36,6 @@ const PaymentCreateForm = () => {
 
                 const data = res.data.order;
                 let totalPrice = 0;
-                // Iterate through each order and add its price to totalPrice
-                // data.forEach(order => {
-                //     totalPrice += order.OrderPrice;
-                // });
 
                 totalPrice = data.OrderPrice;
 
