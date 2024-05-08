@@ -51,20 +51,17 @@ const customerSchema = new mongoose.Schema({
             {
                 DayVisited: {
                     type: String,
-
                 },
 
                 TimeVisited: {
                     type: String,
-
                 },
 
                 Comment: {
-                    type: String,
-
+                    type: String,  
                 },
                 rating:{
-                    type: Number
+                    type: Number,
                 }
                 
             },
