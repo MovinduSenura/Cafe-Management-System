@@ -188,7 +188,7 @@ const downloadInvoice = async (e) => {
         <div className = "tablecontainer">
         <button
               type="button"
-              className="btn btn-primary addItemBtn"
+              className="btn btn-secondary btn-lg ReportBtn"
               onClick={downloadInvoice}
             >
               Download Invoice
