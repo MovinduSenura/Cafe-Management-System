@@ -15,6 +15,8 @@ import Table from "./Table";
 
 const Book = () => {
   const [totalTables, setTotalTables] = useState([]);
+  const [filteredTables, setFilteredTables] = useState([]);
+  const [isAvailableSelected, setIsAvailableSelected] = useState(true); // State to track if "Available" is selected
 
   // User's selections
   const [selection, setSelection] = useState({
@@ -114,6 +116,7 @@ const Book = () => {
 
         console.log(tables);
         setTotalTables(tables);
+        filterTables(isAvailableSelected); // Filter tables initially based on the default availability selection
       })();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -124,9 +127,16 @@ const Book = () => {
     if (
       (booking.name.length === 0) |
       (booking.phone.length === 0) |
-      (booking.email.length === 0)
+      (booking.email.length === 0) ||
+      !selection.time ||
+      !selection.date ||
+      !selection.table.id
     ) {
+      alert("Please fill out all of the details."); // Alert if any details are missing
       console.log("Incomplete Details");
+      setReservationError(true);
+    } else if (!validateEmail(booking.email)) {
+      alert("Please enter a valid email address."); // Alert if email format is invalid
       setReservationError(true);
     } else {
       const datetime = getDate();
@@ -154,6 +164,12 @@ const Book = () => {
         return
       })
     }
+  };
+
+  // Email validation function
+  const validateEmail = email => {
+    const re = /\S+@\S+\.\S+/;
+    return re.test(email);
   };
 
   // Clicking on a table sets the selection state
@@ -246,12 +262,29 @@ const Book = () => {
     return newTimes;
   };
 
-  // Generating tables from available tables state
+  // Filter tables based on availability status
+  const filterTables = isAvailable => {
+    let filteredTables;
+    if (isAvailable) {
+      filteredTables = totalTables.filter(table => table.isAvailable);
+    } else {
+      filteredTables = totalTables.filter(table => !table.isAvailable);
+    }
+    setFilteredTables(filteredTables);
+  };
+
+  // Handle click on "Available" and "Unavailable" labels
+  const handleTableFilter = isAvailable => {
+    filterTables(isAvailable);
+    setIsAvailableSelected(isAvailable); // Update state based on the clicked button
+  };
+
+  // Generating tables from filtered tables
   const getTables = _ => {
     console.log("Getting tables");
-    if (getEmptyTables() > 0) {
+    if (filteredTables.length > 0) {
       let tables = [];
-      totalTables.forEach(table => {
+      filteredTables.forEach(table => {
         console.log(table);
         if (table.isAvailable) {
           tables.push(
@@ -385,10 +418,18 @@ const Book = () => {
                 getEmptyTables() > 0 ? (
                   <div>
                     <div className="table-key">
-                      <span className="empty-table"></span> &nbsp; Available
-                      &nbsp;&nbsp;
-                      <span className="full-table"></span> &nbsp; Unavailable
-                      &nbsp;&nbsp;
+                      <Button
+                        className={`available-btn ${isAvailableSelected ? "selected" : ""}`}
+                        onClick={() => handleTableFilter(false)} // Changed to filter unavailable tables
+                      >
+                        Unavailable
+                      </Button>
+                      <Button
+                        className={`unavailable-btn ${!isAvailableSelected ? "selected" : ""}`}
+                        onClick={() => handleTableFilter(true)} // Changed to filter available tables
+                      >
+                        Available
+                      </Button>
                     </div>
                     <Row noGutters>{getTables()}</Row>
                   </div>
@@ -476,4 +517,4 @@ const Book = () => {
 };
 
 
-export default Book
+export default Book;

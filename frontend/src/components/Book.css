@@ -147,6 +147,8 @@ input[type=date]::-webkit-calendar-picker-indicator {
     margin: 6% 2.5%;
   }
 }
+
+
 .table-key {
   padding-top: 1%;
   padding-bottom: 4.5%;
@@ -158,6 +160,81 @@ input[type=date]::-webkit-calendar-picker-indicator {
   font-size: 1.2rem;
   font-family: Roboto, sans-serif;
 }
+
+.available-btn {
+  margin-right: 10px;
+  padding: 5px 10px;
+  border: none;
+  cursor: pointer;
+  background-color: #f44336; 
+  color: white;
+}
+
+.unavailable-btn {
+  padding: 5px 10px;
+  border: none;
+  cursor: pointer;
+  background-color: #4caf50; 
+  color: white;
+}
+
+/* .selected {
+  background-color: #ccc; 
+} */
+
+.available-tables {
+  font-weight: bold;
+}
+
+.pizza-cta {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.selected-table {
+  margin-bottom: 10px;
+}
+
+.reservation-error {
+  color: red;
+}
+
+.reservation-details-container {
+  margin-top: 20px;
+}
+
+.reservation-details {
+  margin-bottom: 10px;
+}
+
+.reservation-input {
+  width: 100%;
+}
+
+/* .book-table-btn {
+  background-color: #4caf50; 
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+} */
+
+.book-table-btn:hover {
+  background-color: #45a049;
+}
+
+.table-display-message {
+  margin-top: 20px;
+}
+
+/* .booking-dropdown {
+  width: 100%;
+}
+
+.booking-dropdown-menu {
+  width: 100%;
+} */
+
 
 .table-container {
   margin: 0 1%;
