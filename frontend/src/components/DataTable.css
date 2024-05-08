@@ -83,6 +83,20 @@
   background-color: #0c30a5;
 }
 
+.ReportBtn{
+  background-color: #AB845B;
+  border: none;
+  margin-bottom: 20px;
+  margin-top: -40px;
+  float: left;
+  font-weight: 500;
+}
+
+.ReportBtn:hover{
+  cursor: pointer;
+  background-color: #94724e;
+}
+
 .tablecontainer{
     width: 90%;
     margin-left: 5%;
