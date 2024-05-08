@@ -1,5 +1,11 @@
 
 const customerModel = require("../models/customer.model");
+const pdfCreator = require('pdf-creator-node');
+const fs = require('fs'); //Use Node.js's fs module to delete the file from the filesystem.
+const path = require('path');
+const moment = require("moment"); //Use for format date and time
+
+
 
 //Add item router controller
 //req means requests coming from front end.
@@ -85,6 +91,80 @@ const getOneCustomer = async(req,res) => {
     }
 
 }
+
+// Function to generate and serve the PDF invoice
+const customerGenerateInvoice = async (req, res) => {
+    try {
+        const htmlTemplate = fs.readFileSync(path.join(__dirname, '../template/customer-invoice-template.html'), 'utf-8');
+        // console.log(htmlTemplate);
+       
+        const timestamp = moment().format('YYYY_MMMM_DD_HH_mm_ss');
+        const filename = 'Customer_Details_' + timestamp + '_doc' + '.pdf';
+     
+        const customers = await customerModel.find({});
+        // console.log("items : ", items);
+
+        let customerArray = [];
+
+        customers.forEach(i => {
+            
+            const it = {
+                customerFullName: i.customerFullName,
+                customerEmail: i.customerEmail,
+                customerContactNo: i.customerContactNo,
+                customerNIC: i.customerNIC,
+                customerLoyaltyPoints: i.customerLoyaltyPoints,// Include the total price in the item object
+            }
+            customerArray .push(it);
+        })
+       
+        // Calculate the total amount by reducing the items array
+        // const grandTotal = customerArray .reduce((total, item) => total + item.totalPrice, 0); //0: This is the initial value of total. In this case, it starts at 0.
+
+        // Taking logo path
+        const logoPath = path.join(__dirname, '../template/images/logo.png');
+        // Load the logo image asynchronously
+        const logoBuffer = await fs.promises.readFile(logoPath);
+        // Encode the logo buffer to base64
+        const logoBase64 = logoBuffer.toString('base64');
+
+        const options = {
+            format: 'A4',
+            orientation: 'portrait',
+            border: '10mm',
+            header: {
+                height: '0mm',
+            },
+            footer: {
+                height: '0mm',
+            },
+            zoomFactor: '1.0',
+            type: 'buffer',
+        };
+
+        const document = {
+            html: htmlTemplate,
+            data: {
+                customerArray,
+                logoBuffer: logoBase64, // Pass the logo buffer to the HTML template
+            },
+            path: './docs/' + filename,
+        };
+
+        const pdfBuffer = await pdfCreator.create(document, options);
+
+        const filepath = 'http://localhost:8000/docs/' + filename;
+
+        // Send the file path in the response
+        res.status(200).json({ filepath });
+        // res.contentType('application/pdf');
+        // res.status(200).send(pdfBuffer);
+    } catch (error) {
+        console.error('Error generating PDF invoice:', error);
+        res.status(500).send('Internal Server Error');
+    }
+};
+ 
 
 //get- serach particular customer
 const searchCustomer = async (req, res) => {
@@ -174,7 +254,7 @@ const deleteCustomer = async (req,res) => {
 //Sithmi
 const addFeedback = async(req,res) => {
     try{
-        const {DayVisited,TimeVisited,Comment} = req.body;
+        const {DayVisited,TimeVisited,Comment,rating} = req.body;
         const userid = req.params.userid;
         const user = await customerModel.findById(userid);
 
@@ -182,7 +262,7 @@ const addFeedback = async(req,res) => {
             return res.status(400).json({status:"user not found"})
         }
         
-        user.feedbacks.push({DayVisited,TimeVisited,Comment});
+        user.feedbacks.push({DayVisited,TimeVisited,Comment,rating});
         await user.save();
         res.status(200).json({status:"New feedback added",user});
 
@@ -288,128 +368,15 @@ const searchFeedback = async (req, res) => {
 };
 
 
-// const searchFeedback = async (req, res) => {
-
-//     try{
-
-//         const Comment = req.query.Comment;
-        
-//         const feedback = await customerModel.find(
-//             { 'feedbacks': { $elemMatch: { Comment: { $regex: new RegExp(Comment, 'i') } } } },
-//             { 'feedbacks.$': 1, '_id': 0 }
-//         );
-//         console.log("Comment: ", Comment);
-        
-//         const allComments = feedback.flatMap(item => item.feedbacks.map(feedbackItem => feedbackItem.Comment));
-
-        
-//         console.log("All Comments:", allComments);
-        
-
-//         return res.status(200).send({
-//             status: true,
-//             message: "✨ :: Project Searched and fetched!",
-//             searchedFeedback: allComments
-//         })
-
-//     }catch(err){
-
-//         return res.status(500).send({
-//             status: false,
-//             message: err.message
-//         });
-
-//     }
-
-// }
-
-// const searchFeedback = async (req, res) => {
-//     try {
-//         const Comment = req.query.Comment;
-//         const feedback = await customerModel.find({ 'feedbacks.Comment': { $regex: new RegExp(`^${Comment}`, 'i') } });
-//         console.log("Comment: ", Comment);
-//         console.log("Feeback: ", feedback);
-
-//         return res.status(200).send({
-//             status: true,
-//             message: "✨ :: Feedbacks searched and fetched!",
-//             searchedFeedback: feedback
-//         });
-//     } catch (err) {
-//         return res.status(500).send({
-//             status: false,
-//             message: err.message
-//         });
-//     }
-// };
-
-// const searchFeedback = async (req, res) => {
-//     try {
-//         const { DayVisited } = req.query;
-
-//         // Using a regular expression to match partial DayVisited
-//         const feedback = await customerModel.find({
-//             'feedbacks.DayVisited': { $regex: new RegExp(DayVisited, 'i') }
-//         });
-
-//         return res.status(200).send({
-//             status: true,
-//             message: "✨ Project Searched and fetched!",
-//             searchedFeedback: feedback
-//         });
-//     } catch (err) {
-//         return res.status(500).send({
-//             status: false,
-//             message: err.message
-//         });
-//     }
-// };
-
-// const searchFeedback = async (req, res) => {
-//     try {
-//         const { DayVisited } = req.query;
-
-//         // Using aggregation to search within nested array
-//         const feedback = await customerModel.aggregate([
-//             {
-//                 $unwind: "$feedbacks" // Deconstructs the feedbacks array
-//             },
-//             {
-//                 $match: {
-//                     "feedbacks.DayVisited": { $regex: new RegExp(DayVisited, 'i') }
-//                 }
-//             },
-//             {
-//                 $group: {
-//                     _id: "$_id",
-//                     customerFullName: { $first: "$customerFullName" }, // You can include other fields if needed
-//                     searchedFeedback: { $push: "$feedbacks" }
-//                 }
-//             }
-//         ]);
-
-//         return res.status(200).send({
-//             status: true,
-//             message: "✨ Project Searched and fetched!",
-//             searchedFeedback: feedback
-//         });
-//     } catch (err) {
-//         return res.status(500).send({
-//             status: false,
-//             message: err.message
-//         });
-//     }
-// };
-
 const updateFeedback =async(req,res) => {
     const { customerNIC, feedbackId } = req.params;
    
-    const { DayVisited, TimeVisited, Comment } = req.body;
+    const { DayVisited, TimeVisited, Comment,rating } = req.body;
 
     //const patient = await User.findById(userId);
 
     const updateFeedback = {
-        DayVisited, TimeVisited, Comment
+        DayVisited, TimeVisited, Comment,rating
     };
 
     try {
@@ -567,6 +534,7 @@ module.exports = {
     getOneCustomer,
     updateCustomer,
     deleteCustomer,
+    customerGenerateInvoice,
     searchCustomer,
     addFeedback,
     getFeedback,

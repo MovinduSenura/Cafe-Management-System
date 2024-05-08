@@ -8,6 +8,7 @@ const {
     updatepromotion,
     deletepromotion,
     searchPromotion,
+    promotiongenerateInvoice,
 
 
 } = require("../controller/promotion.controller");
@@ -18,6 +19,8 @@ promotionRouter.get('/promotion/:id',getOnepromotion);
 promotionRouter.patch('/promotionUpdate/:id', upload.single("promotionItempic"), updatepromotion);
 promotionRouter.delete('/deletepromotion/:id',deletepromotion);
 promotionRouter.get('/searchPromotion',searchPromotion);
+promotionRouter.get('/generate-promotioninvoice',promotiongenerateInvoice)
+
 
 return promotionRouter
 }

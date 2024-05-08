@@ -5,7 +5,7 @@ import './MenuPage.css'
 
 const MenuPage = () => {
 
-    const [ MenuPage, setMenuAllItems ] = useState([]);
+    const [ MenuAllItems, setMenuAllItems ] = useState([]);
     const [ MenuItemName , setMenuItemName ] = useState('');
     const [ AllOriginalMenuItems , setAllOriginalMenuItems ] = useState([]);
 
@@ -112,18 +112,19 @@ const MenuPage = () => {
 
         <div className='menuItemsSector'>
 
-            {MenuPage.map((menuitems) => (  
+            {MenuAllItems.map((menuitem) => (  
                 <div className="menucard">
                     <div className="submenucard">
                         <img 
-                            src={require(`../../../frontend/src/uploads/${menuitems.menuItemImage}`)}
+                            src={require(`../../../frontend/src/uploads/${menuitem.menuItemImage}`)}
                             width={90}
                             height={100}
                             alt="menuItemImage" 
                         />
                     </div>
-                    <h4 className="nameh4">{menuitems.menuItemName}</h4>
-                    <h2 className="priceh2">{menuitems.menuItemPrice} LKR</h2>
+                    <h4 className="nameh4">{menuitem.menuItemName}</h4>
+                    <h2 className="priceh2">{menuitem.menuItemPrice} LKR</h2>
+                    {menuitem.popular && <span className="popularLabel">*Most Popular*</span>}
                 </div>
             ))}    
                                

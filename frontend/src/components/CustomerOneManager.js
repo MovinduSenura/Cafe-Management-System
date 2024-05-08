@@ -110,10 +110,7 @@ const CustomerOneForm = () => {
                      {/* can put in anyplace within main div */}
             {/* <ToastContainer/> */}
                             
-                            <form>
-
-                            
-                                    {/* onchange is used to store all values letter by letter */}
+                            <form>                                    {/* onchange is used to store all values letter by letter */}
                                     <div className="form-group mb-3">
                                             <label for="fullName">Full Name:</label>
                                             <input type="text" className="form-control" id="fullName" aria-describedby="emailHelp" placeholder="Enter Full Name" onChange={
@@ -183,6 +180,9 @@ const CustomerOneForm = () => {
                                              }value={customerLoyaltyPoints} disabled/>
 
                                     </div>
+
+                                    <button type="button" className="btn btn-primary addItemBtn">Download Invoice</button>
+ {/* onClick={downloadInvoice} Download Invoice </button> */}
 
 
                                     {/* <div style={{textAlign: "center"}} className="onecusbtns">

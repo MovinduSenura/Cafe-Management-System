@@ -74,6 +74,13 @@
       margin-right: auto;
       /* background-color: red; */
     }
+    .star {
+      cursor: pointer;
+      font-size: 30px;
+      color: grey;
+  }
   
-  
-  
+  .star.selected {
+      color: gold;
+  }
+   

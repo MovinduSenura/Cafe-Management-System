@@ -7,7 +7,8 @@ const AddFeedback = () => {
     const [feedbackData, setFeedbackData] = useState({
         DayVisited: '',
         TimeVisited: '',
-        Comment: ''
+        Comment: '',
+        rating:0
     });
 
     const { userid } = useParams();
@@ -19,6 +20,10 @@ const AddFeedback = () => {
             [name]: value
         }));
     };
+    const handleRatingChange = newRating => {
+        setFeedbackData({ ...feedbackData, rating: newRating });
+      };
+    
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -28,7 +33,8 @@ const AddFeedback = () => {
             setFeedbackData({
                 DayVisited: '',
                 TimeVisited: '',
-                Comment: ''
+                Comment:'',
+                rating:0
             });
             // Optionally, redirect the user to another page after successful feedback submission
         } catch (error) {
@@ -56,6 +62,17 @@ const AddFeedback = () => {
                         <label htmlFor="Comment">Comment</label>
                         <textarea id="Comment" className="form-control" name="Comment" value={feedbackData.Comment} onChange={handleInputChange}></textarea>
                     </div>
+                    <div className="rating">
+    <p>Rate us:</p>
+    {[1, 2, 3, 4, 5].map(star => (
+        <Star
+            key={star}
+            selected={star <= feedbackData.rating} // Use feedbackData.rating instead of rating
+            onClick={() => handleRatingChange(star)}
+        />
+    ))}
+</div>
+
                     <div className="submitbtndiv2">
                         <button type="submit" class="btn btn-primary submitbtn2">Submit Feedback</button>
                     </div>
@@ -64,5 +81,11 @@ const AddFeedback = () => {
         </div>
     );
 };
+
+const Star = ({ selected = false, onClick }) => (
+    <span className={selected ? 'star selected' : 'star'} onClick={onClick}>
+      ★
+    </span>
+  );
 
 export default AddFeedback;
