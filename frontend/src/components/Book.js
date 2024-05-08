@@ -130,7 +130,7 @@ const Book = () => {
       setReservationError(true);
     } else {
       const datetime = getDate();
-      let res = await fetch("http://localhost:8000/reservation", {
+      await fetch("http://localhost:8000/reservation", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -140,12 +140,19 @@ const Book = () => {
           date: datetime,
           table: selection.table.id
         })
-      });
-      res = await res.text();
-      alert("Reservation booked")
-      console.log("Reserved: " + res);
-      //TODO: navigate to nbext page
-      console.log("Navigatin...");
+      }).then((res) => {
+
+        res = res.text();
+        alert("Reservation booked")
+        console.log("Reserved: " + res);
+        //TODO: navigate to nbext page
+        console.log("Navigatin...");
+
+        return;
+      }).catch((err) => {
+        alert("Error: " + err)
+        return
+      })
     }
   };
 
@@ -274,7 +281,7 @@ const Book = () => {
   };
 
   return (
-    <div>
+    <div className="bookingContainer">
       
       <Row noGutters className="text-center align-items-center pizza-cta">
         <Col>
