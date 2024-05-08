@@ -59,14 +59,18 @@ const CustomerOneForm = () => {
         }
     };
 
+    console.log("Customer Status:" + getCustomerStatus(parseInt(customerLoyaltyPoints)));
+    console.log("Status Color is:" +getStatusColor(parseInt(customerLoyaltyPoints)));
+
     return (
         <div className="updateFormContainer">
 
             <div className="updateformBootstrap">
 
-                <div style={{ textAlign: 'center', marginBottom: '20px', fontFamily: 'Arial, sans-serif', backgroundColor: '#f0f0f0', color: getStatusColor(parseInt(customerLoyaltyPoints)), padding: '20px', borderRadius: '10px', boxShadow: '0px 0px 5px rgba(0, 0, 0, 0.3)' }}>
+                {/* <div style={{ textAlign: 'center', marginBottom: '20px', fontFamily: 'Arial, sans-serif', backgroundColor: '#f0f0f0', color: getStatusColor(parseInt(customerLoyaltyPoints)), padding: '20px', borderRadius: '10px', boxShadow: '0px 0px 5px rgba(0, 0, 0, 0.3)' }}>
                     <b>{getCustomerStatus(parseInt(customerLoyaltyPoints))}</b>
-                </div>
+                </div> */}
+
                 <form>
                     <div className="form-group mb-3">
                         <label htmlFor="fullName">Full Name:</label>
