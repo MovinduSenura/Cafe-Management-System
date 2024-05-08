@@ -151,6 +151,10 @@ const OrdersAll = () => {
       }
     };
 
+    // const goToReserver = () => {
+    //   navigate('/reservation')
+    // }
+
   return (
     <div className="alldiv">
       <div className="maintablecontainer">
@@ -166,7 +170,15 @@ const OrdersAll = () => {
 
         <div className="tablecontainer">
           <div className="invoicediv"><button type="button" className="btn btn-primary addItemBtn" 
-onClick={downloadInvoice}> Download Invoice </button> </div>
+onClick={downloadInvoice}> Download Invoice </button> 
+<div className="makeReservationButton">
+  <Link to="/reservation">
+    <button type="button" className="btn btn-primary addItemBtn">Make a Reservation</button>
+  </Link>
+</div>
+
+
+</div>
           <div className="logoutdiv"><button type="button" className="btn btn-secondary btn-lg LogoutBtn" onClick={logout}>Logout</button></div>
           <div className="addbtndiv"><Link to='/ordercreate'><button type="button" className="btn btn-secondary btn-lg AddItemBtn">Add Order</button></Link></div>
 
