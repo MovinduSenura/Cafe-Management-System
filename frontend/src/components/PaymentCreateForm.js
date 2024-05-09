@@ -37,7 +37,7 @@ const PaymentCreateForm = () => {
                 setTotal(totalPrice);
                 setPayableAmount(totalPrice);
             } catch (err) {
-                console.log("Error fetching last document:", err.message);
+                console.log("Error fetching order:", err.message);
             }
         }
         getOneOrder();
