@@ -25,10 +25,10 @@ const sendConfirmationEmail = async (recipientEmail, reservationData) => {
   try {
     // Create a transporter using SMTP transport
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
+      service: 'gmail', //Using Gmail SMTP service
       auth: {
         user: 'managercafe4@gmail.com', // sender Gmail address
-        pass: 'ltec rydi auyw hlzk',
+        pass: 'ltec rydi auyw hlzk',// Password of the sender's Gmail account
       }
     });
 
