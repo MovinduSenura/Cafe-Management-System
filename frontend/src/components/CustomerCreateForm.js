@@ -66,7 +66,7 @@ const CustomerCreateForm = () => {
                         contact_no:customerContactNo,
                         nic:customerNIC,
                         gender:customerGender,
-                        address:customerGender,
+                        address:customerAddress,
                         loyalty_points:customerLoyaltyPoints
                     })
                     .then((response) => {
