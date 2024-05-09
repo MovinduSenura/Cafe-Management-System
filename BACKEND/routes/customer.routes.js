@@ -19,6 +19,8 @@ const {
     allFeedbacks,
     searchFeedback,
     getAllFeedbacks,
+    getFeedbackById,
+    postReplyToFeedback,
     getNameAndLoyaltyPoints,
     updateLoyaltyPoints,
 } = require("../controller/customer.controller");
@@ -47,6 +49,9 @@ CustomerRouter.put('/feedback/:customerNIC/:feedbackId', updateFeedback);
 CustomerRouter.get('/feedback/all', allFeedbacks);
 CustomerRouter.get('/feedbacksearch', searchFeedback);
 CustomerRouter.get('/feedbackall', getAllFeedbacks);
+CustomerRouter.get("/userfeedback/:feedbackId",getFeedbackById);
+// Assuming you are using express.Router() and it's defined as CustomerRouter
+CustomerRouter.post('/feedback/:feedbackId/reply', postReplyToFeedback);
 
 
 

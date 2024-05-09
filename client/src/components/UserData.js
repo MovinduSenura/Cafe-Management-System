@@ -107,6 +107,7 @@ const UserData = () => {
                                                 <Star key={star} selected={star <= feedback.rating} />
                                             ))}
                                         </p>
+                                        <p className='replycolor' style={{color:"brown" ,fontWeight: "500"}}>Reply - {feedback.reply}</p>
                                     </div>
                                     <div className='feededitdelbtns'>
                                         <a href={`/feedback/${userData.customerNIC}/${feedback._id}`}>

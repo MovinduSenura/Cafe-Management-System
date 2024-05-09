@@ -470,6 +470,27 @@ const allFeedbacks = async(req,res) => {
     }
 
 }
+//sithmi reply for feedback
+const getFeedbackById = async (req, res) => {
+    try {
+        const feedbackId = req.params.feedbackId;
+
+        const feedback = await customerModel.findOne({ 'feedbacks._id': feedbackId }, { 'feedbacks.$': 1 });
+
+        if (!feedback) {
+            return res.status(404).json({ error: 'Feedback not found' });
+        }
+
+        res.status(200).json({ feedback: feedback.feedbacks[0] });
+    } catch (error) {
+        console.error('Error fetching feedback:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+
+
+
 
 //Chethmi payment loyaltyPoint 
 const getNameAndLoyaltyPoints = async (req, res) => {
@@ -524,6 +545,29 @@ const updateLoyaltyPoints = async (req, res) => {
     }
 }
 
+///sithmi reply part
+// Assuming you have a model called `CustomerModel` where feedbacks are stored in an array
+const postReplyToFeedback = async (req, res) => {
+    const { feedbackId } = req.params;
+    const { reply } = req.body;
+
+    try {
+        const customer = await customerModel.findOneAndUpdate(
+            { "feedbacks._id": feedbackId },
+            { "$set": { "feedbacks.$.reply": reply } },
+            { new: true }
+        );
+        if (!customer) {
+            return res.status(404).json({ message: 'Feedback not found' });
+        }
+        res.status(200).json({ message: 'Reply added successfully', feedback: customer.feedbacks.id(feedbackId) });
+    } catch (error) {
+        console.error('Error posting reply to feedback:', error);
+        res.status(500).json({ message: 'Internal server error', error });
+    }
+};
+
+
 
 
 
@@ -545,7 +589,8 @@ module.exports = {
     allFeedbacks,
     searchFeedback,
     getAllFeedbacks,
-
+    getFeedbackById,
+    postReplyToFeedback,
     getNameAndLoyaltyPoints,
     updateLoyaltyPoints,
 

@@ -50,11 +50,13 @@ function AllCustomerFeedbacks() {
                                     <div className='commentcard' key={appointment._id}>
                                         <p className='commentsubcard'>{appointment.Comment}</p> 
                                         <p>
-            Rating: 
+            Ratings:  
             {[1, 2, 3, 4, 5].map(star => (
-                <Star key={star} selected={star <= appointment.rating} />
-            ))}
-        </p>
+                <Star key={ star} selected={star <= appointment.rating} />
+            ))}               
+        
+        </p>                  <br></br>
+                            <p className='replycolor' style={{color:"brown" ,fontWeight: "500"}}>Reply - {appointment.reply} </p>
                                        
                                     </div>
                                 ))}
@@ -66,31 +68,7 @@ function AllCustomerFeedbacks() {
             </div>
 
         </div>
-    // <div className='afalldiv'>
-    //     <div className="afmaintablecontainer">
-    //         <div className = "aftablecontainer">
-    //             <div className="aftablediv">
-
-    //                 <table className="table table-striped aftbl">
-    //                     <thead>
-    //                         <tr>
-    //                             <th scope="col">Comment</th>
-    //                         </tr>
-    //                     </thead>
-
-    //                     <tbody>
-    //                         {appointments.map((appointment, index) => (
-    //                             <tr key={appointment._id}>
-    //                                 <td>{appointment.Comment}</td>
-    //                             </tr>
-    //                         ))}
-    //                     </tbody>
-    //                 </table>
-
-    //             </div>
-    //         </div>
-    //     </div>
-    // </div>
+    
   )
 }
 
