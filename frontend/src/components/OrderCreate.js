@@ -9,17 +9,17 @@ const OrderCreate = () => {
   const [MenuItems, setMenuItems] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [isCreatingOrder, setIsCreatingOrder] = useState(false); // State to track order creation status
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Fetch items from backend when the component mounts
     fetchItems();
   }, []);
 
   const fetchItems = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/menu/menuItems'); // Adjust the API endpoint as needed
+      const response = await axios.get('http://localhost:8000/menu/menuItems');
       setMenuItems(response.data.AllmenuItems);
     } catch (error) {
       console.error('Error fetching menu items:', error);
@@ -27,34 +27,35 @@ const OrderCreate = () => {
   };
 
   const handleItemChange = (itemId, isChecked) => {
+    const selectedItem = MenuItems.find(item => item._id === itemId);
     if (isChecked) {
-      // Add the item to selectedItems
-      const selectedItem = MenuItems.find(item => item._id === itemId);
       setSelectedItems([...selectedItems, selectedItem]);
       setTotalPrice(totalPrice + selectedItem.menuItemPrice);
     } else {
-      // Remove the item from selectedItems
       const updatedItems = selectedItems.filter(item => item._id !== itemId);
       setSelectedItems(updatedItems);
-      const removedItem = MenuItems.find(item => item._id === itemId);
-      setTotalPrice(totalPrice - removedItem.menuItemPrice);
+      setTotalPrice(totalPrice - selectedItem.menuItemPrice);
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // Check if any menu items are selected before proceeding
+    if (selectedItems.length === 0) {
+      alert('Please select at least one menu item.');
+      return;
+    }
+    // Proceed with order creation
+    setIsCreatingOrder(true); // Set loading state while creating order
     try {
-      // Create order request
       const response = await axios.post('http://localhost:8000/order/create', {
         MenuitemIds: selectedItems.map(item => item._id),
       });
-      console.log('Order created:', response.data.Order);
-      console.log(response.data.Order._id);
-      
+      setIsCreatingOrder(false); // Reset loading state after order creation
       alert("🍟 Order Created!");
-      
       navigate(`/payment/create/${response.data.Order._id}`);
     } catch (error) {
+      setIsCreatingOrder(false); // Reset loading state if order creation fails
       console.error('Error creating order:', error);
     }
   };
@@ -63,7 +64,6 @@ const OrderCreate = () => {
     <div className="createFormContainer" style={{marginBottom: "77px", marginTop: "150px"}}>
       <div className="formBootstrap">
         <h2 style={{marginBottom: "20px"}}>Add Menu Items to Order</h2>
-
         <form onSubmit={handleSubmit}>
           <ul>
             {MenuItems.map(item => (
@@ -79,9 +79,10 @@ const OrderCreate = () => {
             ))}
           </ul>
           <p style={{marginLeft: "32px", marginTop: "25px"}}>Total Price: LKR {totalPrice.toFixed(2)}</p>
-          {/* <p style={{marginLeft: "32px", marginTop: "25px"}}>Total Price: {totalPrice.toFixed(2)} LKR</p> */}
           <div style={{marginTop: "20px"}} className="submitbtndiv">
-            <button type="submit" class="btn btn-primary submitbtn">Create Order</button>
+            <button type="submit" className="btn btn-primary submitbtn" disabled={isCreatingOrder}>
+              {isCreatingOrder ? 'Creating Order...' : 'Create Order'}
+            </button>
           </div>
         </form>
       </div>
