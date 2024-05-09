@@ -208,7 +208,6 @@ const AllCustomers2 = () => {
                 
                     <div className="search-container">
                         <form className="searchTable" onSubmit={handleFormSubmit}>
-                        <button type="button" className="btn btn-primary addItemBtn" style={{marginLeft:'-300px'}} onClick={downloadInvoice}>Download Customers</button>
                             <input id="searchBar" type="text" value={customerNIC} style={{marginLeft:'150px'}} onChange={handleSearchChange} placeholder="Search.." name="search"/>
                             <button type="submit"><i className="fa fa-search" style={{color: "#ffffff",}}></i></button> 
                             
@@ -229,7 +228,9 @@ const AllCustomers2 = () => {
                     <div className="tablediv">
                         {/* <button type="button" className="btn btn-secondary AddItemBtn">Add New Customer</button> */}
                     {/* </a> */}
-                
+                    <div className="reportbtndiv">
+                        <button type="button" className="btn btn-secondary btn-lg ReportBtn" onClick={downloadInvoice}>Download Customers</button>
+                    </div>
 
                 
                 
