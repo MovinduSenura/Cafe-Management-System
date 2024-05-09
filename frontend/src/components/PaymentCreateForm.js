@@ -63,7 +63,7 @@ const PaymentCreateForm = () => {
     };
 
     const validatePaymentAmount = (value) => {
-        if (!value || isNaN(value) || value <= 0) {
+        if (!value || isNaN(value) || value <= 0 || value < total) {
             alert("Invalid payment amount. Please enter a valid amount.");
             return false;
         }

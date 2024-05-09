@@ -169,11 +169,11 @@ const OrdersAll = () => {
         </div>
 
         <div className="tablecontainer">
-          <div className="invoicediv"><button type="button" className="btn btn-primary addItemBtn" 
+          <div className="reportbtndiv"><button type="button" style={{marginRight: '10px'}} className="btn btn-secondary btn-lg ReportBtn" 
 onClick={downloadInvoice}> Download Invoice </button> 
-<div className="makeReservationButton">
+<div className="reportbtndiv">
   <Link to="/reservation">
-    <button type="button" className="btn btn-primary addItemBtn">Make a Reservation</button>
+    <button type="button" className="btn btn-secondary btn-lg ReportBtn">Make a Reservation</button>
   </Link>
 </div>
 
