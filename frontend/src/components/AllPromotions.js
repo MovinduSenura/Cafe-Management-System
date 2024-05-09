@@ -1,10 +1,8 @@
 import React,{ useState, useEffect } from "react";
 import axios from 'axios';
 import {Link, useNavigate}from"react-router-dom";
-
 import { ToastContainer, toast } from 'react-toastify';
- import 'react-toastify/dist/ReactToastify.css';
-//import {useNavigate} from "react-router-dom"
+import 'react-toastify/dist/ReactToastify.css';
 
 import './DataTable.css'
 
@@ -108,12 +106,8 @@ const AllPromotions = ()=> {
 
       if (searchTerm === '') { // when placeholder empty fetch all data
           setAllPromotion(AllOriginalPromotionItems); // Fetch all data when search term is empty
-          // setSearchString("");
       } else {
           await SearchFunction(searchTerm);
-          // if(searchString != ''){
-          //     setSearchString("");
-          // }
       }
   };
 
@@ -164,7 +158,6 @@ const AllPromotions = ()=> {
 
          <div className = "tablecontainer">
          <div className="tableHead">
-                {/* <h2>Controller</h2> */}
 
                 <div className="search-container">
                     <form className="searchTable" onSubmit={handleFormSubmit}>
