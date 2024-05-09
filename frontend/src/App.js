@@ -49,6 +49,7 @@ import Page404 from './components/Page404';
 import ProfitCreateForm from './components/ProfitCreateForm';
 import ProfitAll from './components/ProfitAll';
 import ProfitUpdateForm from './components/ProfitUpdateForm';
+import Book from './components/Book';
 
 function App() {
   return (
@@ -148,8 +149,10 @@ function AppContent() {
             <Route path='/createProfit' element={<ProfitCreateForm/>}/>
             <Route path='/getAllProfit' element={<ProfitAll/>}/>
             <Route path='/updateProfit/:id' element={<ProfitUpdateForm/>}/>
+
+            {/* Reservation */}
+            <Route path='/reservation' element={<Book />} />
             
-           
             <Route path='/404' element={<Page404 />} />
 
           </Routes>

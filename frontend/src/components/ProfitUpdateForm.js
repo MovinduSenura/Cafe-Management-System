@@ -5,11 +5,11 @@ import { useParams, useNavigate } from "react-router-dom";
 import './ProfitCreateForm.css';
 
 const ProfitUpdateForm = () => {
-
     const [income, setIncome] = useState('');
     const [salary, setSalary] = useState('');
     const [other, setOther] = useState('');
     const [profit, setProfit] = useState('');
+    const [error, setError] = useState('');
     const { id } = useParams();
     const navigate = useNavigate();
 
@@ -17,10 +17,12 @@ const ProfitUpdateForm = () => {
         const getOneProfit = async () => {
             try {
                 const res = await axios.get(`http://localhost:8000/profit/getOneProfit/${id}`);
-                const { income, other, profit } = res.data.Profit;
+                const { income,salary,other,profit } = res.data.Profit;
                 setIncome(income);
+                setSalary(salary);
                 setOther(other);
                 setProfit(profit);
+                
                 console.log("🌟 :: Profit details fetched successfully!");
             } catch (err) {
                 console.log("💀 :: Error fetching profit details: " + err.message);
@@ -39,12 +41,29 @@ const ProfitUpdateForm = () => {
         return income - other - salary;
     }
 
+    const validateForm = () => {
+        let isValid = true;
+        setError('');
+
+        if (isNaN(other) || other < 0) {
+            setError('Other Expenses must be a positive number.');
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
     const updateData = async (e) => {
         e.preventDefault();
+
+        if (!validateForm()) {
+            return;
+        }
 
         try {
             const updatedProfit = {
                 income: income,
+                salary: salary,
                 other: other,
                 profit: profit
             }
@@ -67,6 +86,9 @@ const ProfitUpdateForm = () => {
                     <div className="profitTotal">
                         <p>Total Income: {income} LKR</p>
                     </div>
+                    <div className="profitSalary">
+                        <p>Salary: {salary} LKR</p>
+                    </div>
                     <div className="form-group mb-3">
                         <label htmlFor="other">Other Expenses</label>
                         <input type="number" className="form-control" id="other" placeholder="Enter other expenditures" onChange={(e) => setOther(parseFloat(e.target.value) || '')} value={other === '' ? '' : parseFloat(other)} />
@@ -74,6 +96,7 @@ const ProfitUpdateForm = () => {
                     <div className="calculateProfitDiv">
                         <h2>Profit: <span>{profit} LKR</span></h2>
                     </div>
+                    {error && <div className="alert alert-danger">{error}</div>}
                     <button type="submit" className="btn btn-primary">Enter</button>
                 </form>
             </div>

@@ -124,7 +124,7 @@ const UpdatePromotionForm = () => {
                        
                        <label for="promotionImage">Promotion Image:</label>
                            {/* <input type="file" accept="image/*" className="form-control" id="menuItemImage" placeholder="Enter menuItemImage" autoComplete="off" onChange={(e) => setmenuItemImage(e.target.files[0])}/> */}
-                       <input type="file" accept="image/*" className="form-control" id="promotionImage"  autoComplete="off" ref={fileInputRef} required/>
+                       <input type="file" accept="image/*" className="form-control" id="promotionImage"  autoComplete="off" ref={fileInputRef} />
                        {uploadedFileName && <p>Uploaded File: {uploadedFileName}</p>} 
                </div>
               

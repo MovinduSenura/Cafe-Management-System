@@ -162,6 +162,8 @@ const AllCustomers = () => {
         navigate('/')
     }
 
+
+
     return (
         <div className="alldiv">
 
@@ -187,6 +189,8 @@ const AllCustomers = () => {
 
                 <div className="tablecontainer">
                     {/* <a href="/customerCreate"> */}
+                    {/* <button type="button" className="btn btn-primary addItemBtn" onClick={downloadInvoice}>Download Invoice</button> */}
+                    {/* onClick={downloadInvoice} Download Invoice </button> */}
                     <div className="logoutdiv"><button type="button" className="btn btn-secondary btn-lg LogoutBtn" onClick={logout}>Logout</button></div>
                     <div className="addbtndiv"><Link to='/customerCreate'><button type="button" className="btn btn-secondary btn-lg AddItemBtn">Add Customer</button></Link></div>
                     <div className="tablediv">

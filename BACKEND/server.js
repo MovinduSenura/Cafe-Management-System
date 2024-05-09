@@ -7,6 +7,8 @@ require("dotenv").config();
 const app = express();
 const path = require('path');
 
+app.use('/docs', express.static(path.join(__dirname, 'docs')));
+
 //MongoDB Connection
 const { ConnectDB } = require("./utils/connection");
 
@@ -14,7 +16,22 @@ const { ConnectDB } = require("./utils/connection");
 app.use('/docs', express.static(path.join(__dirname, 'docs')));
 
 app.use(express.json());
-app.use(bodyParser.json()); 
+app.use(bodyParser.json());
+
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
+});
+// Set up CORS configuration
+const corsOptions = {
+    origin: '*', // Replace with your frontend domain
+};
+
+// Apply CORS middleware to all routes
 app.use(cors());
 
 //Multer disk Storage
@@ -39,6 +56,8 @@ const CustomerRouter = require('./routes/customer.routes');
 const staffRouter = require('./routes/staff.routes');
 const stockRouter = require('./routes/stock.routes');
 const profitRouter = require("./routes/profit.routes");
+const tablesRouter = require("./routes/tables.routes");
+const reservationRouter = require('./routes/reservation.routes')
 // const FeedbackRouter = require('./routes/feedback.routes');
 
 
@@ -51,10 +70,15 @@ app.use('/payment/',paymentRouter);
 app.use('/staff/', staffRouter);
 app.use('/stock/', stockRouter);
 app.use('/profit/',profitRouter);
+app.use('/table', tablesRouter);
+app.use('/reservation/', reservationRouter)
 
 // app.use('/feedback/',FeedbackRouter);
 
-
+// Specific CORS configuration for the PDF file endpoint
+app.get('/menu/generate-menu-invoice', cors(corsOptions), async (req, res) => {
+    // Your code to generate and serve the PDF file
+});
 
 const PORT = process.env.PORT || 8070;
 

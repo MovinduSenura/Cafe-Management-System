@@ -57,7 +57,6 @@ const MenuAllItems = () => {
     //search function
 
     const SearchFunction = async (searchTerm) => {
-        // e.preventDefault();
 
         try {
             await axios.get('http://localhost:8000/menu/searchmenuItem', {
@@ -90,12 +89,8 @@ const MenuAllItems = () => {
 
         if (searchTerm === '') { // when placeholder empty fetch all data
             setMenuAllItems(allOriginalMenuItems); // Fetch all data when search term is empty
-            // setSearchString("");
         } else {
             await SearchFunction(searchTerm);
-            // if(searchString != ''){
-            //     setSearchString("");
-            // }
         }
     };
 
@@ -109,13 +104,40 @@ const MenuAllItems = () => {
         navigate('/')
     }
 
+    //generate Invoice
+  const downloadInvoice = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.get(
+        "http://localhost:8000/menu/generate-menu-invoice",
+        
+      );
+
+      const { filepath } = response.data;
+
+      // Create a new <a> element to simulate a download link
+      const link = document.createElement("a");
+      // Set the href attribute of the link to the filepath of the generated invoice
+      link.href = filepath;
+      // Set the "download" attribute to specify the default file name for the downloaded file
+      link.setAttribute("download", "invoice.pdf");
+      // Append the link to the document body
+      document.body.appendChild(link);
+
+      // Simulate a click on the link to trigger the download
+      link.click();
+
+       // Remove the link from the document body after the download is complete
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Error downloading invoice:", error.message);
+    }
+  };
+
     return (
         <div className="alldiv">
-
             <div className="maintablecontainer">
-
                 <div className="tableHead">
-
                     <div className="search-container">
                         <form className="searchTable" onSubmit={handleFormSubmit}>
                             <input id="searchBar" type="text" value={menuItemName} onChange={handleSearchChange} placeholder="Search..." name="search"/>
@@ -129,6 +151,10 @@ const MenuAllItems = () => {
                         <button type="button" className="btn btn-secondary btn-lg LogoutBtn" onClick={logout}>Logout</button>
                     </div>
                     <div className="addbtndiv"><Link to='/menucreateform'><button type="button" className="btn btn-secondary btn-lg AddItemBtn">Add Item</button></Link></div>
+                    <div className="reportbtndiv">
+                        <button type="button" className="btn btn-secondary btn-lg ReportBtn" onClick={downloadInvoice}>Download Menu Leaflet</button>        
+                    </div>
+
                     <div className="tablediv">
 
                         <ToastContainer/>
@@ -163,7 +189,6 @@ const MenuAllItems = () => {
                                         <td>{menuitems.menuItemCategory}</td>
                                         <td>{menuitems.menuItemPrice}</td>
                                         <td>{menuitems.menuItemAvailability ? "Yes" : "No"}</td>
-                                        {/* <td>{menuitems.menuItemAvailability}</td> */}
                                         <td>
                                             <table className="EditDeleteBTNs">
                                                 <tbody>
@@ -176,7 +201,6 @@ const MenuAllItems = () => {
                                         </td>
                                     </tr>
                                 ))}
-
                             </tbody>
                         </table>
                     </div>

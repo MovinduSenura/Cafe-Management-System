@@ -1,160 +1,122 @@
-//logics functions hdnna use krnne react
 import React, { useEffect, useState } from "react";
-
-//import axios
 import axios from 'axios';
 import './UpdateForm.css'
-
-//importing css file
-//import './CustomerUpdateForm.css'
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 
-
 const CustomerOneForm = () => {
-        //sending data to backend
-        //catching data from backend
-        //between function and return
+    const [customerFullName, setcustomerFullName] = useState("");
+    const [customerEmail, setcustomerEmail] = useState("");
+    const [customerContactNo, setcustomerContactNo] = useState("");
+    const [customerNIC, setcustomerNIC] = useState("");
+    const [customerGender, setcustomerGender] = useState("");
+    const [customerAddress, setcustomerAddress] = useState("");
+    const [customerLoyaltyPoints, setcustomerLoyaltyPoints] = useState("");
+    const { id } = useParams();
 
-        const[customerFullName, setcustomerFullName] = useState(" ");
-        const[customerEmail, setcustomerEmail] = useState(" ");
-        const[customerContactNo, setcustomerContactNo] = useState(" ");
-        const[customerNIC, setcustomerNIC] = useState(" ");
-        const[customerGender, setcustomerGender] = useState(" ");
-        const[customerAddress, setcustomerAddress] = useState(" ");
-        const[customerLoyaltyPoints, setcustomerLoyaltyPoints] = useState(" ");
-        //customerFullName = " ", when starting it is set
-
-        //useEffect wge react-router-dom lage ekk. useparams walin krnne me page ekt enakot link eke thyena id eka arn id ekt save krnw
-        const { id } = useParams();
-
-        useEffect(() => {
-
-            //This function is created to get data related to one customer
-            const getOneItem = async () => {
-                try{
-
-                    await axios.get(`http://localhost:8000/customer/customer/${id}`)
-                    .then((res) => {
-                        setcustomerFullName(res.data.Customer.customerFullName);
-                        setcustomerEmail(res.data.Customer.customerEmail);
-                        setcustomerContactNo(res.data.Customer.customerContactNo);
-                        setcustomerNIC(res.data.Customer.customerNIC);
-                        setcustomerGender(res.data.Customer.customerGender);
-                        setcustomerAddress(res.data.Customer.customerAddress);
-                        setcustomerLoyaltyPoints(res.data.Customer.customerLoyaltyPoints);
-                        console.log("⭐⭐ :: Customer fetched successfully")
-                        // Controller ekedi hdpu rathu Customer eka hrha okkoma attributes set krgnnw
-                    })
-                    .catch((err) => {
-                        console.log("❌ :: Error on API URL : " + err.message);
-                    })
-
-                }catch (err){
-                    console.log("❌ :: getOneItem failed ERROR : " + err.message);
-                }
+    useEffect(() => {
+        const getOneItem = async () => {
+            try {
+                const res = await axios.get(`http://localhost:8000/customer/customer/${id}`);
+                const customerData = res.data.Customer;
+                setcustomerFullName(customerData.customerFullName);
+                setcustomerEmail(customerData.customerEmail);
+                setcustomerContactNo(customerData.customerContactNo);
+                setcustomerNIC(customerData.customerNIC);
+                setcustomerGender(customerData.customerGender);
+                setcustomerAddress(customerData.customerAddress);
+                setcustomerLoyaltyPoints(customerData.customerLoyaltyPoints);
+                console.log("⭐⭐ :: Customer fetched successfully");
+            } catch (err) {
+                console.log("❌ :: Error on API URL : " + err.message);
             }
+        };
 
-            getOneItem();
-        },[id])
-        //above[] states no. of times useEffect runs.
-        //the variables created outside the function are stated inside [] above. e eeke wdya.
+        getOneItem();
+    }, [id]);
 
-        return (
-            //dynamic ekaka function wda kennoni
-            //only one div is inside return. but many divs can be inside devs.
-            <div className="updateFormContainer">
+    const getCustomerStatus = (loyaltyPoints) => {
+        if (loyaltyPoints > 150) {
+            return "Gold Customer";
+        } else if (loyaltyPoints > 100) {
+            return "Platinum Customer";
+        } else if (loyaltyPoints > 50) {
+            return "Silver Customer";
+        } else {
+            return "Regular Customer";
+        }
+    };
 
-                    <div className="updateformBootstrap">
-                    
-                            
-                            <form>
+    const getStatusColor = (loyaltyPoints) => {
+        if (loyaltyPoints > 150) {
+            return "gold";
+        } else if (loyaltyPoints > 100) {
+            return "blue";
+        } else if (loyaltyPoints > 50) {
+            return "silver";
+        } else {
+            return "black";
+        }
+    };
 
-                            
-                                    {/* onchange is used to store all values letter by letter */}
-                                    <div className="form-group mb-3">
-                                            <label for="fullName">Full Name:</label>
-                                            <input type="text" className="form-control" id="fullName" aria-describedby="emailHelp" placeholder="Enter Full Name" onChange={
-                                                    (e) => {
-                                                        setcustomerFullName(e.target.value)
-                                                    }
-                                            } value={customerFullName} disabled/>
+    console.log("Customer Status:" + getCustomerStatus(parseInt(customerLoyaltyPoints)));
+    console.log("Status Color is:" +getStatusColor(parseInt(customerLoyaltyPoints)));
 
-                                    </div>
+    return (
+        <div className="updateFormContainer">
 
-                                    <div className="form-group mb-3">
-                                            <label for="email">Email:</label>
-                                            <input type="email" className="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter Email" onChange={
-                                                    (e) => {
-                                                        setcustomerEmail(e.target.value)
-                                                    }
-                                             } value={customerEmail} disabled/>
+            <div className="updateformBootstrap">
 
-                                    </div>
+                {/* <div style={{ textAlign: 'center', marginBottom: '20px', fontFamily: 'Arial, sans-serif', backgroundColor: '#f0f0f0', color: getStatusColor(parseInt(customerLoyaltyPoints)), padding: '20px', borderRadius: '10px', boxShadow: '0px 0px 5px rgba(0, 0, 0, 0.3)' }}>
+                    <b>{getCustomerStatus(parseInt(customerLoyaltyPoints))}</b>
+                </div> */}
 
-                                    <div className="form-group mb-3">
-                                            <label for="contactNo">Contact No:</label>
-                                            <input type="tel" className="form-control" id="contactNo" aria-describedby="emailHelp" placeholder="071 5678987" pattern="[0-9]{3}[0-9]{7}" onChange={
-                                                    (e) => {
-                                                        setcustomerContactNo(e.target.value)
-                                                    }
-                                             } value={customerContactNo} disabled/>
-
-                                    </div>
-
-                                    <div className="form-group mb-3">
-                                            <label for="nic">NIC:</label>
-                                            <input type="text" className="form-control" id="nic" aria-describedby="emailHelp" placeholder="Enter NIC" onChange={
-                                                    (e) => {
-                                                        setcustomerNIC(e.target.value)
-                                                    }
-                                             } value={customerNIC} disabled/>
-
-                                    </div>
-
-                                    <div className="form-group mb-3">
-                                            <label for="gender">Gender:</label>
-                                            <input type="text" className="form-control" id="gender" aria-describedby="emailHelp" placeholder="Enter Gender" onChange={
-                                                    (e) => {
-                                                        setcustomerGender(e.target.value)
-                                                    }
-                                             } value={customerGender} disabled/>
-
-                                    </div>
-
-                                    <div className="form-group mb-3">
-                                            <label for="address">Address:</label>
-                                            <input type="text" className="form-control" id="address" aria-describedby="emailHelp" placeholder="Enter Address" onChange={
-                                                    (e) => {
-                                                        setcustomerAddress(e.target.value)
-                                                    }
-                                             } value={customerAddress} disabled/>
-
-                                    </div>
-
-                                    <div className="form-group mb-3">
-                                            <label for="loyaltyPoints">Loyalty Points:</label>
-                                            <input type="number" className="form-control" id="loyaltyPoints" aria-describedby="emailHelp" placeholder="Enter Loyalty Points" onChange={
-                                                    (e) => {
-                                                            setcustomerLoyaltyPoints(e.target.value)
-                                                    }
-                                             }value={customerLoyaltyPoints} disabled/>
-
-                                    </div>
-
-
-                                    <div style={{textAlign: "center"}} className="onecusbtns">
-                                        <Link to = {`/CustomerUpdate/${id}`}>
-                                            <button type="button" class="btn btn-success">Edit</button></Link>
-                                    </div>
-                                    
-
-                            </form>
+                <form>
+                    <div className="form-group mb-3">
+                        <label htmlFor="fullName">Full Name:</label>
+                        <input type="text" className="form-control" id="fullName" placeholder="Enter Full Name" value={customerFullName} disabled />
                     </div>
 
+                    <div className="form-group mb-3">
+                        <label htmlFor="email">Email:</label>
+                        <input type="email" className="form-control" id="email" placeholder="Enter Email" value={customerEmail} disabled />
+                    </div>
 
+                    <div className="form-group mb-3">
+                        <label htmlFor="contactNo">Contact No:</label>
+                        <input type="tel" className="form-control" id="contactNo" placeholder="071 5678987" pattern="[0-9]{3}[0-9]{7}" value={customerContactNo} disabled />
+                    </div>
+
+                    <div className="form-group mb-3">
+                        <label htmlFor="nic">NIC:</label>
+                        <input type="text" className="form-control" id="nic" placeholder="Enter NIC" value={customerNIC} disabled />
+                    </div>
+
+                    <div className="form-group mb-3">
+                        <label htmlFor="gender">Gender:</label>
+                        <input type="text" className="form-control" id="gender" placeholder="Enter Gender" value={customerGender} disabled />
+                    </div>
+
+                    <div className="form-group mb-3">
+                        <label htmlFor="address">Address:</label>
+                        <input type="text" className="form-control" id="address" placeholder="Enter Address" value={customerAddress} disabled />
+                    </div>
+
+                    <div className="form-group mb-3">
+                        <label htmlFor="loyaltyPoints">Loyalty Points:</label>
+                        <input type="number" className="form-control" id="loyaltyPoints" placeholder="Enter Loyalty Points" value={customerLoyaltyPoints} disabled />
+
+                    </div>
+
+                    <div style={{ textAlign: "center" }} className="onecusbtns">
+                        <Link to={`/CustomerUpdate/${id}`}>
+                            <button type="button" className="btn btn-success">Edit</button>
+                        </Link>
+                    </div>
+                </form>
             </div>
-    )
+        </div>
+    );
 };
 
 export default CustomerOneForm;

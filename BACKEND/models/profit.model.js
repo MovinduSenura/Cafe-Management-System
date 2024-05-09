@@ -9,7 +9,7 @@ const profitSchema = new mongoose.Schema({
     },
     salary:{
         type: Number,
-        // required: true,
+        required: true,
         trim: true,
     },
     other:{

@@ -24,6 +24,12 @@ function Feedbacks() {
       console.error("Error fetching user data:", error);
     }
   };
+  const Star = ({ selected = false, onClick }) => (
+    <span className={selected ? 'star selected' : 'star'} onClick={onClick}>
+      ★
+    </span>
+  );
+  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -32,6 +38,10 @@ function Feedbacks() {
       [name]: value,
     }));
   };
+  const handleRatingChange = (newRating) => {
+    setUserData({ ...userData, rating: newRating });
+  };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -93,6 +103,18 @@ function Feedbacks() {
             onChange={handleInputChange}
           />
         </div>
+        <div className="form-group mb-3">
+  <label>Rating</label>
+  <div>
+    {[1, 2, 3, 4, 5].map((star) => (
+      <Star
+        key={star}
+        selected={star <= userData.rating}
+        onClick={() => handleRatingChange(star)}
+      />
+    ))}
+  </div>
+</div>
 
         <div className="submitbtndiv2">
           <button type="submit" class="btn btn-primary submitbtn2">Submit</button>

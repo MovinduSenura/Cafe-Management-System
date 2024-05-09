@@ -1,25 +1,26 @@
-import React, { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import './Payment.css';
 import { useNavigate, useParams } from "react-router-dom";
 
 const PaymentCreateForm = () => {
 
+    const [promotions, setPromotions] = useState([]);
     const [orderID, setorderID] = useState('');
-    const [promotionID, setpromotionID] = useState('ehjd');
-    const [amount, setamount] = useState('');
-    const [date, setdate] = useState('');
-
+    const [errorMessage, setErrorMessage] = useState('');
+    const [customerData, setCustomerData] = useState('');
+    const [searchInput, setSearchInput] = useState('');
     const [total, setTotal] = useState(0);
-    const [paymentAmount, setPaymentAmount] = useState(0); 
+    const [paymentAmount, setPaymentAmount] = useState(0);
     const [payableAmount, setPayableAmount] = useState(0);
-    // const [order,setOrder] = useState([]);
+    const [redeemedPoints, setRedeemedPoints] = useState(0);
+    const [redeemPointsInput, setRedeemPointsInput] = useState(0);
     const [selectedPromotion, setSelectedPromotion] = useState("");
+    const [orderItem, setorderItem] = useState([]);
+    const [orderPrice, setorderPrice] = useState();
+    const [loyaltyButtonDisabled, setLoyaltyButtonDisabled] = useState(false); // State variable to track if loyalty button is disabled
 
-    const [orderItem,setorderItem] = useState([]);
-    const[orderPrice,setorderPrice] = useState();
-
-    const {id} = useParams();
+    const { id } = useParams();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -30,27 +31,30 @@ const PaymentCreateForm = () => {
                 setorderItem(res.data.order.menuItems);
                 setorderID(res.data.order._id);
 
-                console.log("Order",res.data.order);
-
                 const data = res.data.order;
-                let totalPrice = 0;
-                // Iterate through each order and add its price to totalPrice
-                // data.forEach(order => {
-                //     totalPrice += order.OrderPrice;
-                // });
-
-                totalPrice = data.OrderPrice;
+                let totalPrice = data.OrderPrice;
 
                 setTotal(totalPrice);
                 setPayableAmount(totalPrice);
-
-                console.log("Total price : ",total);
             } catch (err) {
-                console.log("Error fetching last document:", err.message);
+                console.log("Error fetching order:", err.message);
             }
         }
         getOneOrder();
     }, [id]);
+
+    useEffect(() => {
+        const fetchPromotions = async () => {
+            try {
+                const res = await axios.get('http://localhost:8000/promotion/promotions');
+                setPromotions(res.data.Allpromotions);
+            } catch (error) {
+                console.error('Error fetching promotions:', error);
+            }
+        };
+
+        fetchPromotions();
+    }, []);
 
 
     const handleChange = (event) => {
@@ -58,163 +62,259 @@ const PaymentCreateForm = () => {
         setPaymentAmount(value);
     };
 
+    const validatePaymentAmount = (value) => {
+        if (!value || isNaN(value) || value <= 0) {
+            alert("Invalid payment amount. Please enter a valid amount.");
+            return false;
+        }
+        return true;
+    };
+    
 
     const calculateChange = () => {
         let change;
-        if(paymentAmount === 0){
+        if (paymentAmount === 0) {
             change = 0;
-        }else{
+        } else {
             change = paymentAmount - payableAmount;
         }
-       
+
         return change;
     };
 
     const handlePromotionChange = (event) => {
         setSelectedPromotion(event.target.value);
-        
-        let newTotalPrice = total; // Sample total price
-        
-        switch (event.target.value) {
-        case "No discount":
-            newTotalPrice -= 0;  
-            break;
-        case "Morning Brew Discount":
-            newTotalPrice -= 10;
-            break;
-        case "Happy Hour Specials":
-            newTotalPrice -= 15;
-            break;
-        case "Daily Roast Deals":
-            newTotalPrice -= 20;
-            break;
-        case "Loyalty Bean Bonus":
-            newTotalPrice -= 25;
-            break;
-        default:
-            break;
-        }
 
-        console.log(newTotalPrice);
-        setPayableAmount(newTotalPrice);
+        const selectedPromotion = promotions.find(promotion => promotion._id === event.target.value);
+
+        if (selectedPromotion) {
+            const discountPercentage = selectedPromotion.promotionValues;
+            const discountAmount = (total * discountPercentage) / 100;
+
+            const newTotalPrice = total - discountAmount;
+
+            setPayableAmount(newTotalPrice);
+        } else {
+            setPayableAmount(total);
+        }
     };
 
-    const sendData = async(e) => {
+    const sendData = async (e) => {
         e.preventDefault();
 
-        try{
+        if (!validatePaymentAmount(paymentAmount)) {
+            return;
+        }
+
+        try {
 
             let newPaymentData = {
                 orderID: orderID,
-                promotionID: promotionID,
+                promotionID: selectedPromotion,
                 amount: payableAmount,
             }
 
-            console.log("OrderID : ",orderID)
-            console.log("promotionID : ",promotionID)
-            console.log("amount : ",amount)
+            axios.post('http://localhost:8000/payment/create', newPaymentData)
+                .then((res) => {
+                    alert(res.data.message);
+                    navigate('/ordercreate');
+                })
+                .catch((err) => {
+                    console.log("Error on API URL or newPaymentData object : " + err.message);
+                })
 
-            axios.post('http://localhost:8000/payment/create',newPaymentData)
-            .then((res) => {
-                alert(res.data.message);
-                console.log(res.data.status);
-                console.log(res.data.message);
-                navigate('/ordercreate');
-            })
-            .catch((err) => {
-                console.log("💀 :: Error on API URL or newPaymentData object : "+err.message);
-            })
-                                                                      
-        }catch(err){
-            console.log("💀 :: sendData function failed! ERROR : "+err.message);
+        } catch (err) {
+            console.log("sendData function failed! ERROR : " + err.message);
         }
     }
 
-  return (
-    <div className="PaymentContainer">
+    const handleInputChange = (event) => {
+        setSearchInput(event.target.value);
+    };
 
-        <div className="PaymentWidthBlanceDiv">
+    const fetchCustomerData = async () => {
+        try {
+            const response = await axios.get(`http://localhost:8000/customer/customerByFind/${searchInput}`);
+            setCustomerData(response.data);
+        } catch (error) {
+            console.error('Error fetching customer data:', error);
+        }
+    };
 
-            <div className="paymentTableContainer">
-                <div className="orderIdDiv">
-                    <p>OrderID: {orderID}</p>
-                </div>
+    const addLoyaltyPoints = async () => {
+        try {
+            const loyaltyPointsToAdd = Math.floor(payableAmount / 100); // Calculate loyalty points based on payable amount
 
-                <div className="paymentTableWrapper">
-                    <table class="paymentTable">
-                        <thead>
-                            <tr>
-                                <th scope="col">No</th>
-                                <th scope="col">Order Items</th>
-                                {/* <th scope="col">Quantity</th> */}
-                                <th scope="col">Price</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            
-                            
+            // Convert existing loyalty points to a number
+            const existingLoyaltyPoints = parseInt(customerData.customerLoyaltyPoints);
+
+            // Perform numeric addition
+            const updatedLoyaltyPoints = existingLoyaltyPoints + loyaltyPointsToAdd;
+
+            // Update customer data in the database
+            const response = await axios.patch(`http://localhost:8000/customer/customerUpdateLoyaltyPoints/${customerData._id}`, {
+                customerLoyaltyPoints: updatedLoyaltyPoints
+            });
+
+            // Update customer data in the state
+            setCustomerData({ ...customerData, customerLoyaltyPoints: updatedLoyaltyPoints });
+            setErrorMessage('');
+        } catch (error) {
+            console.error('Error adding loyalty points:', error);
+            setErrorMessage('Error adding loyalty points');
+        }
+    };
+
+    const handleRedeemPointsInputChange = (event) => {
+        setRedeemPointsInput(event.target.value);
+    };
+
+    const redeemLoyaltyPoints = async () => {
+        try {
+            let loyaltyPointsToRedeem = redeemPointsInput;
+
+            if (loyaltyPointsToRedeem === "all") {
+                loyaltyPointsToRedeem = customerData.customerLoyaltyPoints;
+            } else {
+                loyaltyPointsToRedeem = parseInt(loyaltyPointsToRedeem);
+            }
+
+            if (loyaltyPointsToRedeem <= 0 || loyaltyPointsToRedeem > customerData.customerLoyaltyPoints) {
+                console.error('Invalid loyalty points to redeem.');
+                return;
+            }
+
+            const updatedLoyaltyPoints = customerData.customerLoyaltyPoints - loyaltyPointsToRedeem;
+            await axios.patch(`http://localhost:8000/customer/customerUpdateLoyaltyPoints/${customerData._id}`, {
+                customerLoyaltyPoints: updatedLoyaltyPoints
+            });
+
+            setPayableAmount(payableAmount - (loyaltyPointsToRedeem * 0.5));
+            setRedeemedPoints(redeemedPoints + loyaltyPointsToRedeem);
+            setCustomerData({ ...customerData, customerLoyaltyPoints: updatedLoyaltyPoints });
+        } catch (error) {
+            console.error('Error redeeming loyalty points:', error);
+        }
+    };
+
+    // Function to handle loyalty button click
+    const handleLoyaltyButtonClick = async () => {
+        setLoyaltyButtonDisabled(true); // Disable the button
+        try {
+            await addLoyaltyPoints();
+        } catch (error) {
+            console.error('Error adding loyalty points:', error);
+            setErrorMessage('Error adding loyalty points');
+        }
+    };
+
+    return (
+        <div className="PaymentContainer">
+            <div className="PaymentWidthBlanceDiv">
+                <div className="paymentTableContainer">
+                    <div className="orderIdDiv">
+                        <p>OrderID: {orderID}</p>
+                    </div>
+                    <div className="paymentTableWrapper">
+                        <table className="paymentTable">
+                            <thead>
+                                <tr>
+                                    <th scope="col">No</th>
+                                    <th scope="col">Order Items</th>
+                                    <th scope="col">Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
                                 <tr>
                                     <th scope="row">1</th>
                                     <td>
                                         <ul>
-                                        
                                             {orderItem.map(item => (
                                                 <li key={item._id}>
-                                                {item.menuItemName} - {item.menuItemPrice ? item.menuItemPrice.toFixed(2) : 'N/A'}LKR
+                                                    {item.menuItemName} - {item.menuItemPrice ? item.menuItemPrice.toFixed(2) : 'N/A'}LKR
                                                 </li>
                                             ))}
-                                            
                                         </ul>
                                     </td>
-                                    {/* <td>{order.OrderQuantity}</td> */}
                                     <td>{orderPrice}</td>
                                 </tr>
-                            
-                                
-                            
-                            
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div className="paymentSideView">
-                <div className="calculationPhase">
-                    <div className="paymentTotalPhase">
-                        <p>Total: <span>{total} LKR</span></p>
-                    </div>
-                    <div className="paymentPropotionPhase">
-                        <p>Add Promotion: </p>
-                        <select name="promotion" id="promotion" value={selectedPromotion} onChange={handlePromotionChange}>
-                            <option value="No discount">No discount</option>
-                            <option value="Morning Brew Discount">Morning Brew Discount</option>
-                            <option value="Happy Hour Specials">Happy Hour Specials</option>
-                            <option value="Daily Roast Deals">Daily Roast Deals</option>
-                            <option value="Loyalty Bean Bonus">Loyalty Bean Bonus</option>
-                        </select>
-                    </div>
-                    <div className="paymentPayableAmountPhase">
-                        <p>Payable Amount: <h3>{payableAmount} LKR</h3></p>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-                <div className="balancePhase">
-                    <div className="paymentAmountDiv">
-                        <label for="paymentAmount">Payment Amount(LKR):</label>
-                        <input type="text" id="paymentAmount" name="paymentAmount" value={paymentAmount} onChange={handleChange} placeholder="Enter amount tendered" />
+                <div className="paymentSideView">
+                    <div className="calculationPhase">
+                        <div className="paymentTotalPhase">
+                            <p>Total: <span>{total} LKR</span></p>
+                        </div>
+                        <div className="paymentPropotionPhase">
+                            <p>Add Promotion: </p>
+                            <select name="promotion" id="promotion" value={selectedPromotion} onChange={handlePromotionChange}>
+                                <option value="">Select Promotion</option>
+                                {promotions.map(promotion => (
+                                    <option key={promotion._id} value={promotion._id}>{promotion.promotionName}</option>
+                                ))}
+                            </select>
+                        </div>
+                        <div className="paymentPayableAmountPhase">
+                            <p>Payable Amount: <h3>{payableAmount} LKR</h3></p>
+                        </div>
+                    </div>
+                    <div className="balancePhase">
+                        <div className="paymentAmountDiv">
+                            <label htmlFor="paymentAmount">Payment Amount(LKR):</label>
+                            <input type="text" id="paymentAmount" name="paymentAmount" value={paymentAmount} onChange={handleChange} placeholder="Enter amount tendered" />
+                        </div>
+                        <div className="changeDiv">
+                            <p>Change: <h3>{calculateChange()} LKR</h3></p>
+                        </div>
+                    </div>
+                </div>
+                <div className="loyalityPhase">
+                    <div className="loyalityChangeDiv">
+                        <div className="input-group mb-3 loyalitysearch">
+                            <input 
+                                type="text"
+                                value={searchInput}
+                                onChange={handleInputChange}
+                                className="form-control"
+                                placeholder="Enter customer phone number or name"
+                                aria-label="Enter customer phone number or name"
+                                aria-describedby="basic-addon2"
+                            />
+                            <div className="input-group-append">
+                                <button onClick={fetchCustomerData} className="btn btn-outline-secondary" type="button">Search</button>
+                            </div>
+                        </div>
+                    </div>
+                    {customerData && (
+                        <div className="changeDiv">
+                            <p>Customer Name: {customerData.customerFullName}</p>
+                            <p>Loyalty Points: {customerData.customerLoyaltyPoints}</p>
+                        </div>
+                    )}
+                    <div className="PaymentButtonDiv">
+                        <button onClick={handleLoyaltyButtonClick} className="btn btn-success" disabled={loyaltyButtonDisabled}>Add Loyalty Points</button>
                     </div>
                     <div className="changeDiv">
-                        <p>Change: <h3>{calculateChange()} LKR</h3></p>
+                        <input
+                            type="text"
+                            value={redeemPointsInput}
+                            className="form-control"
+                            onChange={handleRedeemPointsInputChange}
+                            placeholder="Enter points to redeem or 'all'"
+                        />
                     </div>
                     <div className="PaymentButtonDiv">
-                        <button class="custom-button" onClick={sendData}>Done</button>
+                        <button onClick={redeemLoyaltyPoints} className="btn btn-danger">Redeem Loyalty Points</button>
+                    </div>
+                    <div className="PaymentButtonDiv">
+                        <button className="custom-button" onClick={sendData}>Done</button>
                     </div>
                 </div>
             </div>
-
         </div>
-
-    </div>
-  )
+    )
 };
 
 export default PaymentCreateForm;

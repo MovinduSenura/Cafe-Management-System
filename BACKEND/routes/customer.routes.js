@@ -8,6 +8,7 @@ const {
     getOneCustomer,
     updateCustomer,
     deleteCustomer,
+    customerGenerateInvoice,
     searchCustomer,
     addFeedback,
     getFeedback,
@@ -18,6 +19,8 @@ const {
     allFeedbacks,
     searchFeedback,
     getAllFeedbacks,
+    getNameAndLoyaltyPoints,
+    updateLoyaltyPoints,
 } = require("../controller/customer.controller");
 
 
@@ -27,6 +30,11 @@ CustomerRouter.get('/customer/:id', getOneCustomer);
 CustomerRouter.patch('/customerUpdate/:id', updateCustomer);
 CustomerRouter.delete('/customerdelete/:id', deleteCustomer);
 CustomerRouter.get('/customersearch', searchCustomer);
+
+//Chethmi
+CustomerRouter.get('/customerByFind/:identifier', getNameAndLoyaltyPoints);
+CustomerRouter.patch('/customerUpdateLoyaltyPoints/:id', updateLoyaltyPoints);
+CustomerRouter.get('/customer-generate-invoice', customerGenerateInvoice)
 
 //Sithmi
 CustomerRouter.post('/addfeedback/:userid', addFeedback);
