@@ -14,6 +14,7 @@ const AllStaff = () => {
     const[ allStaff, setAllStaff ]= useState([]);
     const[allOriginalStaff,setAllOriginalStaff]=useState([]);
     const[staffName,setStaffName] = useState('');
+    const [bestEmployee, setBestEmployee] = useState(null); // Define bestEmployee in state
 
     const navigate = useNavigate();
 
@@ -33,6 +34,7 @@ const AllStaff = () => {
                 .then((res) => {
                     setAllStaff(res.data.AllStaff);
                     setAllOriginalStaff(res.data.AllStaff);
+                    setBestEmployee(res.data.BestEmployee); // Set bestEmployee from backend data
                     console.log(res.data.message);
                     console.log('status :' + res.data.status);
                 
@@ -135,6 +137,35 @@ const AllStaff = () => {
         navigate('/')
     }
 
+     //generate Invoice
+  const downloadInvoice = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.get(
+        "http://localhost:8000/staff/generate-invoice"
+      );
+
+      const { filepath } = response.data;
+
+      // Create a new <a> element to simulate a download link
+      const link = document.createElement("a");
+      // Set the href attribute of the link to the filepath of the generated invoice
+      link.href = filepath;
+      // Set the "download" attribute to specify the default file name for the downloaded file
+      link.setAttribute("download", "invoice.pdf");
+      // Append the link to the document body
+      document.body.appendChild(link);
+
+      // Simulate a click on the link to trigger the download
+      link.click();
+
+       // Remove the link from the document body after the download is complete
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Error downloading invoice:", error.message);
+    }
+  };
+
     return (
      <div className="alldiv">
        <ToastContainer/>
@@ -156,6 +187,7 @@ const AllStaff = () => {
               <div className="logoutdiv"><button type="button" className="btn btn-secondary btn-lg LogoutBtn" onClick={logout}>Logout</button></div>
               <div className="addbtndiv"><Link to='/createStaff'><button type="button" className="btn btn-secondary btn-lg AddItemBtn">Add Member</button></Link></div>
               <div className="tablediv">
+              <button type="button" className="btn btn-primary addItemBtn" onClick={downloadInvoice}> Download Invoice </button>
 
         <table class="table table-striped tbl">
           <thead>
@@ -178,7 +210,13 @@ const AllStaff = () => {
           {allStaff.map((staff, index) => (
              <tr key={staff._id}>
                 <th scope="row">{index + 1}</th>
-                <td>{staff.staffName}</td>
+                <td>
+                    {staff.staffName} <br/>
+                    {staff.staffWorkedHours === bestEmployee.staffWorkedHours && (
+                        <span className="popularLabel">Best Employee</span>
+                    )}
+                </td>
+                
                 <td>{staff.staffEmail}</td>
                 <td>{staff.staffContactNo}</td>
                 <td>{staff.staffAddress}</td>
