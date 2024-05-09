@@ -39,6 +39,7 @@ import AllItems from './components/AllItems';
 import AllItems2 from './components/AllItems2';
 
 import AllFeedbacks from './components/AllFeedbacks';
+import FeedbackReply from './components/FeedbackReply';
 
 import NavBar from './components/NavBar';
 import Footer from './components/Footer';
@@ -127,6 +128,8 @@ function AppContent() {
 
             {/* Feedback */}
             <Route path='/allfeedback' element={<AllFeedbacks/>} />
+            <Route path="/feedback-reply/:feedbackId" element={<FeedbackReply />} />
+
 
             {/* Stock */}
             <Route path='/stockcreateform' element = {<StockCreateForm />} />

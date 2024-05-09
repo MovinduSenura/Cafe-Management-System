@@ -54,15 +54,20 @@ const customerSchema = new mongoose.Schema({
                 },
 
                 TimeVisited: {
-                    type: String,
+                    type: String,   
                 },
 
                 Comment: {
-                    type: String,  
+                    type: String, 
                 },
                 rating:{
                     type: Number,
-                }
+                
+                },
+                  reply: {
+                    type: String,
+                    default: "pending"
+                  }
                 
             },
         ],

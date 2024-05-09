@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'
 import './AddFeedback.css';
 
 const AddFeedback = () => {
@@ -13,6 +14,9 @@ const AddFeedback = () => {
     });
 
     const { userid } = useParams();
+
+    const [errorMessage, setErrorMessage] = useState('');
+    
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -28,9 +32,14 @@ const AddFeedback = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!feedbackData.DayVisited || !feedbackData.TimeVisited || !feedbackData.Comment ) {
+            setErrorMessage('Please fill in all fields.');
+            return;
+        }
         try {
             await axios.post(`http://localhost:8000/customer/addfeedback/${userid}`, feedbackData);
             alert("Feedback Added Successfully!");
+            
             setFeedbackData({
                 DayVisited: '',
                 TimeVisited: '',
@@ -59,15 +68,15 @@ const AddFeedback = () => {
                 <form onSubmit={handleSubmit}>
                     <div className="form-group mb-3">
                         <label htmlFor="DayVisited">Day Visited</label>
-                        <input type="date" className="form-control" id="DayVisited" name="DayVisited" value={feedbackData.DayVisited} onChange={handleInputChange} max={getMaxDate()} />
+                        <input type="date" className="form-control" id="DayVisited" name="DayVisited" value={feedbackData.DayVisited} onChange={handleInputChange} max={getMaxDate()} required />
                     </div>
                     <div className="form-group mb-3">
                         <label htmlFor="TimeVisited">Time Visited</label>
-                        <input type="time" className="form-control" id="TimeVisited" name="TimeVisited" value={feedbackData.TimeVisited} onChange={handleInputChange} min="08:00" max="21:00" />
+                        <input type="time" className="form-control" id="TimeVisited" name="TimeVisited" value={feedbackData.TimeVisited} onChange={handleInputChange} min="08:00" max="21:00" required />
                     </div>
                     <div className="form-group mb-3">
                         <label htmlFor="Comment">Comment</label>
-                        <textarea id="Comment" className="form-control" name="Comment" value={feedbackData.Comment} onChange={handleInputChange}></textarea>
+                        <textarea id="Comment" className="form-control" name="Comment" value={feedbackData.Comment} onChange={handleInputChange} required></textarea>
                     </div>
                     <div className="rating">
                         <p>Rate us:</p>
