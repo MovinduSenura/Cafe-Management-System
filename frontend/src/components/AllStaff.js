@@ -187,7 +187,7 @@ const AllStaff = () => {
               <div className="logoutdiv"><button type="button" className="btn btn-secondary btn-lg LogoutBtn" onClick={logout}>Logout</button></div>
               <div className="addbtndiv"><Link to='/createStaff'><button type="button" className="btn btn-secondary btn-lg AddItemBtn">Add Member</button></Link></div>
               <div className="tablediv">
-              <button type="button" className="btn btn-primary addItemBtn" onClick={downloadInvoice}> Download Invoice </button>
+              <button type="button" className="btn btn-secondary btn-lg ReportBtn" onClick={downloadInvoice}> Download Staff Details </button>
 
         <table class="table table-striped tbl">
           <thead>
