@@ -8,7 +8,8 @@ const{
     updatestaff,
     deletestaff,
     searchStaff,
-    StaffLogin
+    StaffLogin,
+    staffGenerateInvoice,
 
 }= require("../controller/staff.controller");
 // const { default: StaffLogin } = require("../../frontend/src/components/StaffLogin");
@@ -20,6 +21,7 @@ staffRouter.patch('/staffupdate/:id',updatestaff);
 staffRouter.delete('/deletestaff/:id',deletestaff);
 staffRouter.post('/StaffLogin',StaffLogin);
 staffRouter.get('/searchStaff',searchStaff);
+staffRouter.get('/generate-invoice',staffGenerateInvoice);
 
 
 module.exports = staffRouter;

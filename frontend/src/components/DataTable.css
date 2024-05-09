@@ -154,3 +154,12 @@ thead{
   width: 1100px;
   text-align: right;
 } */
+
+.popularLabel{
+  font-weight: 600;
+  font-size: 0.6rem;
+  color: #ffffff;
+  background-color: #0a975c;
+  padding: 3px 5px;
+  border-radius: 5px;
+}
