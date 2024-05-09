@@ -263,7 +263,7 @@ const PaymentCreateForm = () => {
                     <div className="balancePhase">
                         <div className="paymentAmountDiv">
                             <label htmlFor="paymentAmount">Payment Amount(LKR):</label>
-                            <input type="text" id="paymentAmount" name="paymentAmount" value={paymentAmount} onChange={handleChange} placeholder="Enter amount tendered" />
+                            <input type="text" id="paymentAmount" name="paymentAmount" value={paymentAmount} onChange={handleChange} placeholder="Enter amount" />
                         </div>
                         <div className="changeDiv">
                             <p>Change: <h3>{calculateChange()} LKR</h3></p>
@@ -278,8 +278,8 @@ const PaymentCreateForm = () => {
                                 value={searchInput}
                                 onChange={handleInputChange}
                                 className="form-control"
-                                placeholder="Enter customer phone number or name"
-                                aria-label="Enter customer phone number or name"
+                                placeholder="Enter customer phone number"
+                                aria-label="Enter customer phone number"
                                 aria-describedby="basic-addon2"
                             />
                             <div className="input-group-append">
