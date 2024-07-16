@@ -4,8 +4,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import './DataTable.css';
-// import jsPDF from 'jspdf';
-// import 'jspdf-autotable';
 
 const OrdersAll = () => {
   const [OrdersAll, setOrdersAll] = useState([]);
@@ -70,52 +68,6 @@ const OrdersAll = () => {
   const handleFormSubmit = (e) => {
     e.preventDefault();
   };
-
-  // const generatePDFReport = () => {
-  //   const doc = new jsPDF();
-    
-  //        // Add logo image
-  //        const logo = new Image();
-  //        logo.src = process.env.PUBLIC_URL + '/favicon.png'; // Path to your logo image
-  //        doc.addImage(logo, 'PNG', 10, 10, 20, 20); // Add logo image at position (10, 10) with size 40x40
- 
-  //   // Add report title
-  //   doc.text("Orders Report", 60, 30);
-
-  //   // Define table columns
-  //   const columns = [
-  //       { header: 'Order ID', dataKey: 'orderId' },
-  //       { header: 'Order Items', dataKey: 'orderItems' },
-  //       { header: 'Full Amount (LKR)', dataKey: 'fullAmount' }
-  //   ];
-
-  //   // Map order data to table rows
-  //   const rows = OrdersAll.map((order, index) => ({
-  //       orderId: order._id,
-  //       orderItems: order.menuItems.map(item => item.menuItemName).join(', '), // Concatenate all item names
-  //       fullAmount: order.OrderPrice
-  //   }));
-
-    
-
-  //   // Add table to the document
-  //   doc.autoTable({
-  //     columns: columns, // Specify columns as an array of objects
-  //     body: rows, // Specify rows as an array of objects
-  //     startY: 50, // Adjust vertical position of the table
-  //     margin: { top: 50 }, // Ensure sufficient margin to avoid overlap
-  //     headStyles: {
-  //         fillColor: [171, 132, 91], // Yellow background color for table headers
-  //         textColor: [255, 255, 255], // White text color for table headers
-  //         fontStyle: 'bold' // Bold font style for table headers
-  //     },
-  //     alternateRowStyles: {
-  //       fillColor: [255, 255, 204] // Light yellow background color for alternate rows
-  //     }
-  //   });
-
-  //   doc.save("orders_report.pdf");
-  // };
 
   const logout = (e) => {
     localStorage.clear();
