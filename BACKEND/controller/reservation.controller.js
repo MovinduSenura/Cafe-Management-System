@@ -69,12 +69,7 @@ const createReservation = async (req, res) => {
           const day = days[0];
           const table = day.tables.find(table => table._id == req.body.table);
 
-        //   if (table) {
-        //       table.reservation = new reservationModel({
-        //           name: req.body.name,
-        //           phone: req.body.phone,
-        //           email: req.body.email
-        //       });
+      
 
         if (table) {
             // Define the reservation data here
