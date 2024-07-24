@@ -20,7 +20,7 @@ const PaymentCreateForm = () => {
     const [orderPrice, setorderPrice] = useState();
     const [loyaltyButtonDisabled, setLoyaltyButtonDisabled] = useState(false); // State variable to track if loyalty button is disabled
 
-    const { id } = useParams();
+    const { id } = useParams(); 
     const navigate = useNavigate();
 
     useEffect(() => {
