@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Col } from "reactstrap";
+import { Row, Col } from "reactstrap";//This integrate Bootstrap with react applications
 
 
 const Table = ({ key, id, chairs, name, empty, selectTable }) => {
