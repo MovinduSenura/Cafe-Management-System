@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";//useParams is used to capture values from the url which can be used to further personalize or specify what to render in the particular view
 
 import './UpdateForm.css';
 
