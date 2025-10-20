@@ -25,7 +25,7 @@ export const PaymentAll = () => {
                 return;
             }
             try {
-                const res = await axios.get('http://localhost:8000/payment/getAllPayment');
+                const res = await axios.get('http://localhost:3000/payment/getAllPayment');
                 setPaymentAll(res.data.allPayments);
                 setallOriginalPayments(res.data.allPayments);
                 console.log(res.data.message);
@@ -44,7 +44,7 @@ export const PaymentAll = () => {
         try {
             const confirmed = window.confirm('Are you sure you want to delete this payment record?');
             if (confirmed) {
-                const res = await axios.delete(`http://localhost:8000/payment/deletePayment/${id}`);
+                const res = await axios.delete(`http://localhost:3000/payment/deletePayment/${id}`);
                 toast.success(res.data.message); // Display success message
                 const updatedPayments = PaymentAll.filter(payment => payment._id !== id);
                 setPaymentAll(updatedPayments);
@@ -60,7 +60,7 @@ export const PaymentAll = () => {
     //search functions
     const SearchFunction = async (searchTerm) => {
         try {
-            const res = await axios.get('http://localhost:8000/payment/searchPayment', {
+            const res = await axios.get('http://localhost:3000/payment/searchPayment', {
                 params: {
                     orderID: searchTerm
                 }
@@ -114,7 +114,7 @@ export const PaymentAll = () => {
         e.preventDefault();
         try {
             const response = await axios.get(
-                "http://localhost:8000/payment/payment-generate-invoice"
+                "http://localhost:3000/payment/payment-generate-invoice"
             );
             const { filepath } = response.data;
             const link = document.createElement("a");

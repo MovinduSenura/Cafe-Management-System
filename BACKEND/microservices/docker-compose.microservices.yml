@@ -1,0 +1,355 @@
+services:
+  # Infrastructure Services
+  mongodb:
+    image: mongo:6.0
+    container_name: cafe-mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password123
+      MONGO_INITDB_DATABASE: cafe_management
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - cafe-network
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: cafe-redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - cafe-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # API Gateway (Port 3000)
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    image: cafe-management/api-gateway:latest
+    container_name: cafe-api-gateway
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - NODE_ENV=development
+      - MONGODB_URI=mongodb://admin:password123@mongodb:27017/cafe_management?authSource=admin
+      - REDIS_URL=redis://redis:6379
+      - USER_SERVICE_URL=http://user-service:3001
+      - CUSTOMER_SERVICE_URL=http://customer-service:3002
+      - MENU_SERVICE_URL=http://menu-service:3003
+      - ORDER_SERVICE_URL=http://order-service:3004
+      - PAYMENT_SERVICE_URL=http://payment-service:3005
+      - INVENTORY_SERVICE_URL=http://inventory-service:3006
+      - RESERVATION_SERVICE_URL=http://reservation-service:3007
+      - NOTIFICATION_SERVICE_URL=http://notification-service:3008
+      - REPORT_SERVICE_URL=http://report-service:3009
+      - JWT_SECRET=your-secret-key-change-in-production
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - cafe-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # User Service (Port 3001)
+  user-service:
+    build:
+      context: ./user-service
+      dockerfile: Dockerfile
+    image: cafe-management/user-service:latest
+    container_name: cafe-user-service
+    restart: always
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+      - NODE_ENV=development
+      - MONGODB_URI=mongodb://admin:password123@mongodb:27017/cafe_management?authSource=admin
+      - REDIS_URL=redis://redis:6379
+      - JWT_SECRET=your-secret-key-change-in-production
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - cafe-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Customer Service (Port 3002)
+  customer-service:
+    build:
+      context: ./customer-service
+      dockerfile: Dockerfile
+    image: cafe-management/customer-service:latest
+    container_name: cafe-customer-service
+    restart: always
+    ports:
+      - "3002:3002"
+    environment:
+      - PORT=3002
+      - NODE_ENV=development
+      - MONGODB_URI=mongodb://admin:password123@mongodb:27017/cafe_management?authSource=admin
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - cafe-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3002/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Menu Service (Port 3003)
+  menu-service:
+    build:
+      context: ./menu-service
+      dockerfile: Dockerfile
+    image: cafe-management/menu-service:latest
+    container_name: cafe-menu-service
+    restart: always
+    ports:
+      - "3003:3003"
+    environment:
+      - PORT=3003
+      - NODE_ENV=development
+      - MONGODB_URI=mongodb://admin:password123@mongodb:27017/cafe_management?authSource=admin
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - cafe-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3003/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Order Service (Port 3004)
+  order-service:
+    build:
+      context: ./order-service
+      dockerfile: Dockerfile
+    image: cafe-management/order-service:latest
+    container_name: cafe-order-service
+    restart: always
+    ports:
+      - "3004:3004"
+    environment:
+      - PORT=3004
+      - NODE_ENV=development
+      - MONGODB_URI=mongodb://admin:password123@mongodb:27017/cafe_management?authSource=admin
+      - REDIS_URL=redis://redis:6379
+      - PAYMENT_SERVICE_URL=http://payment-service:3005
+      - INVENTORY_SERVICE_URL=http://inventory-service:3006
+      - NOTIFICATION_SERVICE_URL=http://notification-service:3008
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - cafe-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3004/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Payment Service (Port 3005)
+  payment-service:
+    build:
+      context: ./payment-service
+      dockerfile: Dockerfile
+    image: cafe-management/payment-service:latest
+    container_name: cafe-payment-service
+    restart: always
+    ports:
+      - "3005:3005"
+    environment:
+      - PORT=3005
+      - NODE_ENV=development
+      - MONGODB_URI=mongodb://admin:password123@mongodb:27017/cafe_management?authSource=admin
+      - REDIS_URL=redis://redis:6379
+      - STRIPE_SECRET_KEY=sk_test_your_key_here
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - cafe-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3005/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Inventory Service (Port 3006)
+  inventory-service:
+    build:
+      context: ./inventory-service
+      dockerfile: Dockerfile
+    image: cafe-management/inventory-service:latest
+    container_name: cafe-inventory-service
+    restart: always
+    ports:
+      - "3006:3006"
+    environment:
+      - PORT=3006
+      - NODE_ENV=development
+      - MONGODB_URI=mongodb://admin:password123@mongodb:27017/cafe_management?authSource=admin
+      - REDIS_URL=redis://redis:6379
+      - NOTIFICATION_SERVICE_URL=http://notification-service:3008
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - cafe-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3006/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Reservation Service (Port 3007)
+  reservation-service:
+    build:
+      context: ./reservation-service
+      dockerfile: Dockerfile
+    image: cafe-management/reservation-service:latest
+    container_name: cafe-reservation-service
+    restart: always
+    ports:
+      - "3007:3007"
+    environment:
+      - PORT=3007
+      - NODE_ENV=development
+      - MONGODB_URI=mongodb://admin:password123@mongodb:27017/cafe_management?authSource=admin
+      - REDIS_URL=redis://redis:6379
+      - NOTIFICATION_SERVICE_URL=http://notification-service:3008
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - cafe-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3007/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Notification Service (Port 3008)
+  notification-service:
+    build:
+      context: ./notification-service
+      dockerfile: Dockerfile
+    image: cafe-management/notification-service:latest
+    container_name: cafe-notification-service
+    restart: always
+    ports:
+      - "3008:3008"
+    environment:
+      - PORT=3008
+      - NODE_ENV=development
+      - MONGODB_URI=mongodb://admin:password123@mongodb:27017/cafe_management?authSource=admin
+      - REDIS_URL=redis://redis:6379
+      - SMTP_HOST=smtp.gmail.com
+      - SMTP_PORT=587
+      - SMTP_USER=your-email@gmail.com
+      - SMTP_PASS=your-app-password
+      - TWILIO_ACCOUNT_SID=your_twilio_sid
+      - TWILIO_AUTH_TOKEN=your_twilio_token
+      - TWILIO_PHONE_NUMBER=+1234567890
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - cafe-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3008/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Report Service (Port 3009)
+  report-service:
+    build:
+      context: ./report-service
+      dockerfile: Dockerfile
+    image: cafe-management/report-service:latest
+    container_name: cafe-report-service
+    restart: always
+    ports:
+      - "3009:3009"
+    environment:
+      - PORT=3009
+      - NODE_ENV=development
+      - MONGODB_URI=mongodb://admin:password123@mongodb:27017/cafe_management?authSource=admin
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - cafe-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3009/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    volumes:
+      - report_exports:/app/exports
+
+volumes:
+  mongodb_data:
+    driver: local
+  redis_data:
+    driver: local
+  report_exports:
+    driver: local
+
+networks:
+  cafe-network:
+    driver: bridge

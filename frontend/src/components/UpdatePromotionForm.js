@@ -24,7 +24,7 @@ const UpdatePromotionForm = () => {
         const getOneData = async () => {
             try{
 
-                await axios.get(`http://localhost:8000/promotion/promotion/${id}`)
+                await axios.get(`http://localhost:3000/promotion/promotion/${id}`)
                 .then((res) => {
             setpromotionName(res.data.Promotion.promotionName);
             setpromotionValues(res.data.Promotion.promotionValues);
@@ -64,7 +64,7 @@ const UpdatePromotionForm = () => {
             //     promotionDescription: promotionDescription,
             //     promotionItempic: promotionItempic,
             // }
-            axios.patch(`http://localhost:8000/promotion/promotionUpdate/${id}`,promotionformdata)
+            axios.patch(`http://localhost:3000/promotion/promotionUpdate/${id}`,promotionformdata)
             .then((res) =>{
                 alert(res.data.message);
                 console.log(res.data.status);

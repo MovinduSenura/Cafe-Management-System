@@ -1,16 +1,22 @@
 const express = require("express");
-const profitRouter = express.Router();
+const router = express.Router();
+const { authenticateToken, authorizeRoles } = require("../middleware/auth.middleware");
+const {
+    addProfit,
+    getAllProfits,
+    getOneProfit,
+    updateProfit
+} = require("../controller/profit.controller");
 
-const { addProfit, 
-        getAllProfits,
-        getOneProfit,
-        updateProfit, 
+// Protected routes only (all profit operations require authentication)
+router.use(authenticateToken);
 
-    } = require("../controller/profit.controller")
+// Manager and admin only routes (profit data is sensitive)
+router.use(authorizeRoles('admin', 'manager'));
 
-profitRouter.post('/createProfit',addProfit);
-profitRouter.get('/getAllProfit',getAllProfits);
-profitRouter.get('/getOneProfit/:id',getOneProfit);
-profitRouter.patch('/updateProfit/:id',updateProfit);
+router.get('/', getAllProfits);
+router.get('/:id', getOneProfit);
+router.post('/create', addProfit);
+router.patch('/:id', updateProfit);
 
-module.exports = profitRouter;
+module.exports = router;

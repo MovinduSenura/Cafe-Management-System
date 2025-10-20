@@ -15,7 +15,7 @@ function Feedbacks() {
 
   const fetchData = async (customerNIC, feedbackId) => {
     try {
-      const response = await axios.get(`http://localhost:8000/customer/getonefeedback/${customerNIC}/${feedbackId}`);
+      const response = await axios.get(`http://localhost:3000/customer/getonefeedback/${customerNIC}/${feedbackId}`);
       console.log(response)
       setUserData(response.data.feedback);
       setLoading(false); // Set loading to false after data is fetched
@@ -47,7 +47,7 @@ function Feedbacks() {
     e.preventDefault();
 
     try {
-      await axios.put(`http://localhost:8000/customer/feedback/${customerNIC}/${feedbackId}`, userData);
+      await axios.put(`http://localhost:3000/customer/feedback/${customerNIC}/${feedbackId}`, userData);
       alert("User Data Updated!");
     } catch (error) {
       console.error("Error updating user data:", error);

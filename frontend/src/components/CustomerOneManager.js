@@ -35,7 +35,7 @@ const CustomerOneForm = () => {
             const getOneItem = async () => {
                 try{
 
-                    await axios.get(`http://localhost:8000/customer/customer/${id}`)
+                    await axios.get(`http://localhost:3000/customer/customer/${id}`)
                     .then((res) => {
                         setcustomerFullName(res.data.Customer.customerFullName);
                         setcustomerEmail(res.data.Customer.customerEmail);
@@ -71,7 +71,7 @@ const CustomerOneForm = () => {
     //         if (confirmed) {
 
                 
-    //             await axios.delete(`http://localhost:8000/customer/customerdelete/${id}`)
+    //             await axios.delete(`http://localhost:3000/customer/customerdelete/${id}`)
     //                 .then((res) => {
     //                     alert(res.data.message);
     //                     console.log(res.data.message);

@@ -13,7 +13,7 @@ function AllCustomerFeedbacks() {
     useEffect(() => {
         async function getAppointments() {
             try {
-                const response = await axios.get("http://localhost:8000/customer/feedbackall");
+                const response = await axios.get("http://localhost:3000/customer/feedbackall");
                 setAppointments(response.data.feedbacks);
                 // setFeedbacksAllOriginal(response.data.feedbacks);
                 console.log(response.data.feedbacks)

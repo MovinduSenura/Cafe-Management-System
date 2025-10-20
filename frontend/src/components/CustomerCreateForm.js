@@ -55,7 +55,7 @@ const CustomerCreateForm = () => {
                 customerLoyaltyPoints
             };
 
-            axios.post('http://localhost:8000/customer/customercreate', newCustomerData)
+            axios.post('http://localhost:3000/customer/customercreate', newCustomerData)
                 .then((res) => {
                     // Send email using EmailJS upon successful registration
                     emailjs.send('service_f3hl5ol', 'template_9t7s17a', {

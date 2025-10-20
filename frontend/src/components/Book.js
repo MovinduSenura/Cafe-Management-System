@@ -93,7 +93,7 @@ const Book = () => {
     if (selection.time && selection.date) {
       (async _ => {
         let datetime = getDate();
-        let res = await fetch("http://localhost:8000/table", {
+        let res = await fetch("http://localhost:3000/table", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -140,7 +140,7 @@ const Book = () => {
       setReservationError(true);
     } else {
       const datetime = getDate();
-      await fetch("http://localhost:8000/reservation", {
+      await fetch("http://localhost:3000/reservation", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

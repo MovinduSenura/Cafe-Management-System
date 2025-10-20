@@ -1,7 +1,5 @@
-const express = require ("express");
+const express = require("express");
 const CustomerRouter = express.Router();
-
-//passing two parameters to send data. 1-linkto call 2-functionto run when calling link in1
 const {
     addCustomer,
     getAllCustomers,
@@ -25,34 +23,41 @@ const {
     updateLoyaltyPoints,
 } = require("../controller/customer.controller");
 
+const { 
+    validateCustomerCreate, 
+    validateCustomerUpdate, 
+    validateFeedback 
+} = require("../middleware/validation");
 
-CustomerRouter.post('/customercreate', addCustomer);
-CustomerRouter.get('/customers', getAllCustomers);
-CustomerRouter.get('/customer/:id', getOneCustomer);
-CustomerRouter.patch('/customerUpdate/:id', updateCustomer);
-CustomerRouter.delete('/customerdelete/:id', deleteCustomer);
-CustomerRouter.get('/customersearch', searchCustomer);
+// Customer CRUD routes
+CustomerRouter.post('/create', validateCustomerCreate, addCustomer);
+CustomerRouter.get('/', getAllCustomers);
+CustomerRouter.get('/search', searchCustomer);
+CustomerRouter.get('/reports/invoice', customerGenerateInvoice);
+CustomerRouter.get('/:id', getOneCustomer);
+CustomerRouter.patch('/:id', validateCustomerUpdate, updateCustomer);
+CustomerRouter.delete('/:id', deleteCustomer);
 
-//Chethmi
-CustomerRouter.get('/customerByFind/:identifier', getNameAndLoyaltyPoints);
-CustomerRouter.patch('/customerUpdateLoyaltyPoints/:id', updateLoyaltyPoints);
-CustomerRouter.get('/customer-generate-invoice', customerGenerateInvoice)
+// Customer utility routes
+CustomerRouter.get('/find/:identifier', getNameAndLoyaltyPoints);
+CustomerRouter.patch('/loyalty-points/:id', updateLoyaltyPoints);
 
-//Sithmi
-CustomerRouter.post('/addfeedback/:userid', addFeedback);
-CustomerRouter.get('/getfeedback/:userid', getFeedback);
-CustomerRouter.get('/getonefeedback/:customerNIC/:feedbackId',getOneFeedback);
-CustomerRouter.patch('/updatefeedback/:userId/:feedbackId',updateFeedback);
-CustomerRouter.delete('/deletefeedback/:userId/:feedbackId',deleteFeedback);
-CustomerRouter.get('/login/:nic', loginFeedback);
-CustomerRouter.put('/feedback/:customerNIC/:feedbackId', updateFeedback);
-CustomerRouter.get('/feedback/all', allFeedbacks);
-CustomerRouter.get('/feedbacksearch', searchFeedback);
-CustomerRouter.get('/feedbackall', getAllFeedbacks);
-CustomerRouter.get("/userfeedback/:feedbackId",getFeedbackById);
-// Assuming you are using express.Router() and it's defined as CustomerRouter
+// Feedback routes
+CustomerRouter.post('/:userid/feedback', validateFeedback, addFeedback);
+CustomerRouter.get('/:userid/feedback', getFeedback);
+CustomerRouter.get('/feedback/all', getAllFeedbacks);
+CustomerRouter.get('/feedback/search', searchFeedback);
+CustomerRouter.get('/feedback/:feedbackId', getFeedbackById);
+CustomerRouter.get('/:customerNIC/feedback/:feedbackId', getOneFeedback);
+CustomerRouter.patch('/:customerNIC/feedback/:feedbackId', validateFeedback, updateFeedback);
+CustomerRouter.delete('/:userId/feedback/:feedbackId', deleteFeedback);
 CustomerRouter.post('/feedback/:feedbackId/reply', postReplyToFeedback);
 
+// Authentication route
+CustomerRouter.get('/auth/:nic', loginFeedback);
 
+// Legacy routes (kept for backward compatibility)
+CustomerRouter.get('/feedbackall', getAllFeedbacks);
+CustomerRouter.get('/feedback/all', allFeedbacks);
 
 module.exports = CustomerRouter;

@@ -26,7 +26,7 @@ const MenuUpdateForm = () => {
         const getOneData = async () => {
             try{
 
-                await axios.get(`http://localhost:8000/menu/menuItem/${id}`)
+                await axios.get(`http://localhost:3000/menu/menuItem/${id}`)
                 .then((res) => {
                     setUploadedFileName(res.data.MenuItem.menuItemImage);
                     setmenuItemName(res.data.MenuItem.menuItemName);
@@ -68,7 +68,7 @@ const MenuUpdateForm = () => {
             updateformdata.append('menuItemPrice', menuItemPrice);
             updateformdata.append('menuItemAvailability', menuItemAvailability);
 
-            axios.patch(`http://localhost:8000/menu/menuItemUpdate/${id}`, updateformdata)
+            axios.patch(`http://localhost:3000/menu/menuItemUpdate/${id}`, updateformdata)
             .then((res) => {
                 alert(res.data.message);
                 console.log(res.data.status);

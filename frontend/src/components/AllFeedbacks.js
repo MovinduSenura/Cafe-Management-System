@@ -21,7 +21,7 @@ function AllFeedbacks() {
 
         async function getAppointments() {
             try {
-                const response = await axios.get("http://localhost:8000/customer/feedbackall");
+                const response = await axios.get("http://localhost:3000/customer/feedbackall");
                 setAppointments(response.data.feedbacks);
                 setFeedbacksAllOriginal(response.data.feedbacks);
             } catch (error) {
@@ -34,7 +34,7 @@ function AllFeedbacks() {
 
     const SearchFunction = async (searchTerm) => {
         try {
-            const response = await axios.get('http://localhost:8000/customer/feedbacksearch', {
+            const response = await axios.get('http://localhost:3000/customer/feedbacksearch', {
                 params: {
                     DayVisited: searchTerm
                 }

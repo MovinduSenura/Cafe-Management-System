@@ -15,7 +15,7 @@ const MenuPage = () => {
 
             try{
 
-                await axios.get('http://localhost:8000/menu/menuItems')
+                await axios.get('http://localhost:3000/menu/menuItems')
                 .then((res) => {
                     setMenuAllItems(res.data.AllmenuItems);
                     setAllOriginalMenuItems(res.data.AllmenuItems);
@@ -41,7 +41,7 @@ const MenuPage = () => {
     const SearchFunction = async (searchTerm) => {
 
         try{
-            await axios.get('http://localhost:8000/menu/searchmenuItem', {
+            await axios.get('http://localhost:3000/menu/searchmenuItem', {
             params: {
                 menuItemName: searchTerm
             }})

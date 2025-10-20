@@ -1,28 +1,44 @@
 const express = require("express");
-const promotionRouter = express.Router();
-
+const router = express.Router();
+const { authenticateToken, authorizeRoles } = require("../middleware/auth.middleware");
 const {
     addpromotion,
     getAllpromotions,
     getOnepromotion,
     updatepromotion,
     deletepromotion,
-    searchPromotion,
     promotiongenerateInvoice,
-
-
+    searchPromotion
 } = require("../controller/promotion.controller");
-const promotionAllRoutes = (upload) => {
-promotionRouter.post('/create', upload.single("promotionItempic"), addpromotion);
-promotionRouter.get('/promotions',getAllpromotions);
-promotionRouter.get('/promotion/:id',getOnepromotion);
-promotionRouter.patch('/promotionUpdate/:id', upload.single("promotionItempic"), updatepromotion);
-promotionRouter.delete('/deletepromotion/:id',deletepromotion);
-promotionRouter.get('/searchPromotion',searchPromotion);
-promotionRouter.get('/generate-promotioninvoice',promotiongenerateInvoice)
 
+// Public routes
+router.get('/search', searchPromotion);
+router.get('/:id', getOnepromotion);
+router.get('/', getAllpromotions);
 
-return promotionRouter
-}
+// Protected routes
+router.use(authenticateToken);
 
-module.exports = promotionAllRoutes;
+// Manager and admin routes
+router.post('/create',
+    authorizeRoles('admin', 'manager'),
+    addpromotion
+);
+
+router.patch('/:id',
+    authorizeRoles('admin', 'manager'),
+    updatepromotion
+);
+
+router.get('/invoice/:id',
+    authorizeRoles('admin', 'manager', 'cashier'),
+    promotiongenerateInvoice
+);
+
+// Admin only routes
+router.delete('/:id',
+    authorizeRoles('admin'),
+    deletepromotion
+);
+
+module.exports = router;

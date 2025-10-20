@@ -28,7 +28,7 @@ const AllPromotions2 = ()=> {
       const getAllPromotions = async () => {
         try{
           
-          await axios.get('http://localhost:8000/promotion/promotions')
+          await axios.get('http://localhost:3000/promotion/promotions')
           .then((res) => {
             setAllPromotion(res.data.Allpromotions);
             setAllOriginalPromotionItems(res.data.Allpromotions);
@@ -57,7 +57,7 @@ const AllPromotions2 = ()=> {
     //           const confirmed  = window.confirm('Are you sure you want to delete this item?');
               
     //           if(confirmed){
-    //              await axios.delete(`http://localhost:8000/promotion/deletepromotion/${id}`)
+    //              await axios.delete(`http://localhost:3000/promotion/deletepromotion/${id}`)
     //             .then((res) => {
     //             alert(res.data.message);
     //             console.log(res.data.message);
@@ -80,7 +80,7 @@ const AllPromotions2 = ()=> {
       // e.preventDefault();
 
       try{
-          await axios.get('http://localhost:8000/promotion/searchPromotion', {
+          await axios.get('http://localhost:3000/promotion/searchPromotion', {
           params: {
             promotionName: searchTerm
           }})

@@ -35,7 +35,7 @@ const StaffCreateForm = () => {
             staffRole: staffRole,
         };
 
-        axios.post('http://localhost:8000/staff/create', newStaff)
+        axios.post('http://localhost:3000/staff/create', newStaff)
             .then((res) => {
                 alert(res.data.message);
                 console.log(res.data.status);

@@ -20,7 +20,7 @@ const MenuAllItems = () => {
 
         const getMenuAllItems = async () => {
             try {
-                const res = await axios.get('http://localhost:8000/menu/menuItems');
+                const res = await axios.get('http://localhost:3000/menu/menuItems');
                 setMenuAllItems(res.data.AllmenuItems);
                 setAllOriginalMenuItems(res.data.AllmenuItems);
                 console.log(res.data.message);
@@ -36,7 +36,7 @@ const MenuAllItems = () => {
         try {
             const confirmed = window.confirm('Are you sure want to delete this item?');
             if (confirmed) {
-                await axios.delete(`http://localhost:8000/menu/deletemenuItem/${id}`)
+                await axios.delete(`http://localhost:3000/menu/deletemenuItem/${id}`)
                     .then((res) => {
                         setMenuAllItems(menuAllItems.filter(menuitems => menuitems._id !== id));
                         alert(res.data.message);
@@ -59,7 +59,7 @@ const MenuAllItems = () => {
     const SearchFunction = async (searchTerm) => {
 
         try {
-            await axios.get('http://localhost:8000/menu/searchmenuItem', {
+            await axios.get('http://localhost:3000/menu/searchmenuItem', {
                 params: {
                     menuItemName: searchTerm
                 }
@@ -109,7 +109,7 @@ const MenuAllItems = () => {
     e.preventDefault();
     try {
       const response = await axios.get(
-        "http://localhost:8000/menu/generate-menu-invoice",
+        "http://localhost:3000/menu/generate-menu-invoice",
         
       );
 

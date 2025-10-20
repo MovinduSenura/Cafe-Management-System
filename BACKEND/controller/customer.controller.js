@@ -1,143 +1,227 @@
 
 const customerModel = require("../models/customer.model");
 const pdfCreator = require('pdf-creator-node');
-const fs = require('fs'); //Use Node.js's fs module to delete the file from the filesystem.
+const fs = require('fs');
 const path = require('path');
-const moment = require("moment"); //Use for format date and time
+const moment = require("moment");
+const { ApiResponse, ApiError, asyncHandler } = require('../utils/apiResponse');
+const logger = require('../utils/logger');
 
+// Add customer
+const addCustomer = asyncHandler(async (req, res) => {
+    const { customerFullName, customerEmail, customerContactNo, customerNIC, customerGender, customerAddress, customerLoyaltyPoints } = req.body;
 
+    // Check if customer already exists
+    const existingCustomer = await customerModel.findOne({
+        $or: [{ customerEmail }, { customerNIC }]
+    });
 
-//Add item router controller
-//req means requests coming from front end.
-//await can only be used with asynchronous
-//save wena eka eetklin ewata klin wena eka nwttnw.
-const addCustomer = async (req,res) => {
+    if (existingCustomer) {
+        throw new ApiError(400, "Customer with this email or NIC already exists");
+    }
 
-    try{
-
-    const { customerFullName, customerEmail, customerContactNo, customerNIC, customerGender, customerAddress, customerLoyaltyPoints} = req.body;
-
-    //1st para is model name. 2nd para is the above one.
     const newCustomerData = {
-        customerFullName : customerFullName,
-        customerEmail : customerEmail,
-        customerContactNo : customerContactNo,
-        customerNIC : customerNIC,
-        customerGender : customerGender,
-        customerAddress : customerAddress,
-        customerLoyaltyPoints : customerLoyaltyPoints,
-    }
+        customerFullName,
+        customerEmail,
+        customerContactNo,
+        customerNIC,
+        customerGender,
+        customerAddress,
+        customerLoyaltyPoints: customerLoyaltyPoints || 0,
+    };
 
-    //creating an object of customerModel - newCustomerObj, in brackets-above class name, here the data in above class are stored in newCustomerObj object in CustomerModel.
-    const newCustomerObj = new customerModel(newCustomerData);
-    await newCustomerObj.save();
-
-    return res.status(200).send({
-        status: true,
-        message:"Data saved successfully⭐"
-    })
-
+    const newCustomer = await customerModel.create(newCustomerData);
     
-} catch(err){
-    return res.status(500).send({
-        status: false,
-        message: err.message
-    })
-}
-}
+    logger.info(`New customer created: ${newCustomer._id}`);
 
-//get All items from router controller
-//take all data from database and put them into all items
-const getAllCustomers = async (req, res) => {
+    res.status(201).json(
+        new ApiResponse(201, newCustomer, "Customer created successfully")
+    );
+});
 
-    try{
-        const allCustomers = await customerModel.find();
-//Allcustomers red eka hrha anek eke thyena data front end ekt ywnw. e ynne array ekk wdyta
-        return res.status(200).send({
-            status: true,
-            message: "⭐ All customers are fetched!",
-            Allcustomers: allCustomers, 
-        })
+// Get all customers with pagination
+const getAllCustomers = asyncHandler(async (req, res) => {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
 
-    }catch(err){
-        return res.status(500).send({
-            status: false,
-            message: err.message,
+    const customers = await customerModel.find({ isActive: true })
+        .select('-feedbacks')
+        .skip(skip)
+        .limit(limit)
+        .sort({ createdAt: -1 });
 
+    const total = await customerModel.countDocuments({ isActive: true });
 
-        })
+    const result = {
+        customers,
+        pagination: {
+            page,
+            limit,
+            total,
+            pages: Math.ceil(total / limit),
+            hasNext: page < Math.ceil(total / limit),
+            hasPrev: page > 1
+        }
+    };
 
-    }
-}
+    res.status(200).json(
+        new ApiResponse(200, result, "Customers fetched successfully")
+    );
+});
 
-//get one specifies item router controller
-const getOneCustomer = async(req,res) => {
+// Get one customer
+const getOneCustomer = asyncHandler(async (req, res) => {
+    const customerId = req.params.id;
     
-    try{
-
-        const customerId = req.params.id;
-        const customer = await customerModel.findById(customerId);
-
-        return res.status(200).send({
-            status: true,
-            message: "Customer Fetched⭐",
-            Customer: customer,
-        })
-    }catch(err){
-        return res.status(500).send({
-            status: false,
-            message: err.message,
-        })
+    if (!customerId.match(/^[0-9a-fA-F]{24}$/)) {
+        throw new ApiError(400, "Invalid customer ID format");
     }
 
-}
+    const customer = await customerModel.findById(customerId);
 
-// Function to generate and serve the PDF invoice
-const customerGenerateInvoice = async (req, res) => {
+    if (!customer || !customer.isActive) {
+        throw new ApiError(404, "Customer not found");
+    }
+
+    res.status(200).json(
+        new ApiResponse(200, customer, "Customer fetched successfully")
+    );
+});
+
+// Update customer
+const updateCustomer = asyncHandler(async (req, res) => {
+    const customerId = req.params.id;
+    
+    if (!customerId.match(/^[0-9a-fA-F]{24}$/)) {
+        throw new ApiError(400, "Invalid customer ID format");
+    }
+
+    // Check if email or NIC is being updated and already exists
+    if (req.body.customerEmail || req.body.customerNIC) {
+        const existingCustomer = await customerModel.findOne({
+            _id: { $ne: customerId },
+            $or: [
+                ...(req.body.customerEmail ? [{ customerEmail: req.body.customerEmail }] : []),
+                ...(req.body.customerNIC ? [{ customerNIC: req.body.customerNIC }] : [])
+            ]
+        });
+
+        if (existingCustomer) {
+            throw new ApiError(400, "Customer with this email or NIC already exists");
+        }
+    }
+
+    const updatedCustomer = await customerModel.findByIdAndUpdate(
+        customerId,
+        req.body,
+        { new: true, runValidators: true }
+    );
+
+    if (!updatedCustomer) {
+        throw new ApiError(404, "Customer not found");
+    }
+
+    logger.info(`Customer updated: ${customerId}`);
+
+    res.status(200).json(
+        new ApiResponse(200, updatedCustomer, "Customer updated successfully")
+    );
+});
+
+// Delete customer (soft delete)
+const deleteCustomer = asyncHandler(async (req, res) => {
+    const customerId = req.params.id;
+    
+    if (!customerId.match(/^[0-9a-fA-F]{24}$/)) {
+        throw new ApiError(400, "Invalid customer ID format");
+    }
+
+    const customer = await customerModel.findByIdAndUpdate(
+        customerId,
+        { isActive: false },
+        { new: true }
+    );
+
+    if (!customer) {
+        throw new ApiError(404, "Customer not found");
+    }
+
+    logger.info(`Customer soft deleted: ${customerId}`);
+
+    res.status(200).json(
+        new ApiResponse(200, null, "Customer deleted successfully")
+    );
+});
+
+// Search customers
+const searchCustomer = asyncHandler(async (req, res) => {
+    const { customerNIC, customerName, customerEmail } = req.query;
+    
+    if (!customerNIC && !customerName && !customerEmail) {
+        throw new ApiError(400, "Search term is required");
+    }
+
+    const searchConditions = [];
+    
+    if (customerNIC) {
+        searchConditions.push({ customerNIC: { $regex: customerNIC, $options: 'i' } });
+    }
+    if (customerName) {
+        searchConditions.push({ customerFullName: { $regex: customerName, $options: 'i' } });
+    }
+    if (customerEmail) {
+        searchConditions.push({ customerEmail: { $regex: customerEmail, $options: 'i' } });
+    }
+
+    const customers = await customerModel.find({
+        isActive: true,
+        $or: searchConditions
+    }).select('-feedbacks').limit(20);
+
+    res.status(200).json(
+        new ApiResponse(200, customers, "Customers found successfully")
+    );
+});
+
+// Generate customer invoice PDF
+const customerGenerateInvoice = asyncHandler(async (req, res) => {
     try {
-        const htmlTemplate = fs.readFileSync(path.join(__dirname, '../template/customer-invoice-template.html'), 'utf-8');
-        // console.log(htmlTemplate);
+        const htmlTemplate = await fs.promises.readFile(
+            path.join(__dirname, '../template/customer-invoice-template.html'), 
+            'utf-8'
+        );
        
         const timestamp = moment().format('YYYY_MMMM_DD_HH_mm_ss');
-        const filename = 'Customer_Details_' + timestamp + '_doc' + '.pdf';
+        const filename = `Customer_Details_${timestamp}.pdf`;
      
-        const customers = await customerModel.find({});
-        // console.log("items : ", items);
+        const customers = await customerModel.find({ isActive: true }).select('-feedbacks');
 
-        let customerArray = [];
-
-        customers.forEach(i => {
-            
-            const it = {
-                customerFullName: i.customerFullName,
-                customerEmail: i.customerEmail,
-                customerContactNo: i.customerContactNo,
-                customerNIC: i.customerNIC,
-                customerLoyaltyPoints: i.customerLoyaltyPoints,// Include the total price in the item object
-            }
-            customerArray .push(it);
-        })
+        const customerArray = customers.map(customer => ({
+            customerFullName: customer.customerFullName,
+            customerEmail: customer.customerEmail,
+            customerContactNo: customer.customerContactNo,
+            customerNIC: customer.customerNIC,
+            customerLoyaltyPoints: customer.customerLoyaltyPoints,
+        }));
        
-        // Calculate the total amount by reducing the items array
-        // const grandTotal = customerArray .reduce((total, item) => total + item.totalPrice, 0); //0: This is the initial value of total. In this case, it starts at 0.
-
         // Taking logo path
         const logoPath = path.join(__dirname, '../template/images/logo.png');
-        // Load the logo image asynchronously
-        const logoBuffer = await fs.promises.readFile(logoPath);
-        // Encode the logo buffer to base64
-        const logoBase64 = logoBuffer.toString('base64');
+        let logoBase64 = '';
+        
+        try {
+            const logoBuffer = await fs.promises.readFile(logoPath);
+            logoBase64 = logoBuffer.toString('base64');
+        } catch (logoError) {
+            logger.warn('Logo file not found, continuing without logo');
+        }
 
         const options = {
             format: 'A4',
             orientation: 'portrait',
             border: '10mm',
-            header: {
-                height: '0mm',
-            },
-            footer: {
-                height: '0mm',
-            },
+            header: { height: '0mm' },
+            footer: { height: '0mm' },
             zoomFactor: '1.0',
             type: 'buffer',
         };
@@ -146,432 +230,351 @@ const customerGenerateInvoice = async (req, res) => {
             html: htmlTemplate,
             data: {
                 customerArray,
-                logoBuffer: logoBase64, // Pass the logo buffer to the HTML template
+                logoBuffer: logoBase64,
+                generatedDate: moment().format('YYYY-MM-DD HH:mm:ss')
             },
-            path: './docs/' + filename,
+            path: `./docs/${filename}`,
         };
 
-        const pdfBuffer = await pdfCreator.create(document, options);
+        await pdfCreator.create(document, options);
+        const filepath = `${req.protocol}://${req.get('host')}/docs/${filename}`;
 
-        const filepath = 'http://localhost:8000/docs/' + filename;
+        logger.info(`Customer report generated: ${filename}`);
 
-        // Send the file path in the response
-        res.status(200).json({ filepath });
-        // res.contentType('application/pdf');
-        // res.status(200).send(pdfBuffer);
-    } catch (error) {
-        console.error('Error generating PDF invoice:', error);
-        res.status(500).send('Internal Server Error');
-    }
-};
- 
-
-//get- serach particular customer
-const searchCustomer = async (req, res) => {
-
-    try{
-
-        const CustomerNIC = req.query.customerNIC;
-        // Using a regular expression to match partial game names
-        //regex- ghna akurata match wena eka enw
-        const customer = await customerModel.find({ customerNIC: { $regex: `^${CustomerNIC}`, $options: 'i' } }); //the $regex operator in MongoDB is used to perform a regular expression search for partial matches of the game name. The i option is used to perform a case-insensitive search.
-                                            //customerNIC == CustomerNIC samanada kyl blnw 
-
-        return res.status(200).send({
-            status: true,
-            message: "✨ :: Project Searched and fetched!",
-            customerSearch : customer
-        })
-
-    }catch(err){
-
-        return res.status(500).send({
-            status: false,
-            message: err.message
-        });
-
-    }
-
-}
-
-const updateCustomer = async (req,res) => {
-
-    try{
-         //id allagnne params.id data allagnne body eken
-        const customerId = req.params.id;
-        const {customerFullName, customerEmail, customerContactNo, customerNIC, customerGender, customerAddress, customerLoyaltyPoints} = req.body;
-    
-        const customerData = {
-            customerFullName : customerFullName,
-            customerEmail : customerEmail,
-            customerContactNo : customerContactNo,
-            customerNIC : customerNIC,
-            customerGender : customerGender,
-            customerAddress : customerAddress,
-            customerLoyaltyPoints : customerLoyaltyPoints,
-        }
-
-        const updateCustomerObj = await customerModel.findByIdAndUpdate(customerId, customerData);
-
-        return res.status(200).send({
-        status: true,
-        message: "Customer updated⭐"
-        })
-
-        }catch(err) {
-            //database eken arn response eka front end ekt dnwnm witrai methna third line oni.. so update ekt oni na. dmmat case na.
-            return res.status(500).send({
-                status: false,
-                message: err.message,
-            })
-        }
-   
-}
-
-//Delete customer
-const deleteCustomer = async (req,res) => {
-
-    try{
-
-        const customerId = req.params.id;
-        const delItem = await customerModel.findByIdAndDelete(customerId);
-
-        return res.status(200).send({
-            status: true,
-            message: "Customer Deleted⭐",
-        })
-    }catch(err){
-        return res.status(500).send({
-            status: false,
-            message: err.message,
-        })
-
-    }
-
-   
-}
-
-//Sithmi
-const addFeedback = async(req,res) => {
-    try{
-        const {DayVisited,TimeVisited,Comment,rating} = req.body;
-        const userid = req.params.userid;
-        const user = await customerModel.findById(userid);
-
-        if(!user){
-            return res.status(400).json({status:"user not found"})
-        }
-        
-        user.feedbacks.push({DayVisited,TimeVisited,Comment,rating});
-        await user.save();
-        res.status(200).json({status:"New feedback added",user});
-
-    }catch(err) {
-        console.log(err);
-        res.status(500).json({status:"Error adding new feedback",err});
-    }
-}
-
-const getFeedback = async(req,res) => {
-    try {
-        
-        const userid=req.params.userid;
-
-        const feed=await customerModel.findById(userid).populate('feedbacks')
-        .then((user)=>{
-            res.status(200)
-            .send({status:"feedback fetched",feedbacks:user.feedbacks})
-        })
-
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({error:"Server error"})
-    }
-}
-
-const getAllFeedbacks = async (req, res) => {
-    try {
-        const feedbacks = await customerModel.find({}, { feedbacks: 1 });
-        // console.log("feedbacks: ", feedbacks.map(customer => customer.feedbacks).flat());
-
-        return res.status(200).send({
-            status: true,
-            message: "✨ All feedbacks fetched!",
-            feedbacks: feedbacks.map(customer => customer.feedbacks).flat()
-        });
-    } catch (err) {
-        return res.status(500).send({
-            status: false,
-            message: err.message
-        });
-    }
-};
-
-const getOneFeedback = async(req,res) =>{
-    try {
-        const { customerNIC, feedbackId } = req.params;
-
-        // Assuming you have a 'User' model with an 'feedbacks' field
-        const user = await customerModel.findOne({customerNIC});
-        
-
-        if (!user) {
-            return res.status(404).json({ error: 'user not found' });
-        }
-
-        const feedback = user.feedbacks
-        
-        .find(
-            (fb) => fb._id.toString() === feedbackId
+        res.status(200).json(
+            new ApiResponse(200, { filepath }, "Report generated successfully")
         );
-        
-
-        if (!feedback) {
-            return res.status(404).json({ error: 'Feedback not found',customerNIC,feedbackId });
-        }
-
-        // Return the feedback details
-        res.status(200).json({ feedback });
-
     } catch (error) {
-        console.error('Error fetching feedbacks:', error);
-        res.status(500).json({ error: 'Internal server error' });
+        logger.error('Error generating PDF invoice:', error);
+        throw new ApiError(500, 'Failed to generate report');
     }
-}
+});
 
-const searchFeedback = async (req, res) => {
-    try {
-        const DayVisited = req.query.DayVisited;
-        const feedbacks = await customerModel.find({ 'feedbacks.DayVisited': { $regex: new RegExp(`^${DayVisited}`, 'i') } });
+// Add feedback
+const addFeedback = asyncHandler(async (req, res) => {
+    const { DayVisited, TimeVisited, Comment, rating } = req.body;
+    const userid = req.params.userid;
 
-        // const flattenedFeedbacks = feedbacks.map(customer => customer.feedbacks[0]).flat();
-        // const flattenedFeedbacks = feedbacks.flatMap(customer => customer.feedbacks);
-
-        const searchTerm = DayVisited; // Replace "your search term" with the term you're searching for
-        // const flattenedFeedbacks = feedbacks.flatMap(customer => customer.feedbacks.filter(feedback => feedback.DayVisited === searchTerm));
-        const flattenedFeedbacks = feedbacks.flatMap(customer => customer.feedbacks.filter(feedback => feedback.DayVisited.startsWith(searchTerm)));
-
-
-        // console.log("feedbacks", flattenedFeedbacks);
-
-        return res.status(200).send({
-            status: true,
-            message: "✨ :: Feedbacks searched and fetched!",
-            searchedFeedback: flattenedFeedbacks
-        });
-    } catch (err) {
-        return res.status(500).send({
-            status: false,
-            message: err.message
-        });
+    if (!userid.match(/^[0-9a-fA-F]{24}$/)) {
+        throw new ApiError(400, "Invalid user ID format");
     }
-};
 
+    const user = await customerModel.findById(userid);
 
-const updateFeedback =async(req,res) => {
+    if (!user || !user.isActive) {
+        throw new ApiError(404, "Customer not found");
+    }
+    
+    user.feedbacks.push({ DayVisited, TimeVisited, Comment, rating });
+    await user.save();
+
+    logger.info(`Feedback added for customer: ${userid}`);
+
+    res.status(201).json(
+        new ApiResponse(201, user.feedbacks[user.feedbacks.length - 1], "Feedback added successfully")
+    );
+});
+
+// Get feedback for a specific user
+const getFeedback = asyncHandler(async (req, res) => {
+    const userid = req.params.userid;
+
+    if (!userid.match(/^[0-9a-fA-F]{24}$/)) {
+        throw new ApiError(400, "Invalid user ID format");
+    }
+
+    const user = await customerModel.findById(userid).select('feedbacks customerFullName');
+
+    if (!user || !user.isActive) {
+        throw new ApiError(404, "Customer not found");
+    }
+
+    res.status(200).json(
+        new ApiResponse(200, { 
+            customer: user.customerFullName,
+            feedbacks: user.feedbacks 
+        }, "Feedbacks fetched successfully")
+    );
+});
+
+// Get all feedbacks from all customers
+const getAllFeedbacks = asyncHandler(async (req, res) => {
+    const customers = await customerModel.find({ 
+        isActive: true,
+        'feedbacks.0': { $exists: true }
+    }).select('customerFullName feedbacks');
+
+    const allFeedbacks = customers.flatMap(customer => 
+        customer.feedbacks.map(feedback => ({
+            ...feedback.toObject(),
+            customerName: customer.customerFullName,
+            customerId: customer._id
+        }))
+    );
+
+    res.status(200).json(
+        new ApiResponse(200, allFeedbacks, "All feedbacks fetched successfully")
+    );
+});
+
+// Get one specific feedback
+const getOneFeedback = asyncHandler(async (req, res) => {
     const { customerNIC, feedbackId } = req.params;
-   
-    const { DayVisited, TimeVisited, Comment,rating } = req.body;
 
-    //const patient = await User.findById(userId);
+    const user = await customerModel.findOne({ customerNIC, isActive: true });
 
-    const updateFeedback = {
-        DayVisited, TimeVisited, Comment,rating
+    if (!user) {
+        throw new ApiError(404, 'Customer not found');
+    }
+
+    const feedback = user.feedbacks.find(fb => fb._id.toString() === feedbackId);
+
+    if (!feedback) {
+        throw new ApiError(404, 'Feedback not found');
+    }
+
+    res.status(200).json(
+        new ApiResponse(200, { feedback, customerName: user.customerFullName }, "Feedback fetched successfully")
+    );
+});
+
+// Search feedback
+const searchFeedback = asyncHandler(async (req, res) => {
+    const { DayVisited } = req.query;
+    
+    if (!DayVisited) {
+        throw new ApiError(400, "Search term is required");
+    }
+
+    const customers = await customerModel.find({ 
+        isActive: true,
+        'feedbacks.DayVisited': { $regex: new RegExp(`^${DayVisited}`, 'i') } 
+    }).select('customerFullName feedbacks');
+
+    const matchingFeedbacks = customers.flatMap(customer => 
+        customer.feedbacks
+            .filter(feedback => feedback.DayVisited.toLowerCase().startsWith(DayVisited.toLowerCase()))
+            .map(feedback => ({
+                ...feedback.toObject(),
+                customerName: customer.customerFullName,
+                customerId: customer._id
+            }))
+    );
+
+    res.status(200).json(
+        new ApiResponse(200, matchingFeedbacks, "Feedbacks found successfully")
+    );
+});
+
+// Update feedback
+const updateFeedback = asyncHandler(async (req, res) => {
+    const { customerNIC, feedbackId } = req.params;
+    const { DayVisited, TimeVisited, Comment, rating } = req.body;
+
+    const updateData = { DayVisited, TimeVisited, Comment, rating };
+
+    const customer = await customerModel.findOneAndUpdate(
+        { customerNIC, 'feedbacks._id': feedbackId },
+        { $set: { 'feedbacks.$': updateData } },
+        { new: true, runValidators: true }
+    );
+
+    if (!customer) {
+        throw new ApiError(404, "Customer or feedback not found");
+    }
+
+    const updatedFeedback = customer.feedbacks.find(fb => fb._id.toString() === feedbackId);
+
+    logger.info(`Feedback updated: ${feedbackId} for customer: ${customerNIC}`);
+
+    res.status(200).json(
+        new ApiResponse(200, updatedFeedback, "Feedback updated successfully")
+    );
+});
+
+// Delete feedback
+const deleteFeedback = asyncHandler(async (req, res) => {
+    const { userId, feedbackId } = req.params;
+
+    if (!userId.match(/^[0-9a-fA-F]{24}$/)) {
+        throw new ApiError(400, "Invalid user ID format");
+    }
+
+    const user = await customerModel.findById(userId);
+
+    if (!user || !user.isActive) {
+        throw new ApiError(404, 'Customer not found');
+    }
+
+    const feedbackIndex = user.feedbacks.findIndex(
+        feedback => feedback._id.toString() === feedbackId
+    );
+
+    if (feedbackIndex === -1) {
+        throw new ApiError(404, 'Feedback not found');
+    }
+
+    user.feedbacks.splice(feedbackIndex, 1);
+    await user.save();
+
+    logger.info(`Feedback deleted: ${feedbackId} for customer: ${userId}`);
+
+    res.status(200).json(
+        new ApiResponse(200, null, 'Feedback deleted successfully')
+    );
+});
+
+// Login feedback (find customer by NIC)
+const loginFeedback = asyncHandler(async (req, res) => {
+    const customerNIC = req.params.nic;
+
+    const user = await customerModel.findOne({ customerNIC, isActive: true });
+
+    if (!user) {
+        throw new ApiError(404, 'Customer not found');
+    }
+
+    res.status(200).json(
+        new ApiResponse(200, { 
+            _id: user._id,
+            customerFullName: user.customerFullName,
+            customerEmail: user.customerEmail,
+            customerLoyaltyPoints: user.customerLoyaltyPoints
+        }, 'Customer found successfully')
+    );
+});
+
+// Get all feedbacks (alternative method)
+const allFeedbacks = asyncHandler(async (req, res) => {
+    const customers = await customerModel.find({ 
+        isActive: true,
+        'feedbacks.0': { $exists: true }
+    }).select('customerFullName feedbacks');
+
+    const allFeedbacks = customers.reduce((feedbacks, customer) => {
+        const customerFeedbacks = customer.feedbacks.map(feedback => ({
+            ...feedback.toObject(),
+            customerName: customer.customerFullName,
+            customerId: customer._id
+        }));
+        feedbacks.push(...customerFeedbacks);
+        return feedbacks;
+    }, []);
+
+    res.status(200).json(
+        new ApiResponse(200, allFeedbacks, "All feedbacks fetched successfully")
+    );
+});
+
+// Get feedback by ID
+const getFeedbackById = asyncHandler(async (req, res) => {
+    const feedbackId = req.params.feedbackId;
+
+    const customer = await customerModel.findOne({ 
+        'feedbacks._id': feedbackId,
+        isActive: true 
+    }).select('customerFullName feedbacks.$');
+
+    if (!customer || !customer.feedbacks.length) {
+        throw new ApiError(404, 'Feedback not found');
+    }
+
+    const feedback = {
+        ...customer.feedbacks[0].toObject(),
+        customerName: customer.customerFullName
     };
 
-    try {
-        const update = await customerModel.findOneAndUpdate(
-            { customerNIC, 'feedbacks._id': feedbackId },
-            { $set: { 'feedbacks.$': updateFeedback } },
-            { new: true }
-        ).then(() => {
-            res.status(200).send({ status: "Feedback Updated!", updateFeedback })
-            console.log("saved",updateFeedback);
-        });
+    res.status(200).json(
+        new ApiResponse(200, feedback, "Feedback fetched successfully")
+    );
+});
 
-        ////res.json(updateedPatient)
-    } catch (error) {
-        res.status(500).json({ error });
+// Get customer name and loyalty points by identifier
+const getNameAndLoyaltyPoints = asyncHandler(async (req, res) => {
+    const { identifier } = req.params;
+
+    const customer = await customerModel.findOne({
+        isActive: true,
+        $or: [
+            { customerContactNo: identifier }, 
+            { customerFullName: { $regex: identifier, $options: 'i' } }
+        ]
+    }).select('_id customerFullName customerLoyaltyPoints');
+
+    if (!customer) {
+        throw new ApiError(404, 'Customer not found');
     }
 
+    res.status(200).json(
+        new ApiResponse(200, {
+            _id: customer._id,
+            customerFullName: customer.customerFullName,
+            customerLoyaltyPoints: customer.customerLoyaltyPoints
+        }, "Customer details fetched successfully")
+    );
+});
 
-}
+// Update loyalty points
+const updateLoyaltyPoints = asyncHandler(async (req, res) => {
+    const customerId = req.params.id;
+    const { customerLoyaltyPoints } = req.body;
 
-const deleteFeedback = async(req,res) => {
-    try {
-        const { userId, feedbackId } = req.params;
-
-        // Find the user by ID
-        const user = await customerModel.findById(userId);
-
-        if (!user) {
-            return res.status(404).json({ error: 'User not found' });
-        }
-
-        // Find the index of the feedback to delete
-        const feedbackIndex = user.feedbacks.findIndex(
-            (feedback) => feedback._id.toString() === feedbackId
-        );
-
-        if (feedbackIndex === -1) {
-            return res.status(404).json({ error: 'Appointment not found' });
-        }
-
-        // Remove the appointment from the array
-        user.feedbacks.splice(feedbackIndex, 1);
-
-        // Save the updated user
-        await user.save();
-
-        res.status(200).json({ status: 'Appointment deleted successfully' });
-    } catch (error) {
-        console.error('Error deleting appointment:', error);
-        res.status(500).json({ error: 'Internal server error' });
+    if (!customerId.match(/^[0-9a-fA-F]{24}$/)) {
+        throw new ApiError(400, "Invalid customer ID format");
     }
 
-
-}
-
-const loginFeedback = async(req,res) =>{
-    try {
-        const customerNIC = req.params.nic;
-
-        // Find the user by customerNIC
-        const user = await customerModel.findOne({ customerNIC });
-
-        if (!user) {
-            return res.status(404).json({ error: 'User not found' });
-        }
-
-        // Return the user data
-        res.status(200).json({ status: 'User found', user });
-    } catch (error) {
-        console.error('Error fetching user:', error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-}
-
-const allFeedbacks = async(req,res) => {
-    try {
-        // Find all users with appointments
-        const usersWithFeedbacks = await customerModel.find({ feedbacks: { $exists: true, $not: { $size: 0 } } });
-
-        // Extract all appointments from users
-        const allFeedbacks = usersWithFeedbacks.reduce((feedbacks, user) => {
-            feedbacks.push(...user.feedbacks);
-            return feedbacks;
-        }, []);
-
-        // Send the appointments as JSON response
-        res.json(allFeedbacks);
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Internal Server Error');
+    if (typeof customerLoyaltyPoints !== 'number' || customerLoyaltyPoints < 0) {
+        throw new ApiError(400, "Invalid loyalty points value");
     }
 
-}
-//sithmi reply for feedback
-const getFeedbackById = async (req, res) => {
-    try {
-        const feedbackId = req.params.feedbackId;
+    const customer = await customerModel.findByIdAndUpdate(
+        customerId,
+        { customerLoyaltyPoints },
+        { new: true, runValidators: true }
+    ).select('customerFullName customerLoyaltyPoints');
 
-        const feedback = await customerModel.findOne({ 'feedbacks._id': feedbackId }, { 'feedbacks.$': 1 });
-
-        if (!feedback) {
-            return res.status(404).json({ error: 'Feedback not found' });
-        }
-
-        res.status(200).json({ feedback: feedback.feedbacks[0] });
-    } catch (error) {
-        console.error('Error fetching feedback:', error);
-        res.status(500).json({ error: 'Internal server error' });
+    if (!customer) {
+        throw new ApiError(404, 'Customer not found');
     }
-};
 
+    logger.info(`Loyalty points updated for customer: ${customerId}`);
 
+    res.status(200).json(
+        new ApiResponse(200, {
+            customerLoyaltyPoints: customer.customerLoyaltyPoints,
+            customerName: customer.customerFullName
+        }, 'Loyalty points updated successfully')
+    );
+});
 
-
-
-//Chethmi payment loyaltyPoint 
-const getNameAndLoyaltyPoints = async (req, res) => {
-    try {
-        const { identifier } = req.params;
-
-        // Find the customer by customerNIC or customerFullName
-        const customer = await customerModel.findOne({
-            $or: [{ customerContactNo: identifier }, { customerFullName: identifier }]
-        });
-
-        if (!customer) {
-            return res.status(404).json({ error: 'Customer not found' });
-        }
-
-        // Extract name and loyalty points
-        const { _id,customerFullName, customerLoyaltyPoints } = customer;
-
-        // Return name and loyalty points
-        res.status(200).json({ _id,customerFullName, customerLoyaltyPoints });
-    } catch (error) {
-        console.error('Error fetching customer details:', error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-}
-
-//Chethmi - update loyalty points
-const updateLoyaltyPoints = async (req, res) => {
-    try {
-        // Extract the customer ID and new loyalty points from the request parameters and body
-        const customerId = req.params.id;
-        const { customerLoyaltyPoints } = req.body;
-
-        // Find the customer by ID
-        const customer = await customerModel.findById(customerId);
-
-        if (!customer) {
-            return res.status(404).json({ error: 'Customer not found' });
-        }
-
-        // Update the loyalty points
-        customer.customerLoyaltyPoints = customerLoyaltyPoints;
-
-        // Save the updated customer data
-        await customer.save();
-
-        // Return success response
-        res.status(200).json({ status: 'Loyalty points updated successfully', customerLoyaltyPoints: customer.customerLoyaltyPoints });
-    } catch (error) {
-        console.error('Error updating loyalty points:', error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-}
-
-///sithmi reply part
-// Assuming you have a model called `CustomerModel` where feedbacks are stored in an array
-const postReplyToFeedback = async (req, res) => {
+// Post reply to feedback
+const postReplyToFeedback = asyncHandler(async (req, res) => {
     const { feedbackId } = req.params;
     const { reply } = req.body;
 
-    try {
-        const customer = await customerModel.findOneAndUpdate(
-            { "feedbacks._id": feedbackId },
-            { "$set": { "feedbacks.$.reply": reply } },
-            { new: true }
-        );
-        if (!customer) {
-            return res.status(404).json({ message: 'Feedback not found' });
-        }
-        res.status(200).json({ message: 'Reply added successfully', feedback: customer.feedbacks.id(feedbackId) });
-    } catch (error) {
-        console.error('Error posting reply to feedback:', error);
-        res.status(500).json({ message: 'Internal server error', error });
+    if (!reply || reply.trim().length === 0) {
+        throw new ApiError(400, "Reply cannot be empty");
     }
-};
 
+    const customer = await customerModel.findOneAndUpdate(
+        { "feedbacks._id": feedbackId, isActive: true },
+        { "$set": { "feedbacks.$.reply": reply.trim() } },
+        { new: true }
+    );
 
+    if (!customer) {
+        throw new ApiError(404, 'Feedback not found');
+    }
 
+    const updatedFeedback = customer.feedbacks.find(fb => fb._id.toString() === feedbackId);
 
+    logger.info(`Reply added to feedback: ${feedbackId}`);
 
-//exporting, get all item router controller
+    res.status(200).json(
+        new ApiResponse(200, updatedFeedback, 'Reply added successfully')
+    );
+});
+
 module.exports = {
     addCustomer,
     getAllCustomers,
@@ -593,5 +596,4 @@ module.exports = {
     postReplyToFeedback,
     getNameAndLoyaltyPoints,
     updateLoyaltyPoints,
-
-}
+};
