@@ -1,10 +1,14 @@
-const express = require("express")
-const tablesRouter = express.Router();
-
+const express = require("express");
+const router = express.Router();
+const { authenticateToken, authorizeRoles } = require("../middleware/auth.middleware");
 const {
     getAllTables
-} = require("../controller/table.controller")
+} = require("../controller/table.controller");
 
-tablesRouter.post('/', getAllTables)
+// Protected routes
+router.use(authenticateToken);
 
-module.exports = tablesRouter;
+// All staff can view tables
+router.get('/', getAllTables);
+
+module.exports = router;
