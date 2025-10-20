@@ -1,0 +1,62 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cafe-config
+  namespace: cafe-management
+data:
+  NODE_ENV: "production"
+  LOG_LEVEL: "info"
+  REDIS_HOST: "redis-service"
+  REDIS_PORT: "6379"
+  MONGODB_HOST: "mongodb-service"
+  MONGODB_PORT: "27017"
+  MONGODB_DATABASE: "cafe-management"
+  
+  # API Gateway Configuration
+  CORS_ORIGINS: "https://cafe-frontend.com,https://admin.cafe-frontend.com"
+  RATE_LIMIT_MAX: "1000"
+  
+  # Service URLs (internal cluster communication)
+  USER_SERVICE_URL: "http://user-service:3001"
+  CUSTOMER_SERVICE_URL: "http://customer-service:3002"
+  MENU_SERVICE_URL: "http://menu-service:3003"
+  ORDER_SERVICE_URL: "http://order-service:3004"
+  PAYMENT_SERVICE_URL: "http://payment-service:3005"
+  INVENTORY_SERVICE_URL: "http://inventory-service:3006"
+  RESERVATION_SERVICE_URL: "http://reservation-service:3007"
+  NOTIFICATION_SERVICE_URL: "http://notification-service:3008"
+  REPORT_SERVICE_URL: "http://report-service:3009"
+  
+  # Feature Flags
+  ENABLE_METRICS: "true"
+  ENABLE_TRACING: "true"
+  ENABLE_HEALTH_CHECKS: "true"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: cafe-secrets
+  namespace: cafe-management
+type: Opaque
+data:
+  # Base64 encoded secrets (change these in production!)
+  JWT_SECRET: "eW91ci1zdXBlci1zZWNyZXQtand0LWtleS1jaGFuZ2UtaW4tcHJvZHVjdGlvbg=="
+  MONGODB_USERNAME: "YWRtaW4="
+  MONGODB_PASSWORD: "cGFzc3dvcmQ="
+  REDIS_PASSWORD: ""
+  
+  # Email Configuration (base64 encoded)
+  SMTP_HOST: "c210cC5nbWFpbC5jb20="
+  SMTP_PORT: "NTg3"
+  SMTP_USER: "eW91ci1lbWFpbEBnbWFpbC5jb20="
+  SMTP_PASSWORD: "eW91ci1hcHAtcGFzc3dvcmQ="
+  
+  # Payment Gateway Secrets
+  STRIPE_SECRET_KEY: "c2tfdGVzdF8xMjM0NTY3ODkw"
+  PAYPAL_CLIENT_SECRET: "cGF5cGFsLXNlY3JldC1rZXk="
+  
+  # SMS API Keys
+  TWILIO_AUTH_TOKEN: "dHdpbGlvLWF1dGgtdG9rZW4="
+  
+  # Push Notification Keys
+  FCM_SERVER_KEY: "ZmNtLXNlcnZlci1rZXk="
