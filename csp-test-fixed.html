@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSP Test After Fix</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+            min-height: 100px;
+            overflow: auto;
+        }
+
+        .service-status {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .healthy {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Microservices Status Checker</h1>
+        <p>Check if Content Security Policy issues are fixed. Click on each button to check service health.</p>
+
+        <div>
+            <button id="testAll">Test All Services</button>
+            <button id="testApiGateway">API Gateway (3000)</button>
+            <button id="testUserService">User Service (3001)</button>
+            <button id="testCustomerService">Customer Service (3002)</button>
+            <button id="testMenuService">Menu Service (3003)</button>
+            <button id="testOrderService">Order Service (3004)</button>
+            <button id="testPaymentService">Payment Service (3005)</button>
+            <button id="testInventoryService">Inventory Service (3006)</button>
+            <button id="testReservationService">Reservation Service (3007)</button>
+            <button id="testNotificationService">Notification Service (3008)</button>
+            <button id="testReportService">Report Service (3009)</button>
+        </div>
+
+        <div id="result">Results will appear here...</div>
+
+        <div id="consoleLog">
+            <h3>Console Log Monitor</h3>
+            <p>Any Content Security Policy errors will appear below:</p>
+            <pre id="consoleOutput"></pre>
+        </div>
+    </div>
+
+    <script>
+        // Override console.error to catch CSP errors
+        const originalConsoleError = console.error;
+        console.error = function () {
+            // Call the original console.error
+            originalConsoleError.apply(console, arguments);
+
+            // Log to our UI
+            const errorDiv = document.getElementById('consoleOutput');
+            const errorText = Array.from(arguments).join(' ');
+            errorDiv.textContent += errorText + '\n';
+
+            if (errorText.includes('Content Security Policy')) {
+                errorDiv.style.color = 'red';
+                errorDiv.style.fontWeight = 'bold';
+            }
+        };
+
+        // Function to test a service
+        async function testService(port, name) {
+            const resultDiv = document.getElementById('result');
+            try {
+                const response = await fetch(`http://localhost:${port}/health`);
+                const data = await response.json();
+
+                // Create a status div
+                const statusDiv = document.createElement('div');
+                statusDiv.className = `service-status healthy`;
+                statusDiv.innerHTML = `
+                    <h3>${name} (Port ${port})</h3>
+                    <p>Status: ${data.status || 'OK'}</p>
+                    <p>Timestamp: ${data.timestamp || new Date().toISOString()}</p>
+                    <p>Uptime: ${data.uptime ? data.uptime.toFixed(2) + 's' : 'N/A'}</p>
+                    <p style="color: green; font-weight: bold;">✅ Inline styles are working!</p>
+                `;
+
+                // Add to result
+                resultDiv.appendChild(statusDiv);
+                return true;
+            } catch (error) {
+                // Create an error status div
+                const statusDiv = document.createElement('div');
+                statusDiv.className = `service-status error`;
+                statusDiv.innerHTML = `
+                    <h3>${name} (Port ${port})</h3>
+                    <p>Error: ${error.message}</p>
+                    <p style="color: red; font-weight: bold;">❌ Failed to reach service</p>
+                `;
+
+                // Add to result
+                resultDiv.appendChild(statusDiv);
+                return false;
+            }
+        }
+
+        // Test all services
+        async function testAllServices() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '<h2>Testing all services...</h2>';
+
+            const services = [
+                { port: 3000, name: 'API Gateway' },
+                { port: 3001, name: 'User Service' },
+                { port: 3002, name: 'Customer Service' },
+                { port: 3003, name: 'Menu Service' },
+                { port: 3004, name: 'Order Service' },
+                { port: 3005, name: 'Payment Service' },
+                { port: 3006, name: 'Inventory Service' },
+                { port: 3007, name: 'Reservation Service' },
+                { port: 3008, name: 'Notification Service' },
+                { port: 3009, name: 'Report Service' }
+            ];
+
+            resultDiv.innerHTML = '';
+
+            let successCount = 0;
+            for (const service of services) {
+                const success = await testService(service.port, service.name);
+                if (success) successCount++;
+            }
+
+            const summaryDiv = document.createElement('div');
+            summaryDiv.innerHTML = `
+                <h3>Summary</h3>
+                <p>${successCount}/${services.length} services healthy</p>
+                <p style="color: ${successCount === services.length ? 'green' : 'orange'}; font-weight: bold;">
+                    ${successCount === services.length ? 'All services are healthy! ✅' : 'Some services are not responding ⚠️'}
+                </p>
+            `;
+            resultDiv.prepend(summaryDiv);
+        }
+
+        // Add event listeners
+        document.getElementById('testAll').addEventListener('click', testAllServices);
+        document.getElementById('testApiGateway').addEventListener('click', () => {
+            document.getElementById('result').innerHTML = '';
+            testService(3000, 'API Gateway');
+        });
+        document.getElementById('testUserService').addEventListener('click', () => {
+            document.getElementById('result').innerHTML = '';
+            testService(3001, 'User Service');
+        });
+        document.getElementById('testCustomerService').addEventListener('click', () => {
+            document.getElementById('result').innerHTML = '';
+            testService(3002, 'Customer Service');
+        });
+        document.getElementById('testMenuService').addEventListener('click', () => {
+            document.getElementById('result').innerHTML = '';
+            testService(3003, 'Menu Service');
+        });
+        document.getElementById('testOrderService').addEventListener('click', () => {
+            document.getElementById('result').innerHTML = '';
+            testService(3004, 'Order Service');
+        });
+        document.getElementById('testPaymentService').addEventListener('click', () => {
+            document.getElementById('result').innerHTML = '';
+            testService(3005, 'Payment Service');
+        });
+        document.getElementById('testInventoryService').addEventListener('click', () => {
+            document.getElementById('result').innerHTML = '';
+            testService(3006, 'Inventory Service');
+        });
+        document.getElementById('testReservationService').addEventListener('click', () => {
+            document.getElementById('result').innerHTML = '';
+            testService(3007, 'Reservation Service');
+        });
+        document.getElementById('testNotificationService').addEventListener('click', () => {
+            document.getElementById('result').innerHTML = '';
+            testService(3008, 'Notification Service');
+        });
+        document.getElementById('testReportService').addEventListener('click', () => {
+            document.getElementById('result').innerHTML = '';
+            testService(3009, 'Report Service');
+        });
+    </script>
+</body>
+
+</html>
