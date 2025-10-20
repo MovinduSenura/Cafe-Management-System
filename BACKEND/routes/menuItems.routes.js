@@ -1,7 +1,8 @@
 const express = require("express");
-const menuItemRouter = express.Router();
-const cors = require('cors');
-
+const router = express.Router();
+const { upload, handleMulterError } = require("../config/multer");
+const { authenticateToken, authorizeRoles } = require("../middleware/auth.middleware");
+const { validateMenuItem, validateMenuItemUpdate } = require("../middleware/validation");
 const {
     addmenuItem,
     getAllmenuItems,
@@ -12,16 +13,41 @@ const {
     menuItemgenerateInvoice,
 } = require("../controller/menuItem.controller");
 
-const menuAllRoutes = (upload) => {
-    menuItemRouter.post('/create', upload.single("menuItemImage"), addmenuItem);
-    menuItemRouter.get('/menuItems', getAllmenuItems);
-    menuItemRouter.get('/menuItem/:id', getOnemenuItem);
-    menuItemRouter.get('/searchmenuItem', searchmenuItem);
-    menuItemRouter.patch('/menuItemUpdate/:id', upload.single("menuItemImage"), updatemenuItem);
-    menuItemRouter.delete('/deletemenuItem/:id', deletemenuItem);
-    menuItemRouter.get('/generate-menu-invoice', menuItemgenerateInvoice);
+// Apply multer error handling middleware
+router.use(handleMulterError);
 
-    return menuItemRouter
-}
+// Public routes (no authentication required)
+router.get('/', getAllmenuItems);
+router.get('/search', searchmenuItem);
+router.get('/:id', getOnemenuItem);
 
-module.exports = menuAllRoutes;
+// Protected routes (authentication required)
+router.use(authenticateToken);
+
+// Admin and manager only routes
+router.post('/create', 
+    authorizeRoles('admin', 'manager'),
+    upload.single("menuItemImage"), 
+    validateMenuItem,
+    addmenuItem
+);
+
+router.patch('/:id', 
+    authorizeRoles('admin', 'manager'),
+    upload.single("menuItemImage"), 
+    validateMenuItemUpdate,
+    updatemenuItem
+);
+
+router.delete('/:id', 
+    authorizeRoles('admin'),
+    deletemenuItem
+);
+
+// Admin only routes
+router.get('/reports/invoice', 
+    authorizeRoles('admin'),
+    menuItemgenerateInvoice
+);
+
+module.exports = router;

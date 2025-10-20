@@ -20,7 +20,7 @@
 //     useEffect(() => {
 //         const getOneFeedback = async() => {
 //             try{
-//                 await axios.get(`http://localhost:8000/feedback/feedback/${id}`)
+//                 await axios.get(`http://localhost:3000/feedback/feedback/${id}`)
 //                 .then((res)=>{
 //                     setName(res.data.Feedback.Name);
 //                     setEmail(res.data.Feedback.Email);
@@ -50,7 +50,7 @@
 //             TimeVisited:TimeVisited,
 //             Comment: Comment,
 //             }
-//             axios.patch(`http://localhost:8000/feedback/feedbackUpdate/${id}`, updateFeedbackData)
+//             axios.patch(`http://localhost:3000/feedback/feedbackUpdate/${id}`, updateFeedbackData)
 //             .then((res) => {
 //                 alert(res.data.message);
 //                 console.log(res.data.status);

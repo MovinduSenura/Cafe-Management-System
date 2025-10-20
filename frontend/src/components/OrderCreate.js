@@ -19,7 +19,7 @@ const OrderCreate = () => {
 
   const fetchItems = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/menu/menuItems');
+      const response = await axios.get('http://localhost:3000/menu/menuItems');
       setMenuItems(response.data.AllmenuItems);
     } catch (error) {
       console.error('Error fetching menu items:', error);
@@ -48,7 +48,7 @@ const OrderCreate = () => {
     // Proceed with order creation
     setIsCreatingOrder(true); // Set loading state while creating order
     try {
-      const response = await axios.post('http://localhost:8000/order/create', {
+      const response = await axios.post('http://localhost:3000/order/create', {
         MenuitemIds: selectedItems.map(item => item._id),
       });
       setIsCreatingOrder(false); // Reset loading state after order creation

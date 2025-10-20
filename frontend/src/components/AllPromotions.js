@@ -26,7 +26,7 @@ const AllPromotions = ()=> {
       const getAllPromotions = async () => {
         try{
           
-          await axios.get('http://localhost:8000/promotion/promotions')
+          await axios.get('http://localhost:3000/promotion/promotions')
           .then((res) => {
             setAllPromotion(res.data.Allpromotions);
             setAllOriginalPromotionItems(res.data.Allpromotions);
@@ -55,7 +55,7 @@ const AllPromotions = ()=> {
               const confirmed  = window.confirm('Are you sure you want to delete this item?');
               
               if(confirmed){
-                 await axios.delete(`http://localhost:8000/promotion/deletepromotion/${id}`)
+                 await axios.delete(`http://localhost:3000/promotion/deletepromotion/${id}`)
                 .then((res) => {
                 alert(res.data.message);
                 console.log(res.data.message);
@@ -78,7 +78,7 @@ const AllPromotions = ()=> {
         // e.preventDefault();
 
         try{
-            await axios.get('http://localhost:8000/promotion/searchPromotion', {
+            await axios.get('http://localhost:3000/promotion/searchPromotion', {
             params: {
               promotionName: searchTerm
             }})
@@ -126,7 +126,7 @@ const AllPromotions = ()=> {
     e.preventDefault();
     try {
       const response = await axios.get(
-        "http://localhost:8000/promotion/generate-promotioninvoice"
+        "http://localhost:3000/promotion/generate-promotioninvoice"
       );
 
       const { filepath } = response.data;

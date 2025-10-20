@@ -30,7 +30,7 @@ const AllStaff = () => {
 
             try{
 
-                await axios.get('http://localhost:8000/staff/staff')
+                await axios.get('http://localhost:3000/staff/staff')
                 .then((res) => {
                     setAllStaff(res.data.AllStaff);
                     setAllOriginalStaff(res.data.AllStaff);
@@ -62,7 +62,7 @@ const AllStaff = () => {
             const confirmed = window.confirm('Are you sure you want to delete this item?');
 
             if(confirmed){
-                await axios.delete(`http://localhost:8000/staff/deletestaff/${id}`)
+                await axios.delete(`http://localhost:3000/staff/deletestaff/${id}`)
                 .then((res) => {
                     alert(res.data.message);
                     console.log(res.data.message);
@@ -87,7 +87,7 @@ const AllStaff = () => {
         // e.preventDefault();
 
         try{
-            await axios.get('http://localhost:8000/staff/searchStaff', {
+            await axios.get('http://localhost:3000/staff/searchStaff', {
             params: {
                 staffName: searchTerm
             }})
@@ -142,7 +142,7 @@ const AllStaff = () => {
     e.preventDefault();
     try {
       const response = await axios.get(
-        "http://localhost:8000/staff/generate-invoice"
+        "http://localhost:3000/staff/generate-invoice"
       );
 
       const { filepath } = response.data;

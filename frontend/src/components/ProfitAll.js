@@ -20,7 +20,7 @@ const ProfitAll = () => {
     const getAllProfits = async () => {
 
       try{
-        await axios.get('http://localhost:8000/profit/getAllProfit')
+        await axios.get('http://localhost:3000/profit/getAllProfit')
         .then((res) => {
           setProfitAll(res.data.allProfits);
           console.log(res.data.message);

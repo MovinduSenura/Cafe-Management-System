@@ -18,7 +18,7 @@ function FeedbackReply() {
         async function fetchFeedback() {
             try {
                 console.log(`Fetching feedback with ID: ${feedbackId}`); // Debugging output
-                const response = await axios.get(`http://localhost:8000/customer/userfeedback/${feedbackId}`);
+                const response = await axios.get(`http://localhost:3000/customer/userfeedback/${feedbackId}`);
                 console.log('Feedback data received:', response.data); // Debugging output
                 setFeedback(response.data.feedback);
             } catch (error) {
@@ -37,7 +37,7 @@ function FeedbackReply() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post(`http://localhost:8000/customer/feedback/${feedbackId}/reply`, { reply });
+            await axios.post(`http://localhost:3000/customer/feedback/${feedbackId}/reply`, { reply });
             alert('Reply successfully submitted!');
             navigate('/allfeedback');
         } catch (error) {

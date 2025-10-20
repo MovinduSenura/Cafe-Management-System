@@ -14,7 +14,7 @@
 //     useEffect(()=>{
 //         const getFeedbacksAll = async()=>{
 //             try{
-//                 await axios.get('http://localhost:8000/feedback/feedbacks')
+//                 await axios.get('http://localhost:3000/feedback/feedbacks')
 //                 .then((res)=>{
 //                     setFeedbacksAll(res.data.AllFeedbacks);
 //                     setFeedbacksAllOriginal(res.data.AllFeedbacks);
@@ -38,7 +38,7 @@
 //         const confirmed = window.confirm('Are you sure you want to delete the feedback?');
 
 //         if(confirmed){
-//           await axios.delete(`http://localhost:8000/feedback/feedbackDelete/${id}`)
+//           await axios.delete(`http://localhost:3000/feedback/feedbackDelete/${id}`)
 //           .then((res)=>{
 //             alert(res.data.message);
 //             console.log(res.data.message);
@@ -58,7 +58,7 @@
       
 
 //       try{
-//           await axios.get('http://localhost:8000/feedback/feedbackSearch', {
+//           await axios.get('http://localhost:3000/feedback/feedbackSearch', {
 //           params: {
 //               Name: searchTerm
 //           }})

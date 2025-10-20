@@ -1,6 +1,7 @@
 const express = require("express");
-const paymentRouter = express.Router();
-
+const router = express.Router();
+const { authenticateToken, authorizeRoles } = require("../middleware/auth.middleware");
+const { validatePayment } = require("../middleware/validation");
 const {
     addPayment,
     getAllPayments,
@@ -8,18 +9,41 @@ const {
     updatePayment,
     deletePayment,
     searchPayment,
-    PaymentGenerateInvoice,
+    PaymentGenerateInvoice
+} = require("../controller/payment.controller");
 
-} = require("../controller/payment.controller")
+// Public routes
+router.get('/search', searchPayment);
 
-//post(URL,function)
-paymentRouter.post('/create',addPayment);
-paymentRouter.get('/getAllPayment',getAllPayments);
-paymentRouter.get('/getOne/:id',getOnePayment);
-paymentRouter.patch('/updatePayment/:id',updatePayment);
-paymentRouter.delete('/deletePayment/:id',deletePayment);
-paymentRouter.get('/searchPayment',searchPayment);
-paymentRouter.get('/payment-generate-invoice',PaymentGenerateInvoice);
+// Protected routes only (all payment operations require authentication)
+router.use(authenticateToken);
 
+// Cashier and above routes
+router.post('/create',
+    authorizeRoles('admin', 'manager', 'cashier'),
+    validatePayment,
+    addPayment
+);
 
-module.exports = paymentRouter;
+router.get('/', getAllPayments);
+router.get('/:id', getOnePayment);
+
+// Manager and admin routes
+router.patch('/:id',
+    authorizeRoles('admin', 'manager'),
+    validatePayment,
+    updatePayment
+);
+
+router.get('/invoice/generate',
+    authorizeRoles('admin', 'manager'),
+    PaymentGenerateInvoice
+);
+
+// Admin only routes
+router.delete('/:id',
+    authorizeRoles('admin'),
+    deletePayment
+);
+
+module.exports = router;

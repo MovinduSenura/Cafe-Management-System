@@ -21,7 +21,7 @@
 //     const onSubmit = async e => {
 //         e.preventDefault();
 //         try {
-//             const res = await axios.post('http://localhost:8000/staff/StaffLogin', { staffEmail, staffPassword });
+//             const res = await axios.post('http://localhost:3000/staff/StaffLogin', { staffEmail, staffPassword });
 //             const token = res.data.token;
 //             localStorage.setItem('token', token);
     
@@ -94,7 +94,7 @@ const StaffLogin = () => {
     const onSubmit = async e => {
          e.preventDefault();
         try {
-            const res = await axios.post('http://localhost:8000/staff/StaffLogin', { staffEmail, staffPassword });
+            const res = await axios.post('http://localhost:3000/staff/StaffLogin', { staffEmail, staffPassword });
             const token = res.data.token;
             localStorage.setItem('token', token);
     

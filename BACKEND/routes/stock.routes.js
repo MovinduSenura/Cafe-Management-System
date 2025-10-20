@@ -1,22 +1,46 @@
 const express = require("express");
-const StockRouter = express.Router();
-
-const { 
+const router = express.Router();
+const { authenticateToken, authorizeRoles } = require("../middleware/auth.middleware");
+const {
     addItem,
     getAllItems,
     getOneItem,
     updateItem,
     deleteItem,
     searchItem,
-    stockgenerateInvoice,
+    stockgenerateInvoice
 } = require("../controller/stock.controller");
 
-StockRouter.post('/create', addItem);
-StockRouter.get('/items', getAllItems);
-StockRouter.get('/item/:id', getOneItem);
-StockRouter.get('/searchItem', searchItem);
-StockRouter.patch('/itemUpdate/:id', updateItem);
-StockRouter.delete('/itemDelete/:id', deleteItem);
-StockRouter.get('/stock-generate-invoice', stockgenerateInvoice)
+// Public routes
+router.get('/search', searchItem);
 
-module.exports = StockRouter;
+// Protected routes only (all stock operations require authentication)
+router.use(authenticateToken);
+
+// All staff can view stock
+router.get('/', getAllItems);
+router.get('/:id', getOneItem);
+
+// Manager and admin can manage stock
+router.post('/create',
+    authorizeRoles('admin', 'manager'),
+    addItem
+);
+
+router.patch('/:id',
+    authorizeRoles('admin', 'manager'),
+    updateItem
+);
+
+router.get('/invoice/generate',
+    authorizeRoles('admin', 'manager'),
+    stockgenerateInvoice
+);
+
+// Admin only routes
+router.delete('/:id',
+    authorizeRoles('admin'),
+    deleteItem
+);
+
+module.exports = router;

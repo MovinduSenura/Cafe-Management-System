@@ -29,7 +29,7 @@ const PromotionCreateForm = () =>{
             //     promotionDescription: promotionDescription,
             //     promotionItempic: promotionItempic,
             // }
-            axios.post('http://localhost:8000/promotion/create',promotionformdata,  {headers: {'Content-Type': 'multipart/form-data'}})
+            axios.post('http://localhost:3000/promotion/create',promotionformdata,  {headers: {'Content-Type': 'multipart/form-data'}})
             .then((res) =>{
                 alert(res.data.message);
                 console.log(res.data.status);

@@ -22,7 +22,7 @@ const OrdersAll = () => {
 
     const getAllOrders = async () => {
       try {
-        const res = await axios.get("http://localhost:8000/order/allOrders");
+        const res = await axios.get("http://localhost:3000/order/allOrders");
         setOrdersAll(res.data.AllOrders);
         setAllOriginalOrders(res.data.AllOrders);
       } catch (err) {
@@ -40,7 +40,7 @@ const OrdersAll = () => {
       );
 
       if (confirmed) {
-        await axios.delete(`http://localhost:8000/order/delete/${id}`);
+        await axios.delete(`http://localhost:3000/order/delete/${id}`);
         setOrdersAll(OrdersAll.filter(order => order._id !== id));
         alert("Order deleted successfully!");
       } else {
@@ -79,7 +79,7 @@ const OrdersAll = () => {
       e.preventDefault();
       try {
         const response = await axios.get(
-          "http://localhost:8000/order/generate-Order-invoice"
+          "http://localhost:3000/order/generate-Order-invoice"
         );
   
         const { filepath } = response.data;

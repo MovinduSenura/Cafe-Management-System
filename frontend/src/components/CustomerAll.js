@@ -36,7 +36,7 @@ const AllCustomers = () => {
 
             try {
 
-                await axios.get('http://localhost:8000/customer/customers')
+                await axios.get('http://localhost:3000/customer/customers')
 
                     //controller eken Allcustomers ewnw..eeka allgnnonii.Array ekk wdyt enne
                     .then((res) => {
@@ -71,7 +71,7 @@ const AllCustomers = () => {
     //         if (confirmed) {
 
     //             //when passing a parameter or variable bactic mark is used
-    //             await axios.delete(`http://localhost:8000/customer/customerdelete/${id}`)
+    //             await axios.delete(`http://localhost:3000/customer/customerdelete/${id}`)
     //                 .then((res) => {
     //                     alert(res.data.message);
     //                     console.log(res.data.message);
@@ -105,7 +105,7 @@ const AllCustomers = () => {
         // e.preventDefault();
 
         try{
-            await axios.get('http://localhost:8000/customer/customersearch', {
+            await axios.get('http://localhost:3000/customer/customersearch', {
             params: {
                 customerNIC: searchTerm
                 //here customerNIC is taken from searchCustomer eke try eke res.query.customerNIC  in controller.js

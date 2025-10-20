@@ -34,7 +34,7 @@
 //     const handleSubmit = async (e) => {
 //         e.preventDefault();
 //         try {
-//             await axios.post(`http://localhost:8000/customer/addfeedback/${customerNIC}`, feedbackData);
+//             await axios.post(`http://localhost:3000/customer/addfeedback/${customerNIC}`, feedbackData);
 //             alert("Feedback Added Successfully!");
 //             // Optionally, redirect the user to another page after successful feedback submission
 //         } catch (error) {

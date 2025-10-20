@@ -29,7 +29,7 @@ const StaffUpdateForm =() =>{
        const getOneData = async () => {
            try{
 
-               await axios.get(`http://localhost:8000/staff/staff/${id}`)
+               await axios.get(`http://localhost:3000/staff/staff/${id}`)
                .then((res) => {
                    setstaffName(res.data.Staff.staffName);
                    setstaffEmail(res.data.Staff.staffEmail);
@@ -79,7 +79,7 @@ const StaffUpdateForm =() =>{
 
          }
 
-         axios.patch(`http://localhost:8000/staff/staffupdate/${id}`, updateStaffData)
+         axios.patch(`http://localhost:3000/staff/staffupdate/${id}`, updateStaffData)
          .then((res) => {
             alert(res.data.message);
             console.log(res.data.status);

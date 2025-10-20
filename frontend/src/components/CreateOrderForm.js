@@ -19,7 +19,7 @@ const CreateOrderForm = () => {
                 OrderPrice: OrderPrice,
             }
     
-            axios.post('http://localhost:8000/order/create', newOrderData)
+            axios.post('http://localhost:3000/order/create', newOrderData)
                 .then((res) => {
                     alert(res.data.message);
                     console.log(res.data.status);

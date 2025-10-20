@@ -37,7 +37,7 @@ const AddFeedback = () => {
             return;
         }
         try {
-            await axios.post(`http://localhost:8000/customer/addfeedback/${userid}`, feedbackData);
+            await axios.post(`http://localhost:3000/customer/addfeedback/${userid}`, feedbackData);
             alert("Feedback Added Successfully!");
             
             setFeedbackData({

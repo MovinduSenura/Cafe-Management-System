@@ -1,27 +1,57 @@
 const express = require("express");
-const staffRouter = express.Router();
-
-const{
+const router = express.Router();
+const { authenticateToken, authorizeRoles } = require("../middleware/auth.middleware");
+const { validateStaff, validateStaffUpdate, validateLogin } = require("../middleware/validation");
+const {
     addstaff,
+    StaffLogin,
     getAllstaff,
     getOnestaff,
     updatestaff,
     deletestaff,
     searchStaff,
-    StaffLogin,
-    staffGenerateInvoice,
+    staffGenerateInvoice
+} = require("../controller/staff.controller");
 
-}= require("../controller/staff.controller");
-// const { default: StaffLogin } = require("../../frontend/src/components/StaffLogin");
+// Public routes (authentication)
+router.post('/login', validateLogin, StaffLogin);
+router.get('/search', searchStaff);
 
-staffRouter.post('/create',addstaff);
-staffRouter.get('/staff',getAllstaff);
-staffRouter.get('/staff/:id',getOnestaff);
-staffRouter.patch('/staffupdate/:id',updatestaff);
-staffRouter.delete('/deletestaff/:id',deletestaff);
-staffRouter.post('/StaffLogin',StaffLogin);
-staffRouter.get('/searchStaff',searchStaff);
-staffRouter.get('/generate-invoice',staffGenerateInvoice);
+// Protected routes
+router.use(authenticateToken);
 
+// Manager and admin routes
+router.get('/',
+    authorizeRoles('admin', 'manager'),
+    getAllstaff
+);
 
-module.exports = staffRouter;
+router.get('/:id',
+    authorizeRoles('admin', 'manager'),
+    getOnestaff
+);
+
+// Admin only routes
+router.post('/register',
+    authorizeRoles('admin'),
+    validateStaff,
+    addstaff
+);
+
+router.patch('/:id',
+    authorizeRoles('admin'),
+    validateStaffUpdate,
+    updatestaff
+);
+
+router.delete('/:id',
+    authorizeRoles('admin'),
+    deletestaff
+);
+
+router.get('/invoice/generate',
+    authorizeRoles('admin'),
+    staffGenerateInvoice
+);
+
+module.exports = router;

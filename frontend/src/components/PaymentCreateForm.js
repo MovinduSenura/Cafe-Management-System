@@ -26,7 +26,7 @@ const PaymentCreateForm = () => {
     useEffect(() => {
         const getOneOrder = async () => {
             try {
-                const res = await axios.get(`http://localhost:8000/order/oneOrder/${id}`);
+                const res = await axios.get(`http://localhost:3000/order/oneOrder/${id}`);
                 setorderPrice(res.data.order.OrderPrice);
                 setorderItem(res.data.order.menuItems);
                 setorderID(res.data.order._id);
@@ -46,7 +46,7 @@ const PaymentCreateForm = () => {
     useEffect(() => {
         const fetchPromotions = async () => {
             try {
-                const res = await axios.get('http://localhost:8000/promotion/promotions');
+                const res = await axios.get('http://localhost:3000/promotion/promotions');
                 setPromotions(res.data.Allpromotions);
             } catch (error) {
                 console.error('Error fetching promotions:', error);
@@ -114,7 +114,7 @@ const PaymentCreateForm = () => {
                 amount: payableAmount,
             }
 
-            axios.post('http://localhost:8000/payment/create', newPaymentData)
+            axios.post('http://localhost:3000/payment/create', newPaymentData)
                 .then((res) => {
                     alert(res.data.message);
                     navigate('/ordercreate');
@@ -134,7 +134,7 @@ const PaymentCreateForm = () => {
 
     const fetchCustomerData = async () => {
         try {
-            const response = await axios.get(`http://localhost:8000/customer/customerByFind/${searchInput}`);
+            const response = await axios.get(`http://localhost:3000/customer/customerByFind/${searchInput}`);
             setCustomerData(response.data);
         } catch (error) {
             console.error('Error fetching customer data:', error);
@@ -152,7 +152,7 @@ const PaymentCreateForm = () => {
             const updatedLoyaltyPoints = existingLoyaltyPoints + loyaltyPointsToAdd;
 
             // Update customer data in the database
-            const response = await axios.patch(`http://localhost:8000/customer/customerUpdateLoyaltyPoints/${customerData._id}`, {
+            const response = await axios.patch(`http://localhost:3000/customer/customerUpdateLoyaltyPoints/${customerData._id}`, {
                 customerLoyaltyPoints: updatedLoyaltyPoints
             });
 
@@ -185,7 +185,7 @@ const PaymentCreateForm = () => {
             }
 
             const updatedLoyaltyPoints = customerData.customerLoyaltyPoints - loyaltyPointsToRedeem;
-            await axios.patch(`http://localhost:8000/customer/customerUpdateLoyaltyPoints/${customerData._id}`, {
+            await axios.patch(`http://localhost:3000/customer/customerUpdateLoyaltyPoints/${customerData._id}`, {
                 customerLoyaltyPoints: updatedLoyaltyPoints
             });
 

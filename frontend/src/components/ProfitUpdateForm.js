@@ -16,7 +16,7 @@ const ProfitUpdateForm = () => {
     useEffect(() => {
         const getOneProfit = async () => {
             try {
-                const res = await axios.get(`http://localhost:8000/profit/getOneProfit/${id}`);
+                const res = await axios.get(`http://localhost:3000/profit/getOneProfit/${id}`);
                 const { income,salary,other,profit } = res.data.Profit;
                 setIncome(income);
                 setSalary(salary);
@@ -68,7 +68,7 @@ const ProfitUpdateForm = () => {
                 profit: profit
             }
 
-            const res = await axios.patch(`http://localhost:8000/profit/updateProfit/${id}`, updatedProfit);
+            const res = await axios.patch(`http://localhost:3000/profit/updateProfit/${id}`, updatedProfit);
             alert(res.data.message);
             console.log(res.data.status);
             console.log(res.data.message);

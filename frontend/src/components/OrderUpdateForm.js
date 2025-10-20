@@ -15,7 +15,7 @@ const OrderUpdateForm = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/menu/menuItems`);
+        const response = await axios.get(`http://localhost:3000/menu/menuItems`);
         setAllMenuItems(response.data.AllmenuItems);
       } catch (err) {
         console.log("💀 :: Error fetching menu items: " + err.message);
@@ -28,7 +28,7 @@ const OrderUpdateForm = () => {
   useEffect(() => {
     const getOneData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/order/oneOrder/${id}`);
+        const response = await axios.get(`http://localhost:3000/order/oneOrder/${id}`);
         const items = response.data.order.menuItems;
         setSelectedItems(items);
         const price = items.reduce((acc, item) => acc + item.menuItemPrice, 0);
@@ -63,7 +63,7 @@ const OrderUpdateForm = () => {
         OrderPrice: totalPrice, // Pass totalPrice
       };
   
-      const response = await axios.patch(`http://localhost:8000/order/Update/${id}`, updateOrderItem);
+      const response = await axios.patch(`http://localhost:3000/order/Update/${id}`, updateOrderItem);
       alert(response.data.message);
       console.log(response.data.status);
       console.log(response.data.message);

@@ -24,7 +24,7 @@ const StockCreateForm = () => {
                 minstocklevel: minstocklevel,
             };
 
-            const response = await axios.post('http://localhost:8000/stock/create', newStockData);
+            const response = await axios.post('http://localhost:3000/stock/create', newStockData);
             console.log(response.data);
 
             alert(response.data.message);

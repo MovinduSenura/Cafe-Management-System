@@ -21,7 +21,7 @@ const StockUpdateForm = () => {
         const getOneData = async () => {
             try{
                   
-                await axios.get(`http://localhost:8000/stock/item/${id}`)
+                await axios.get(`http://localhost:3000/stock/item/${id}`)
                 .then((res) => {
                     setItemName(res.data.Item.itemName);
                     setQuantity(res.data.Item.quantity);
@@ -52,7 +52,7 @@ const StockUpdateForm = () => {
                 minstocklevel: minstocklevel,
             };
 
-            await axios.patch(`http://localhost:8000/stock/itemUpdate/${id}`, updateStockData)
+            await axios.patch(`http://localhost:3000/stock/itemUpdate/${id}`, updateStockData)
             .then((res) => {
                 alert(res.data.message);
                 console.log(res.data.status);

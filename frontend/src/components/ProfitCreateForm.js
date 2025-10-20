@@ -14,7 +14,7 @@ const ProfitCreateForm = () => {
     useEffect(() => {
         const getAllPayments = async () => {
             try {
-                const res = await axios.get('http://localhost:8000/payment/getAllPayment');
+                const res = await axios.get('http://localhost:3000/payment/getAllPayment');
                 setPaymentAll(res.data.allPayments);
                 console.log(res.data.message);
                 console.log('status : ' + res.data.status);
@@ -25,7 +25,7 @@ const ProfitCreateForm = () => {
 
         const calculateStaffSalary = async () => {
             try {
-                const res = await axios.get('http://localhost:8000/staff/staff');
+                const res = await axios.get('http://localhost:3000/staff/staff');
                 const staffData = res.data.AllStaff; // Access the AllStaff property
                 let totalSalary = 0;
                 staffData.forEach(staff => {
@@ -62,7 +62,7 @@ const ProfitCreateForm = () => {
                 profit: profit
             }
 
-            axios.post('http://localhost:8000/profit/createProfit', newProfitData)
+            axios.post('http://localhost:3000/profit/createProfit', newProfitData)
                 .then((res) => {
                     alert(res.data.message);
                     console.log(res.data.status);

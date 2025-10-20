@@ -17,7 +17,7 @@ const CustomerOneForm = () => {
     useEffect(() => {
         const getOneItem = async () => {
             try {
-                const res = await axios.get(`http://localhost:8000/customer/customer/${id}`);
+                const res = await axios.get(`http://localhost:3000/customer/customer/${id}`);
                 const customerData = res.data.Customer;
                 setcustomerFullName(customerData.customerFullName);
                 setcustomerEmail(customerData.customerEmail);

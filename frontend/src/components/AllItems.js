@@ -32,7 +32,7 @@ export const AllItems = () => {
 
             try{
 
-                await axios.get('http://localhost:8000/stock/items')
+                await axios.get('http://localhost:3000/stock/items')
                 .then((res) => {
                     setAllItems(res.data.AllItems);
                     setAllOriginalItems(res.data.AllItems);
@@ -62,7 +62,7 @@ export const AllItems = () => {
 
             if(confirmed){
 
-               await axios.delete(`http://localhost:8000/stock/itemDelete/${id}`)
+               await axios.delete(`http://localhost:3000/stock/itemDelete/${id}`)
                .then((res) => {
                 alert(res.data.message);
                 console.log(res.data.message);
@@ -90,7 +90,7 @@ export const AllItems = () => {
         // e.preventDefault();
 
         try{
-            await axios.get('http://localhost:8000/stock/searchItem', {
+            await axios.get('http://localhost:3000/stock/searchItem', {
             params: {
                 itemName: searchTerm
             }})
@@ -142,7 +142,7 @@ export const AllItems = () => {
     e.preventDefault();
     try {
       const response = await axios.get(
-        "http://localhost:8000/stock/stock-generate-invoice"
+        "http://localhost:3000/stock/stock-generate-invoice"
       );
 
       const { filepath } = response.data;

@@ -20,7 +20,7 @@ const PaymentUpdateForm = () => {
         const getOneData = async () => {
             try{
 
-                await axios.get(`http://localhost:8000/payment/getOne/${id}`)
+                await axios.get(`http://localhost:3000/payment/getOne/${id}`)
                 .then((res) => {
                     setorderID(res.data.payment.orderID);
                     setpromotionID(res.data.payment.promotionID);
@@ -51,7 +51,7 @@ const PaymentUpdateForm = () => {
                 date: date,
             }
 
-            axios.patch(`http://localhost:8000/payment/updatePayment/${id}`,updatePayment)
+            axios.patch(`http://localhost:3000/payment/updatePayment/${id}`,updatePayment)
             .then((res) => {
                 alert(res.data.message);
                 console.log(res.data.status);

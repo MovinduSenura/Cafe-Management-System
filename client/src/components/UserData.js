@@ -17,7 +17,7 @@ const UserData = () => {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/customer/login/${customerNIC}`);
+                const response = await axios.get(`http://localhost:3000/customer/login/${customerNIC}`);
                 setUserData(response.data.user);
                 setLoading(false);
             } catch (error) {
@@ -38,7 +38,7 @@ const UserData = () => {
 
     const handleDeleteFeedback = async (feedbackId) => {
         try {
-            await axios.delete(`http://localhost:8000/customer/deletefeedback/${userData._id}/${feedbackId}`);
+            await axios.delete(`http://localhost:3000/customer/deletefeedback/${userData._id}/${feedbackId}`);
             alert("Feedback Deleted!");
             window.location.reload();
         } catch (error) {

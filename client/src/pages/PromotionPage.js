@@ -13,7 +13,7 @@ const PromotionPage = () => {
       const getAllPromotions = async () => {
         try{
           
-          await axios.get('http://localhost:8000/promotion/promotions')
+          await axios.get('http://localhost:3000/promotion/promotions')
           .then((res) => {
             setAllPromotion(res.data.Allpromotions);
             console.log(res.data.Allpromotions);

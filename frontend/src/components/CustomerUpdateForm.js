@@ -34,7 +34,7 @@ const CustomerUpdateForm = () => {
             const getOneItem = async () => {
                 try{
 
-                    await axios.get(`http://localhost:8000/customer/customer/${id}`)
+                    await axios.get(`http://localhost:3000/customer/customer/${id}`)
                     .then((res) => {
                         setcustomerFullName(res.data.Customer.customerFullName);
                         setcustomerEmail(res.data.Customer.customerEmail);
@@ -81,7 +81,7 @@ const CustomerUpdateForm = () => {
 
                         //axios thmai uda thyena object eka backend ekt arn ynne post req ekkin
                         //axios eken parameters dekak pass krnw. mulinma pass krnne link eka(route url eka). eelgata pass krnne api uda hdgtta object eka(newCustomerData)
-                        axios.patch(`http://localhost:8000/customer/customerUpdate/${id}`, updateCustomerData)
+                        axios.patch(`http://localhost:3000/customer/customerUpdate/${id}`, updateCustomerData)
                         //take the res from backend if above all are sucessful. backend eken gnne then ekedi.
                         .then((res) => {
                                
