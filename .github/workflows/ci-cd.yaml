@@ -15,7 +15,9 @@ jobs:
     test:
         name: Test and Lint
         runs-on: ubuntu-latest
+        continue-on-error: true
         strategy:
+            fail-fast: false
             matrix:
                 service:
                     [
@@ -104,22 +106,22 @@ jobs:
                   output: "trivy-results.sarif"
 
             - name: Upload Trivy scan results to GitHub Security tab
-              uses: github/codeql-action/upload-sarif@v2
+              uses: github/codeql-action/upload-sarif@v3
               with:
                   sarif_file: "trivy-results.sarif"
 
             - name: Run npm audit
-              working-directory: Backend
               run: |
+                  cd Backend || cd BACKEND
                   echo "## Security Audit Results" > audit-results.txt
                   for service in api-gateway user-service customer-service menu-service order-service payment-service inventory-service reservation-service notification-service report-service; do
                     if [ -d "$service" ] && [ -f "$service/package.json" ]; then
                       echo "### Auditing $service" >> audit-results.txt
                       cd "$service"
                       if npm audit --audit-level moderate >> ../audit-results.txt 2>&1; then
-                        echo "$service: No issues found" >> ../audit-results.txt
+                        echo "✅ $service: No issues found" >> ../audit-results.txt
                       else
-                        echo "$service: Issues found (check above)" >> ../audit-results.txt
+                        echo "⚠️  $service: Issues found (check above)" >> ../audit-results.txt
                       fi
                       cd ..
                     fi

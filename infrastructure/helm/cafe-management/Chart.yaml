@@ -4,6 +4,7 @@ description: A Helm chart for Cafe Management System microservices
 type: application
 version: 0.1.0
 appVersion: "1.0.0"
+icon: https://raw.githubusercontent.com/ravin00/Cafe-Management-System/main/frontend/public/favicon.ico
 
 keywords:
   - microservices
