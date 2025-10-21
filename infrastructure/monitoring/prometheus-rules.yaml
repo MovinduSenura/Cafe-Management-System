@@ -1,0 +1,101 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-rules
+  namespace: monitoring
+data:
+  cafe-management.yml: |
+    groups:
+    - name: cafe-management.rules
+      rules:
+      # High error rate
+      - alert: HighErrorRate
+        expr: (rate(http_requests_total{status=~"5.."}[5m]) / rate(http_requests_total[5m])) > 0.1
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "High error rate detected"
+          description: "Service {{ $labels.service }} has error rate above 10% ({{ $value }}%)"
+          
+      # High response time
+      - alert: HighResponseTime
+        expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m])) > 1
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High response time detected"
+          description: "95th percentile response time is {{ $value }}s for service {{ $labels.service }}"
+          
+      # Service down
+      - alert: ServiceDown
+        expr: up == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Service is down"
+          description: "Service {{ $labels.job }} has been down for more than 1 minute"
+          
+      # High memory usage
+      - alert: HighMemoryUsage
+        expr: (container_memory_usage_bytes / container_spec_memory_limit_bytes) > 0.8
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High memory usage"
+          description: "Container {{ $labels.container }} memory usage is above 80%"
+          
+      # High CPU usage
+      - alert: HighCPUUsage
+        expr: rate(container_cpu_usage_seconds_total[5m]) > 0.8
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High CPU usage"
+          description: "Container {{ $labels.container }} CPU usage is above 80%"
+          
+      # Database connection pool exhaustion
+      - alert: DatabaseConnectionPoolHigh
+        expr: mongodb_connections_current / mongodb_connections_available > 0.8
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Database connection pool usage high"
+          description: "MongoDB connection pool usage is above 80%"
+          
+      # Redis memory usage high
+      - alert: RedisMemoryHigh
+        expr: redis_memory_used_bytes / redis_memory_max_bytes > 0.8
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Redis memory usage high"
+          description: "Redis memory usage is above 80%"
+          
+    - name: kubernetes.rules
+      rules:
+      # Pod not ready
+      - alert: PodNotReady
+        expr: kube_pod_status_ready{condition="false"} == 1
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Pod not ready"
+          description: "Pod {{ $labels.pod }} in namespace {{ $labels.namespace }} has been not ready for more than 5 minutes"
+          
+      # Deployment replicas mismatch
+      - alert: DeploymentReplicasMismatch
+        expr: kube_deployment_spec_replicas != kube_deployment_status_replicas_available
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Deployment replicas mismatch"
+          description: "Deployment {{ $labels.deployment }} has {{ $labels.spec_replicas }} desired replicas but {{ $labels.available_replicas }} available"

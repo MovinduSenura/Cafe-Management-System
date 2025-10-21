@@ -1,0 +1,101 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: inventory-service
+  namespace: cafe-management
+  labels:
+    app: inventory-service
+    tier: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: inventory-service
+  template:
+    metadata:
+      labels:
+        app: inventory-service
+        tier: backend
+    spec:
+      serviceAccountName: cafe-management-sa
+      containers:
+      - name: inventory-service
+        image: cafe-management/inventory-service:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 3006
+        env:
+        - name: PORT
+          value: "3006"
+        - name: MONGODB_URI
+          value: "mongodb://$(MONGODB_USERNAME):$(MONGODB_PASSWORD)@mongodb-service:27017/inventory-service?authSource=admin"
+        envFrom:
+        - configMapRef:
+            name: cafe-config
+        - secretRef:
+            name: cafe-secrets
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "300m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3006
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 3006
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 1000
+          allowPrivilegeEscalation: false
+        volumeMounts:
+        - name: logs-volume
+          mountPath: /app/logs
+      volumes:
+      - name: logs-volume
+        emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: inventory-service
+  namespace: cafe-management
+  labels:
+    app: inventory-service
+spec:
+  ports:
+  - port: 3006
+    targetPort: 3006
+    name: http
+  selector:
+    app: inventory-service
+  type: ClusterIP
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: inventory-service-hpa
+  namespace: cafe-management
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: inventory-service
+  minReplicas: 1
+  maxReplicas: 3
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70

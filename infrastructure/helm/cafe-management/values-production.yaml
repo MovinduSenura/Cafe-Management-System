@@ -1,0 +1,218 @@
+# Production environment values for Cafe Management System
+
+# Global settings
+global:
+  namespace: cafe-management
+
+# Image settings - use specific tags for production
+image:
+  tag: latest  # This will be overridden by CI/CD with specific SHA
+
+# Service configuration - production resources
+resources:
+  limits:
+    cpu: 1000m
+    memory: 1Gi
+  requests:
+    cpu: 200m
+    memory: 256Mi
+
+# Autoscaling - production scaling
+autoscaling:
+  enabled: true
+  minReplicas: 3
+  maxReplicas: 20
+  targetCPUUtilizationPercentage: 70
+  targetMemoryUtilizationPercentage: 80
+
+# Services configuration - production replicas
+services:
+  apiGateway:
+    replicas: 3
+    resources:
+      limits:
+        cpu: 1500m
+        memory: 2Gi
+      requests:
+        cpu: 300m
+        memory: 512Mi
+  
+  userService:
+    replicas: 3
+  
+  customerService:
+    replicas: 3
+  
+  menuService:
+    replicas: 3
+  
+  orderService:
+    replicas: 5  # More replicas for high-traffic service
+    resources:
+      limits:
+        cpu: 1200m
+        memory: 1.5Gi
+      requests:
+        cpu: 250m
+        memory: 384Mi
+  
+  paymentService:
+    replicas: 4  # Critical service needs more replicas
+    resources:
+      limits:
+        cpu: 1200m
+        memory: 1.5Gi
+      requests:
+        cpu: 250m
+        memory: 384Mi
+  
+  inventoryService:
+    replicas: 3
+  
+  reservationService:
+    replicas: 2
+  
+  notificationService:
+    replicas: 2
+  
+  reportService:
+    replicas: 2
+
+# Database configuration - production HA setup
+mongodb:
+  enabled: true
+  auth:
+    enabled: true
+    rootUser: root
+    rootPassword: # Set via secret in production
+    usernames: ["produser"]
+    passwords: [""] # Set via secret in production
+    databases: ["cafedb"]
+  architecture: replicaset
+  replicaCount: 3
+  persistence:
+    enabled: true
+    size: 20Gi
+    storageClass: fast-ssd  # Use high-performance storage
+  resources:
+    limits:
+      cpu: 2000m
+      memory: 4Gi
+    requests:
+      cpu: 500m
+      memory: 1Gi
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+
+# Cache configuration - production HA
+redis:
+  enabled: true
+  auth:
+    enabled: true
+    password: # Set via secret in production
+  architecture: replicaset
+  master:
+    persistence:
+      enabled: true
+      size: 10Gi
+      storageClass: fast-ssd
+  replica:
+    replicaCount: 3
+    persistence:
+      enabled: true
+      size: 10Gi
+      storageClass: fast-ssd
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+    requests:
+      cpu: 200m
+      memory: 256Mi
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+
+# Production ingress with SSL
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/rate-limit: "100"
+    nginx.ingress.kubernetes.io/rate-limit-window: "1m"
+  hosts:
+    - host: api.cafemanagement.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: cafe-management-prod-tls
+      hosts:
+        - api.cafemanagement.com
+
+# Security - enable network policies in production
+networkPolicy:
+  enabled: true
+
+# Pod disruption budgets - ensure availability
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 2
+
+# Node affinity for production workloads
+affinity:
+  podAntiAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+    - weight: 100
+      podAffinityTerm:
+        labelSelector:
+          matchExpressions:
+          - key: app.kubernetes.io/name
+            operator: In
+            values: ["cafe-management"]
+        topologyKey: kubernetes.io/hostname
+
+# Production environment configuration
+configMap:
+  data:
+    LOG_LEVEL: info
+    ENVIRONMENT: production
+    DEBUG: "false"
+    CACHE_TTL: "3600"
+    MAX_CONNECTIONS: "100"
+    REQUEST_TIMEOUT: "30000"
+
+# Enhanced monitoring for production
+monitoring:
+  enabled: true
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "3000"
+    prometheus.io/path: "/metrics"
+
+# Production health checks - more strict
+healthCheck:
+  enabled: true
+  livenessProbe:
+    httpGet:
+      path: /health
+      port: 3000
+    initialDelaySeconds: 60
+    periodSeconds: 30
+    timeoutSeconds: 10
+    failureThreshold: 3
+  readinessProbe:
+    httpGet:
+      path: /ready
+      port: 3000
+    initialDelaySeconds: 15
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 3

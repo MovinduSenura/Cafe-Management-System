@@ -1,0 +1,103 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cafe-management-infrastructure
+  namespace: argocd
+  labels:
+    app: cafe-management
+    component: infrastructure
+spec:
+  project: cafe-management
+  
+  source:
+    repoURL: https://github.com/ravin00/Cafe-Management-System.git
+    targetRevision: HEAD
+    path: infrastructure/k8s/infrastructure
+    
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cafe-management
+    
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+      allowEmpty: false
+    syncOptions:
+    - CreateNamespace=true
+    - PrunePropagationPolicy=foreground
+    - PruneLast=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
+  
+  revisionHistoryLimit: 10
+  
+  ignoreDifferences:
+  - group: apps
+    kind: Deployment
+    jsonPointers:
+    - /spec/replicas
+  
+  info:
+  - name: 'Description'
+    value: 'Infrastructure components (MongoDB, Redis) for Cafe Management System'
+  - name: 'Owner'
+    value: 'Platform Team'
+  - name: 'Environment'
+    value: 'Production'
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cafe-management-services
+  namespace: argocd
+  labels:
+    app: cafe-management
+    component: services
+spec:
+  project: cafe-management
+  
+  source:
+    repoURL: https://github.com/ravin00/Cafe-Management-System.git
+    targetRevision: HEAD
+    path: infrastructure/k8s/services
+    
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cafe-management
+    
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+      allowEmpty: false
+    syncOptions:
+    - CreateNamespace=true
+    - PrunePropagationPolicy=foreground
+    - PruneLast=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
+  
+  revisionHistoryLimit: 10
+  
+  ignoreDifferences:
+  - group: apps
+    kind: Deployment
+    jsonPointers:
+    - /spec/replicas
+  
+  info:
+  - name: 'Description'
+    value: 'Microservices for Cafe Management System'
+  - name: 'Owner'
+    value: 'Development Team'
+  - name: 'Environment'
+    value: 'Production'

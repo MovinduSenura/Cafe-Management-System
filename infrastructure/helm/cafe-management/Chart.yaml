@@ -1,0 +1,27 @@
+apiVersion: v2
+name: cafe-management
+description: A Helm chart for Cafe Management System microservices
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+
+keywords:
+  - microservices
+  - nodejs
+  - mongodb
+  - redis
+  - cafe
+
+maintainers:
+  - name: Cafe Management Team
+    email: team@cafemanagement.com
+
+dependencies:
+  - name: mongodb
+    version: "13.15.1"
+    repository: https://charts.bitnami.com/bitnami
+    condition: mongodb.enabled
+  - name: redis
+    version: "17.11.3"
+    repository: https://charts.bitnami.com/bitnami
+    condition: redis.enabled

@@ -1,0 +1,101 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment-service
+  namespace: cafe-management
+  labels:
+    app: payment-service
+    tier: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: payment-service
+  template:
+    metadata:
+      labels:
+        app: payment-service
+        tier: backend
+    spec:
+      serviceAccountName: cafe-management-sa
+      containers:
+      - name: payment-service
+        image: cafe-management/payment-service:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 3005
+        env:
+        - name: PORT
+          value: "3005"
+        - name: MONGODB_URI
+          value: "mongodb://$(MONGODB_USERNAME):$(MONGODB_PASSWORD)@mongodb-service:27017/payment-service?authSource=admin"
+        envFrom:
+        - configMapRef:
+            name: cafe-config
+        - secretRef:
+            name: cafe-secrets
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "300m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3005
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 3005
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 1000
+          allowPrivilegeEscalation: false
+        volumeMounts:
+        - name: logs-volume
+          mountPath: /app/logs
+      volumes:
+      - name: logs-volume
+        emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: payment-service
+  namespace: cafe-management
+  labels:
+    app: payment-service
+spec:
+  ports:
+  - port: 3005
+    targetPort: 3005
+    name: http
+  selector:
+    app: payment-service
+  type: ClusterIP
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: payment-service-hpa
+  namespace: cafe-management
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: payment-service
+  minReplicas: 1
+  maxReplicas: 3
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70

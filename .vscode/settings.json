@@ -1,0 +1,62 @@
+{
+  "yaml.schemas": {
+    "kubernetes": [
+      "infrastructure/k8s/**/*.yaml",
+      "infrastructure/k8s/**/*.yml",
+      "infrastructure/monitoring/**/*.yaml",
+      "infrastructure/monitoring/**/*.yml",
+      "infrastructure/argocd/**/*.yaml",
+      "infrastructure/argocd/**/*.yml"
+    ],
+    "https://json.schemastore.org/github-workflow": [
+      ".github/workflows/*.yaml",
+      ".github/workflows/*.yml"
+    ]
+  },
+  "yaml.validate": true,
+  "yaml.schemaStore": {
+    "enable": true,
+    "url": "https://www.schemastore.org/api/json/catalog.json"
+  },
+  "yaml.customTags": [
+    "!And",
+    "!And sequence",
+    "!If",
+    "!If sequence", 
+    "!Not",
+    "!Not sequence",
+    "!Equals",
+    "!Equals sequence",
+    "!Or",
+    "!Or sequence",
+    "!FindInMap",
+    "!FindInMap sequence",
+    "!Base64",
+    "!Join",
+    "!Join sequence",
+    "!Cidr",
+    "!Ref",
+    "!Sub",
+    "!Sub sequence",
+    "!GetAtt",
+    "!GetAZs",
+    "!ImportValue",
+    "!ImportValue sequence",
+    "!Select",
+    "!Select sequence",
+    "!Split",
+    "!Split sequence"
+  ],
+  "files.associations": {
+    "*.yaml": "yaml",
+    "*.yml": "yaml"
+},
+  "editor.formatOnSave": true,
+  "[yaml]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    "editor.autoIndent": "advanced"
+  },
+  "kubernetes.editor.validation.enabled": true,
+  "redhat.telemetry.enabled": false
+}

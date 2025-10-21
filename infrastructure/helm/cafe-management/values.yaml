@@ -1,0 +1,269 @@
+# Default values for cafe-management
+# This is a YAML-formatted file
+
+# Global settings
+global:
+  namespace: cafe-management
+  imageRegistry: ""
+  imagePullSecrets: []
+
+# Image settings
+image:
+  registry: docker.io
+  repository: cafe-management
+  tag: latest
+  pullPolicy: IfNotPresent
+
+# Service configuration
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 3000
+
+# Ingress configuration
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts:
+    - host: cafe-management.local
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+
+# Resource limits and requests
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+# Autoscaling configuration
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 70
+  targetMemoryUtilizationPercentage: 80
+
+# Pod configuration
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+# Security context
+podSecurityContext:
+  fsGroup: 2000
+
+securityContext:
+  allowPrivilegeEscalation: false
+  runAsNonRoot: true
+  runAsUser: 1000
+  capabilities:
+    drop:
+    - ALL
+
+# Service Account
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+# Monitoring and health checks
+monitoring:
+  enabled: true
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "3000"
+    prometheus.io/path: "/metrics"
+
+healthCheck:
+  enabled: true
+  livenessProbe:
+    httpGet:
+      path: /health
+      port: 3000
+    initialDelaySeconds: 30
+    periodSeconds: 10
+  readinessProbe:
+    httpGet:
+      path: /ready
+      port: 3000
+    initialDelaySeconds: 5
+    periodSeconds: 5
+
+# Environment variables
+env:
+  NODE_ENV: production
+  PORT: "3000"
+
+# Configuration from ConfigMap/Secret
+configMap:
+  enabled: true
+  data: {}
+
+secret:
+  enabled: true
+  data: {}
+
+# Microservices configuration
+services:
+  apiGateway:
+    enabled: true
+    name: api-gateway
+    port: 8080
+    targetPort: 3000
+    replicas: 2
+    resources:
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+      requests:
+        cpu: 200m
+        memory: 256Mi
+
+  userService:
+    enabled: true
+    name: user-service
+    port: 3001
+    targetPort: 3000
+    replicas: 2
+
+  customerService:
+    enabled: true
+    name: customer-service
+    port: 3002
+    targetPort: 3000
+    replicas: 2
+
+  menuService:
+    enabled: true
+    name: menu-service
+    port: 3003
+    targetPort: 3000
+    replicas: 2
+
+  orderService:
+    enabled: true
+    name: order-service
+    port: 3004
+    targetPort: 3000
+    replicas: 3
+    resources:
+      limits:
+        cpu: 750m
+        memory: 768Mi
+      requests:
+        cpu: 150m
+        memory: 192Mi
+
+  paymentService:
+    enabled: true
+    name: payment-service
+    port: 3005
+    targetPort: 3000
+    replicas: 2
+    resources:
+      limits:
+        cpu: 600m
+        memory: 512Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi
+
+  inventoryService:
+    enabled: true
+    name: inventory-service
+    port: 3006
+    targetPort: 3000
+    replicas: 2
+
+  reservationService:
+    enabled: true
+    name: reservation-service
+    port: 3007
+    targetPort: 3000
+    replicas: 2
+
+  notificationService:
+    enabled: true
+    name: notification-service
+    port: 3008
+    targetPort: 3000
+    replicas: 1
+
+  reportService:
+    enabled: true
+    name: report-service
+    port: 3009
+    targetPort: 3000
+    replicas: 1
+
+# Database configuration
+mongodb:
+  enabled: true
+  auth:
+    enabled: true
+    rootUser: root
+    rootPassword: rootpassword123
+    usernames: ["cafeuser"]
+    passwords: ["cafepassword123"]
+    databases: ["cafedb"]
+  architecture: replicaset
+  replicaCount: 3
+  persistence:
+    enabled: true
+    size: 8Gi
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+    requests:
+      cpu: 250m
+      memory: 256Mi
+
+# Cache configuration
+redis:
+  enabled: true
+  auth:
+    enabled: true
+    password: redispassword123
+  architecture: replicaset
+  master:
+    persistence:
+      enabled: true
+      size: 4Gi
+  replica:
+    replicaCount: 2
+    persistence:
+      enabled: true
+      size: 4Gi
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
+# Network policies
+networkPolicy:
+  enabled: true
+  ingress:
+    - from:
+      - namespaceSelector:
+          matchLabels:
+            name: monitoring
+      - namespaceSelector:
+          matchLabels:
+            name: istio-system
+    - from:
+      - podSelector: {}
+
+# Pod Disruption Budget
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 1

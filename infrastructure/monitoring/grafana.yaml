@@ -1,0 +1,115 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-datasources
+  namespace: monitoring
+data:
+  prometheus.yaml: |
+    apiVersion: 1
+    datasources:
+    - name: Prometheus
+      type: prometheus
+      url: http://prometheus:9090
+      access: proxy
+      isDefault: true
+      editable: true
+    - name: Jaeger
+      type: jaeger
+      url: http://jaeger-query:16686
+      access: proxy
+      editable: true
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboards-config
+  namespace: monitoring
+data:
+  dashboards.yaml: |
+    apiVersion: 1
+    providers:
+    - name: 'default'
+      orgId: 1
+      folder: ''
+      type: file
+      disableDeletion: false
+      updateIntervalSeconds: 10
+      allowUiUpdates: true
+      options:
+        path: /var/lib/grafana/dashboards
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana
+  namespace: monitoring
+  labels:
+    app: grafana
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grafana
+  template:
+    metadata:
+      labels:
+        app: grafana
+    spec:
+      containers:
+      - name: grafana
+        image: grafana/grafana:10.0.0
+        ports:
+        - containerPort: 3000
+          name: web
+        env:
+        - name: GF_SECURITY_ADMIN_PASSWORD
+          value: "admin123"  # Change this in production
+        - name: GF_USERS_ALLOW_SIGN_UP
+          value: "false"
+        - name: GF_INSTALL_PLUGINS
+          value: "grafana-piechart-panel,grafana-polystat-panel"
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        volumeMounts:
+        - name: grafana-storage
+          mountPath: /var/lib/grafana
+        - name: datasources
+          mountPath: /etc/grafana/provisioning/datasources
+        - name: dashboards-config
+          mountPath: /etc/grafana/provisioning/dashboards
+        - name: dashboards
+          mountPath: /var/lib/grafana/dashboards
+      volumes:
+      - name: grafana-storage
+        emptyDir: {}
+      - name: datasources
+        configMap:
+          name: grafana-datasources
+      - name: dashboards-config
+        configMap:
+          name: grafana-dashboards-config
+      - name: dashboards
+        configMap:
+          name: grafana-dashboards
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana
+  namespace: monitoring
+  labels:
+    app: grafana
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 3000
+    targetPort: 3000
+    protocol: TCP
+    name: web
+  selector:
+    app: grafana

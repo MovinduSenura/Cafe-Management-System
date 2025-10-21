@@ -1,0 +1,115 @@
+# Staging environment values for Cafe Management System
+
+# Global settings
+global:
+  namespace: cafe-management-staging
+
+# Image settings (for staging, use latest or develop tags)
+image:
+  tag: develop
+
+# Service configuration - reduced resources for staging
+resources:
+  limits:
+    cpu: 300m
+    memory: 256Mi
+  requests:
+    cpu: 50m
+    memory: 64Mi
+
+# Autoscaling - minimal for staging
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 80
+
+# Services configuration - single replica for staging
+services:
+  apiGateway:
+    replicas: 1
+  userService:
+    replicas: 1
+  customerService:
+    replicas: 1
+  menuService:
+    replicas: 1
+  orderService:
+    replicas: 1
+  paymentService:
+    replicas: 1
+  inventoryService:
+    replicas: 1
+  reservationService:
+    replicas: 1
+  notificationService:
+    replicas: 1
+  reportService:
+    replicas: 1
+
+# Database configuration - smaller resources for staging
+mongodb:
+  enabled: true
+  auth:
+    enabled: true
+    rootUser: root
+    rootPassword: staging-root-pass
+    usernames: ["staginguser"]
+    passwords: ["staging-pass"]
+    databases: ["staging-cafedb"]
+  architecture: standalone  # Single node for staging
+  replicaCount: 1
+  persistence:
+    enabled: true
+    size: 4Gi
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
+# Cache configuration - smaller for staging
+redis:
+  enabled: true
+  auth:
+    enabled: true
+    password: staging-redis-pass
+  architecture: standalone  # Single node for staging
+  master:
+    persistence:
+      enabled: true
+      size: 2Gi
+  resources:
+    limits:
+      cpu: 200m
+      memory: 256Mi
+    requests:
+      cpu: 50m
+      memory: 64Mi
+
+# Ingress for staging
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    cert-manager.io/cluster-issuer: letsencrypt-staging
+  hosts:
+    - host: staging.cafemanagement.local
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: cafe-management-staging-tls
+      hosts:
+        - staging.cafemanagement.local
+
+# Environment specific configuration
+configMap:
+  data:
+    LOG_LEVEL: debug
+    ENVIRONMENT: staging
+    DEBUG: "true"
+    CACHE_TTL: "300"

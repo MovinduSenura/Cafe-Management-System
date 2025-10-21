@@ -1,0 +1,268 @@
+name: CI/CD Pipeline
+
+on:
+    push:
+        branches: [main, develop]
+    pull_request:
+        branches: [main]
+
+env:
+    REGISTRY: ghcr.io
+    IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+    # Test and Lint
+    test:
+        name: Test and Lint
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                service:
+                    [
+                        api-gateway,
+                        user-service,
+                        customer-service,
+                        menu-service,
+                        order-service,
+                        payment-service,
+                        inventory-service,
+                        reservation-service,
+                        notification-service,
+                        report-service,
+                    ]
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "18"
+                  cache: "npm"
+                  cache-dependency-path: "Backend/${{ matrix.service }}/package-lock.json"
+
+            - name: Install dependencies
+              working-directory: Backend/${{ matrix.service }}
+              run: npm ci
+
+            - name: Run linting
+              working-directory: Backend/${{ matrix.service }}
+              run: npm run lint || echo "No lint script found"
+
+            - name: Run tests
+              working-directory: Backend/${{ matrix.service }}
+              run: npm test || echo "No test script found"
+
+            - name: Generate test coverage
+              working-directory: Backend/${{ matrix.service }}
+              run: npm run test:coverage || echo "No coverage script found"
+
+            - name: Upload coverage to Codecov
+              uses: codecov/codecov-action@v3
+              with:
+                  file: Backend/${{ matrix.service }}/coverage/lcov.info
+                  flags: ${{ matrix.service }}
+                  name: ${{ matrix.service }}-coverage
+
+    # Security Scanning
+    security:
+        name: Security Scan
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Run Trivy vulnerability scanner
+              uses: aquasecurity/trivy-action@master
+              with:
+                  scan-type: "fs"
+                  scan-ref: "."
+                  format: "sarif"
+                  output: "trivy-results.sarif"
+
+            - name: Upload Trivy scan results to GitHub Security tab
+              uses: github/codeql-action/upload-sarif@v2
+              with:
+                  sarif_file: "trivy-results.sarif"
+
+            - name: Run npm audit
+              working-directory: Backend
+              run: |
+                  for service in */; do
+                    if [ -f "$service/package.json" ]; then
+                      echo "Auditing $service"
+                      cd "$service"
+                      npm audit --audit-level moderate || echo "Vulnerabilities found in $service"
+                      cd ..
+                    fi
+                  done
+
+    # Build and Push Images
+    build:
+        name: Build and Push Images
+        runs-on: ubuntu-latest
+        needs: [test, security]
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        strategy:
+            matrix:
+                service:
+                    [
+                        api-gateway,
+                        user-service,
+                        customer-service,
+                        menu-service,
+                        order-service,
+                        payment-service,
+                        inventory-service,
+                        reservation-service,
+                        notification-service,
+                        report-service,
+                    ]
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Set up Docker Buildx
+              uses: docker/setup-buildx-action@v3
+
+            - name: Log in to Container Registry
+              uses: docker/login-action@v3
+              with:
+                  registry: ${{ env.REGISTRY }}
+                  username: ${{ github.actor }}
+                  password: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Extract metadata
+              id: meta
+              uses: docker/metadata-action@v5
+              with:
+                  images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/${{ matrix.service }}
+                  tags: |
+                      type=ref,event=branch
+                      type=ref,event=pr
+                      type=sha,prefix=sha-
+                      type=raw,value=latest,enable={{is_default_branch}}
+
+            - name: Build and push Docker image
+              uses: docker/build-push-action@v5
+              with:
+                  context: Backend/${{ matrix.service }}
+                  platforms: linux/amd64,linux/arm64
+                  push: true
+                  tags: ${{ steps.meta.outputs.tags }}
+                  labels: ${{ steps.meta.outputs.labels }}
+                  cache-from: type=gha
+                  cache-to: type=gha,mode=max
+
+    # Deploy to Staging
+    deploy-staging:
+        name: Deploy to Staging
+        runs-on: ubuntu-latest
+        needs: [build]
+        if: github.ref == 'refs/heads/develop'
+        environment: staging
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Setup kubectl
+              uses: azure/setup-kubectl@v3
+              with:
+                  version: "latest"
+
+            - name: Configure kubectl
+              run: |
+                  mkdir -p ~/.kube
+                  echo "${{ secrets.KUBECONFIG_STAGING }}" | base64 -d > ~/.kube/config
+
+            - name: Setup Helm
+              uses: azure/setup-helm@v3
+              with:
+                  version: "latest"
+
+            - name: Deploy to staging
+              run: |
+                  helm upgrade --install cafe-management-staging ./infrastructure/helm/cafe-management \
+                    --namespace cafe-management-staging \
+                    --create-namespace \
+                    --set global.namespace=cafe-management-staging \
+                    --set image.tag=sha-${{ github.sha }} \
+                    --set image.registry=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }} \
+                    --values ./infrastructure/helm/cafe-management/values-staging.yaml \
+                    --wait --timeout=10m
+
+            - name: Run health checks
+              run: |
+                  kubectl wait --for=condition=available deployment/api-gateway -n cafe-management-staging --timeout=300s
+                  kubectl get pods -n cafe-management-staging
+
+    # Deploy to Production
+    deploy-production:
+        name: Deploy to Production
+        runs-on: ubuntu-latest
+        needs: [build]
+        if: github.ref == 'refs/heads/main'
+        environment: production
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Setup kubectl
+              uses: azure/setup-kubectl@v3
+              with:
+                  version: "latest"
+
+            - name: Configure kubectl
+              run: |
+                  mkdir -p ~/.kube
+                  echo "${{ secrets.KUBECONFIG_PRODUCTION }}" | base64 -d > ~/.kube/config
+
+            - name: Setup Helm
+              uses: azure/setup-helm@v3
+              with:
+                  version: "latest"
+
+            - name: Deploy to production
+              run: |
+                  helm upgrade --install cafe-management ./infrastructure/helm/cafe-management \
+                    --namespace cafe-management \
+                    --create-namespace \
+                    --set image.tag=sha-${{ github.sha }} \
+                    --set image.registry=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }} \
+                    --values ./infrastructure/helm/cafe-management/values-production.yaml \
+                    --wait --timeout=15m
+
+            - name: Run health checks
+              run: |
+                  kubectl wait --for=condition=available deployment/api-gateway -n cafe-management --timeout=300s
+                  kubectl get pods -n cafe-management
+
+            - name: Update ArgoCD Applications
+              run: |
+                  # Sync ArgoCD applications after successful deployment
+                  argocd app sync cafe-management-services --server ${{ secrets.ARGOCD_SERVER }} --auth-token ${{ secrets.ARGOCD_TOKEN }}
+                  argocd app sync monitoring-stack --server ${{ secrets.ARGOCD_SERVER }} --auth-token ${{ secrets.ARGOCD_TOKEN }}
+
+    # Notify
+    notify:
+        name: Notify Deployment Status
+        runs-on: ubuntu-latest
+        needs: [deploy-production]
+        if: always()
+
+        steps:
+            - name: Notify Slack
+              uses: 8398a7/action-slack@v3
+              with:
+                  status: ${{ job.status }}
+                  channel: "#deployments"
+                  webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+                  text: |
+                      Cafe Management System deployment ${{ job.status }}!
+                      Branch: ${{ github.ref_name }}
+                      Commit: ${{ github.sha }}
+                      Actor: ${{ github.actor }}

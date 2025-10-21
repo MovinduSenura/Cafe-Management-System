@@ -1,0 +1,100 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-gateway
+  namespace: cafe-management
+  labels:
+    app: api-gateway
+    tier: gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-gateway
+  template:
+    metadata:
+      labels:
+        app: api-gateway
+        tier: gateway
+    spec:
+      serviceAccountName: cafe-management-sa
+      containers:
+      - name: api-gateway
+        image: cafe-management/api-gateway:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 3000
+        env:
+        - name: PORT
+          value: "3000"
+        envFrom:
+        - configMapRef:
+            name: cafe-config
+        - secretRef:
+            name: cafe-secrets
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "300m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 1000
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: false
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-gateway-service
+  namespace: cafe-management
+  labels:
+    app: api-gateway
+spec:
+  ports:
+  - port: 80
+    targetPort: 3000
+    name: http
+  selector:
+    app: api-gateway
+  type: LoadBalancer
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: api-gateway-hpa
+  namespace: cafe-management
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: api-gateway
+  minReplicas: 1
+  maxReplicas: 3
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80

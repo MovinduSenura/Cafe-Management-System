@@ -1,0 +1,17 @@
+{{- if .Values.configMap.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "cafe-management.fullname" . }}-config
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    {{- include "cafe-management.labels" . | nindent 4 }}
+data:
+  NODE_ENV: {{ .Values.env.NODE_ENV | quote }}
+  PORT: {{ .Values.env.PORT | quote }}
+  MONGODB_URI: {{ include "cafe-management.mongodbConnectionString" . | quote }}
+  REDIS_URI: {{ include "cafe-management.redisConnectionString" . | quote }}
+  {{- range $key, $value := .Values.configMap.data }}
+  {{ $key }}: {{ $value | quote }}
+  {{- end }}
+{{- end }}
