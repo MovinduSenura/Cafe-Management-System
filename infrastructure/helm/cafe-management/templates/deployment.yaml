@@ -1,0 +1,107 @@
+{{- range $serviceName, $serviceConfig := .Values.services }}
+{{- if $serviceConfig.enabled }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $serviceConfig.name }}
+  namespace: {{ $.Values.global.namespace }}
+  labels:
+    {{- include "cafe-management.labels" $ | nindent 4 }}
+    app.kubernetes.io/component: {{ $serviceConfig.name }}
+spec:
+  replicas: {{ $serviceConfig.replicas | default 1 }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "cafe-management.name" $ }}
+      app.kubernetes.io/instance: {{ $.Release.Name }}
+      app.kubernetes.io/component: {{ $serviceConfig.name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "cafe-management.name" $ }}
+        app.kubernetes.io/instance: {{ $.Release.Name }}
+        app.kubernetes.io/component: {{ $serviceConfig.name }}
+      annotations:
+        {{- if $.Values.monitoring.enabled }}
+        {{- toYaml $.Values.monitoring.annotations | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with $.Values.global.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "cafe-management.serviceAccountName" $ }}
+      securityContext:
+        {{- toYaml $.Values.podSecurityContext | nindent 8 }}
+      containers:
+      - name: {{ $serviceConfig.name }}
+        securityContext:
+          {{- toYaml $.Values.securityContext | nindent 12 }}
+        image: {{ $.Values.image.registry }}/{{ $.Values.image.repository }}/{{ $serviceConfig.name }}:{{ $.Values.image.tag }}
+        imagePullPolicy: {{ $.Values.image.pullPolicy }}
+        ports:
+        - name: http
+          containerPort: {{ $serviceConfig.targetPort }}
+          protocol: TCP
+        {{- if $.Values.healthCheck.enabled }}
+        livenessProbe:
+          {{- toYaml $.Values.healthCheck.livenessProbe | nindent 12 }}
+        readinessProbe:
+          {{- toYaml $.Values.healthCheck.readinessProbe | nindent 12 }}
+        {{- end }}
+        env:
+        {{- if $.Values.configMap.enabled }}
+        - name: NODE_ENV
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "cafe-management.fullname" $ }}-config
+              key: NODE_ENV
+        - name: PORT
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "cafe-management.fullname" $ }}-config
+              key: PORT
+        - name: MONGODB_URI
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "cafe-management.fullname" $ }}-config
+              key: MONGODB_URI
+        - name: REDIS_URI
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "cafe-management.fullname" $ }}-config
+              key: REDIS_URI
+        {{- end }}
+        {{- if $.Values.secret.enabled }}
+        {{- if $.Values.mongodb.enabled }}
+        - name: MONGODB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "cafe-management.fullname" $ }}-secret
+              key: MONGODB_PASSWORD
+        {{- end }}
+        {{- if $.Values.redis.enabled }}
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "cafe-management.fullname" $ }}-secret
+              key: REDIS_PASSWORD
+        {{- end }}
+        {{- end }}
+        resources:
+          {{- toYaml ($serviceConfig.resources | default $.Values.resources) | nindent 12 }}
+      {{- with $.Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with $.Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with $.Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end }}
+{{- end }}

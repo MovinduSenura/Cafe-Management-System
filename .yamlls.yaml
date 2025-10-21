@@ -1,0 +1,37 @@
+# YAML Language Server Configuration
+yaml:
+  schemas:
+    # Kubernetes schema for infrastructure files
+    kubernetes:
+      - "infrastructure/k8s/**/*.yaml"
+      - "infrastructure/k8s/**/*.yml"
+      - "infrastructure/monitoring/**/*.yaml"
+      - "infrastructure/monitoring/**/*.yml"  
+      - "infrastructure/argocd/**/*.yaml"
+      - "infrastructure/argocd/**/*.yml"
+    
+    # GitHub Actions schema
+    "https://json.schemastore.org/github-workflow":
+      - ".github/workflows/*.yaml"
+      - ".github/workflows/*.yml"
+    
+    # Helm Chart schema
+    "https://json.schemastore.org/helm-chart":
+      - "infrastructure/helm/**/Chart.yaml"
+    
+    # Helm Values schema  
+    "https://json.schemastore.org/helm-values":
+      - "infrastructure/helm/**/values*.yaml"
+      - "infrastructure/helm/**/values*.yml"
+
+  validate: true
+  completion: true
+  hover: true
+  
+  # Custom tags for CloudFormation/other tools
+  customTags:
+    - "!Ref"
+    - "!Sub" 
+    - "!GetAtt"
+    - "!Join"
+    - "!Base64"

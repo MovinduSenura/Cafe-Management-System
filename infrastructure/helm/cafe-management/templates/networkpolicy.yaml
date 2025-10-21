@@ -1,0 +1,21 @@
+{{- if .Values.networkPolicy.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "cafe-management.fullname" . }}-netpol
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    {{- include "cafe-management.labels" . | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "cafe-management.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  {{- toYaml .Values.networkPolicy.ingress | nindent 2 }}
+  egress:
+  - {} # Allow all egress for now
+{{- end }}

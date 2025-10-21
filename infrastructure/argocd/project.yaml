@@ -1,0 +1,101 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: cafe-management
+  namespace: argocd
+spec:
+  description: Cafe Management System Project
+  
+  # Source repositories that can be used in this project
+  sourceRepos:
+  - 'https://github.com/ravin00/Cafe-Management-System.git'
+  - 'https://charts.bitnami.com/bitnami'
+  - 'https://prometheus-community.github.io/helm-charts'
+  - 'https://grafana.github.io/helm-charts'
+  - 'https://jaegertracing.github.io/helm-charts'
+  
+  # Destinations where applications can be deployed
+  destinations:
+  - namespace: 'cafe-management'
+    server: 'https://kubernetes.default.svc'
+  - namespace: 'monitoring'
+    server: 'https://kubernetes.default.svc'
+  - namespace: 'istio-system'
+    server: 'https://kubernetes.default.svc'
+  - namespace: 'kube-system'
+    server: 'https://kubernetes.default.svc'
+  
+  # Cluster resource allow list
+  clusterResourceWhitelist:
+  - group: ''
+    kind: Namespace
+  - group: ''
+    kind: ClusterRole
+  - group: ''
+    kind: ClusterRoleBinding
+  - group: 'rbac.authorization.k8s.io'
+    kind: ClusterRole
+  - group: 'rbac.authorization.k8s.io'
+    kind: ClusterRoleBinding
+  - group: 'apiextensions.k8s.io'
+    kind: CustomResourceDefinition
+  - group: 'admissionregistration.k8s.io'
+    kind: MutatingWebhookConfiguration
+  - group: 'admissionregistration.k8s.io'
+    kind: ValidatingWebhookConfiguration
+  
+  # Namespace resource allow list
+  namespaceResourceWhitelist:
+  - group: ''
+    kind: '*'
+  - group: 'apps'
+    kind: '*'
+  - group: 'extensions'
+    kind: '*'
+  - group: 'networking.k8s.io'
+    kind: '*'
+  - group: 'policy'
+    kind: '*'
+  - group: 'autoscaling'
+    kind: '*'
+  - group: 'monitoring.coreos.com'
+    kind: '*'
+  - group: 'metrics.k8s.io'
+    kind: '*'
+  
+  roles:
+  # Admin role for full access
+  - name: admin
+    description: Admin role with full access
+    policies:
+    - p, proj:cafe-management:admin, applications, *, cafe-management/*, allow
+    - p, proj:cafe-management:admin, applications, *, monitoring/*, allow
+    - p, proj:cafe-management:admin, applications, action/*, cafe-management/*, allow
+    - p, proj:cafe-management:admin, applications, action/*, monitoring/*, allow
+    groups:
+    - admin
+  
+  # Developer role for limited access
+  - name: developer
+    description: Developer role with limited access
+    policies:
+    - p, proj:cafe-management:developer, applications, get, cafe-management/*, allow
+    - p, proj:cafe-management:developer, applications, sync, cafe-management/*, allow
+    groups:
+    - developers
+  
+  # Sync windows for controlled deployments
+  syncWindows:
+  - kind: allow
+    schedule: '0 8-17 * * 1-5'  # Allow sync during business hours on weekdays
+    duration: 9h
+    applications:
+    - '*'
+    manualSync: true
+  
+  - kind: deny
+    schedule: '0 18-7 * * *'  # Deny sync outside business hours
+    duration: 13h
+    applications:
+    - 'cafe-management-*'
+    manualSync: false

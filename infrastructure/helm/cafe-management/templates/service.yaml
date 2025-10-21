@@ -1,0 +1,28 @@
+{{- range $serviceName, $serviceConfig := .Values.services }}
+{{- if $serviceConfig.enabled }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $serviceConfig.name }}-service
+  namespace: {{ $.Values.global.namespace }}
+  labels:
+    {{- include "cafe-management.labels" $ | nindent 4 }}
+    app.kubernetes.io/component: {{ $serviceConfig.name }}
+  {{- if $.Values.monitoring.enabled }}
+  annotations:
+    {{- toYaml $.Values.monitoring.annotations | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ $.Values.service.type }}
+  ports:
+  - port: {{ $serviceConfig.port }}
+    targetPort: {{ $serviceConfig.targetPort }}
+    protocol: TCP
+    name: http
+  selector:
+    app.kubernetes.io/name: {{ include "cafe-management.name" $ }}
+    app.kubernetes.io/instance: {{ $.Release.Name }}
+    app.kubernetes.io/component: {{ $serviceConfig.name }}
+{{- end }}
+{{- end }}

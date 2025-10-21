@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mongo-customer-uri
+  namespace: cafe-management
+type: Opaque
+stringData:
+  uri: "mongodb://admin:password@mongodb-service:27017/customer-service?authSource=admin"
