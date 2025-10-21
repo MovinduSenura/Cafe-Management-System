@@ -16,6 +16,11 @@ const redisClient = redis.createClient({
   password: process.env.REDIS_PASSWORD
 });
 
+// Connect to Redis with error handling
+redisClient.connect().catch((err) => {
+  logger.warn('Redis connection failed:', err.message);
+});
+
 // Middleware
 app.use(helmet({
   contentSecurityPolicy: {
@@ -51,7 +56,7 @@ const globalLimiter = rateLimit({
 app.use('/api', globalLimiter);
 
 // Authentication middleware
-const authenticateToken = async (req, res, next) => {
+const authenticateToken = (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
     const token = authHeader && authHeader.split(' ')[1];
@@ -209,21 +214,21 @@ app.use('/api/v1/reservations', authenticateToken, createProxyMiddleware(service
 app.use('/api/v1/notifications', authenticateToken, createProxyMiddleware(services.notification));
 app.use('/api/v1/reports', authenticateToken, createProxyMiddleware(services.report));
 
-// Circuit breaker pattern
-const circuitBreaker = (serviceName) => {
-  return (req, res, next) => {
-    // Simple circuit breaker implementation
-    // In production, use a library like 'opossum'
-    const failureThreshold = 5;
-    const resetTimeout = 60000; // 1 minute
+// Circuit breaker pattern - commented out for now
+// const circuitBreaker = (_serviceName) => {
+//   return (req, res, next) => {
+//     // Simple circuit breaker implementation
+//     // In production, use a library like 'opossum'
+//     const _failureThreshold = 5;
+//     const _resetTimeout = 60000; // 1 minute
     
-    // Circuit breaker logic would go here
-    next();
-  };
-};
+//     // Circuit breaker logic would go here
+//     next();
+//   };
+// };
 
 // Error handling middleware
-app.use((error, req, res, next) => {
+app.use((error, req, res, _next) => {
   logger.error('API Gateway error:', error);
   
   if (error.code === 'ECONNREFUSED') {
@@ -257,8 +262,8 @@ app.use('*', (req, res) => {
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-  logger.info(`🚀 API Gateway running on port ${PORT}`);
-  logger.info(`📊 Proxying to ${Object.keys(services).length} microservices`);
+  logger.info(`API Gateway running on port ${PORT}`);
+  logger.info(`Proxying to ${Object.keys(services).length} microservices`);
 });
 
 module.exports = app;
