@@ -41,43 +41,54 @@ jobs:
               uses: actions/setup-node@v4
               with:
                   node-version: "18"
-                  cache: "npm"
-                  cache-dependency-path: "Backend/${{ matrix.service }}/package-lock.json"
+
+            - name: Debug service directory
+              run: |
+                  echo "Current directory: $(pwd)"
+                  echo "Service: ${{ matrix.service }}"
+                  echo "Looking for Backend/${{ matrix.service }}"
+                  ls -la Backend/ || echo "Backend directory not found"
+                  ls -la Backend/${{ matrix.service }}/ || echo "Service directory not found"
+                  ls -la Backend/${{ matrix.service }}/package.json || echo "package.json not found"
+                  ls -la Backend/${{ matrix.service }}/package-lock.json || echo "package-lock.json not found"
 
             - name: Install dependencies
-              working-directory: Backend/${{ matrix.service }}
               run: |
+                  cd Backend/${{ matrix.service }}
+                  echo "Installing dependencies for ${{ matrix.service }}"
                   if [ -f "package-lock.json" ]; then
+                    echo "Using npm ci (found package-lock.json)"
                     npm ci
                   else
+                    echo "Using npm install (no package-lock.json found)"
                     npm install
                   fi
 
             - name: Run linting
-              working-directory: Backend/${{ matrix.service }}
               run: |
+                  cd Backend/${{ matrix.service }}
                   if npm run lint:check; then
-                    echo "Linting passed"
+                    echo "✅ Linting passed for ${{ matrix.service }}"
                   else
-                    echo "Linting issues found, but continuing..."
+                    echo "⚠️  Linting issues found in ${{ matrix.service }}, but continuing..."
                   fi
 
             - name: Run tests
-              working-directory: Backend/${{ matrix.service }}
               run: |
+                  cd Backend/${{ matrix.service }}
                   if npm test; then
-                    echo "Tests passed"
+                    echo "✅ Tests passed for ${{ matrix.service }}"
                   else
-                    echo "Some tests failed, but continuing..."
+                    echo "⚠️  Some tests failed in ${{ matrix.service }}, but continuing..."
                   fi
 
             - name: Generate test coverage
-              working-directory: Backend/${{ matrix.service }}
               run: |
+                  cd Backend/${{ matrix.service }}
                   if npm run test:coverage; then
-                    echo "Coverage generated"
+                    echo "✅ Coverage generated for ${{ matrix.service }}"
                   else
-                    echo "Coverage generation failed, but continuing..."
+                    echo "⚠️  Coverage generation failed for ${{ matrix.service }}, but continuing..."
                   fi
 
             - name: Upload coverage to Codecov
