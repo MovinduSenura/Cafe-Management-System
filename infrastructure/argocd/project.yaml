@@ -92,10 +92,3 @@ spec:
     applications:
     - '*'
     manualSync: true
-  
-  - kind: deny
-    schedule: '0 18-7 * * *'  # Deny sync outside business hours
-    duration: 13h
-    applications:
-    - 'cafe-management-*'
-    manualSync: false
