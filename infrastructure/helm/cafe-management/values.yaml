@@ -231,7 +231,7 @@ redis:
   auth:
     enabled: true
     password: redispassword123
-  architecture: replicaset
+  architecture: replication
   master:
     persistence:
       enabled: true
