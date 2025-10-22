@@ -1,5 +1,5 @@
 # ArgoCD Installation Manifest
-# This installs ArgoCD in the argocd namespace
+# This creates the namespace for ArgoCD installation
 apiVersion: v1
 kind: Namespace
 metadata:
@@ -7,38 +7,27 @@ metadata:
   labels:
     name: argocd
 ---
-# Apply ArgoCD installation
-# kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-# 
-# Or use this custom installation with additional configurations
-apiVersion: argoproj.io/v1alpha1
-kind: ArgoCD
+# ArgoCD Server Service Configuration
+# This exposes the ArgoCD server as a LoadBalancer for easy access
+apiVersion: v1
+kind: Service
 metadata:
-  name: argocd
+  name: argocd-server-loadbalancer
   namespace: argocd
+  labels:
+    app.kubernetes.io/component: server
+    app.kubernetes.io/name: argocd-server
+    app.kubernetes.io/part-of: argocd
 spec:
-  server:
-    insecure: true  # For development, use HTTPS in production
-    service:
-      type: LoadBalancer
-    extraArgs:
-      - --insecure
-  dex:
-    openShiftOAuth: false
-  rbac:
-    defaultPolicy: 'role:readonly'
-    policy: |
-      p, role:admin, applications, *, */*, allow
-      p, role:admin, clusters, *, *, allow
-      p, role:admin, repositories, *, *, allow
-      p, role:admin, certificates, *, *, allow
-      p, role:admin, accounts, *, *, allow
-      p, role:admin, gpgkeys, *, *, allow
-      g, admin, role:admin
-    scopes: '[groups]'
-  resourceCustomizations: |
-    networking.k8s.io/Ingress:
-      health.lua: |
-        hs = {}
-        hs.status = "Healthy"
-        return hs
+  type: LoadBalancer
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: 8080
+  - name: https
+    port: 443
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app.kubernetes.io/name: argocd-server
