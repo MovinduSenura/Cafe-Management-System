@@ -41,11 +41,11 @@ jobs:
                   cd ./infrastructure/helm/cafe-management
                   helm dependency build
                   
-                  # Then lint the chart
-                  helm lint ./infrastructure/helm/cafe-management
+                  # Then lint the chart (from within the chart directory)
+                  helm lint .
                   
                   # Test template generation
-                  helm template cafe-management ./infrastructure/helm/cafe-management --debug --dry-run
+                  helm template cafe-management . --debug --dry-run
 
             - name: Validate Kubernetes Manifests
               run: |
