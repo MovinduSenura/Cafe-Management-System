@@ -41,50 +41,58 @@ jobs:
               uses: actions/setup-node@v4
               with:
                   node-version: "18"
-                  cache: "npm"
-                  cache-dependency-path: "Backend/${{ matrix.service }}/package-lock.json"
 
-            - name: Install dependencies
-              working-directory: Backend/${{ matrix.service }}
+            - name: Debug directory structure
               run: |
-                  if [ -f "package-lock.json" ]; then
-                    npm ci
+                  echo "Current working directory:"
+                  pwd
+                  echo "Repository root contents:"
+                  ls -la
+                  echo "BACKEND directory contents:"
+                  ls -la BACKEND/ || echo "BACKEND directory not found"
+                  echo "Service directories in BACKEND:"
+                  ls -la BACKEND/ | grep -E "(api-gateway|user-service|customer-service|menu-service|order-service|payment-service|inventory-service|reservation-service|notification-service|report-service)" || echo "No service directories found"
+
+            - name: Install dependencies for ${{ matrix.service }}
+              run: |
+                  cd BACKEND/${{ matrix.service }}
+                  if [ -f package.json ]; then
+                      echo "Installing dependencies for ${{ matrix.service }}"
+                      npm install
                   else
-                    npm install
+                      echo "No package.json found for ${{ matrix.service }}"
+                      exit 1
                   fi
 
-            - name: Run linting
-              working-directory: Backend/${{ matrix.service }}
+            - name: Run linting for ${{ matrix.service }}
               run: |
-                  if npm run lint:check; then
-                    echo "Linting passed"
-                  else
-                    echo "Linting issues found, but continuing..."
-                  fi
+                  cd BACKEND/${{ matrix.service }}
+                  echo "Running linting for ${{ matrix.service }}"
+                  npm run lint
 
             - name: Run tests
-              working-directory: Backend/${{ matrix.service }}
               run: |
+                  cd BACKEND/${{ matrix.service }}
                   if npm test; then
-                    echo "Tests passed"
+                    echo "✅ Tests passed for ${{ matrix.service }}"
                   else
-                    echo "Some tests failed, but continuing..."
+                    echo "⚠️  Some tests failed in ${{ matrix.service }}, but continuing..."
                   fi
 
             - name: Generate test coverage
-              working-directory: Backend/${{ matrix.service }}
               run: |
+                  cd BACKEND/${{ matrix.service }}
                   if npm run test:coverage; then
-                    echo "Coverage generated"
+                    echo "✅ Coverage generated for ${{ matrix.service }}"
                   else
-                    echo "Coverage generation failed, but continuing..."
+                    echo "⚠️  Coverage generation failed for ${{ matrix.service }}, but continuing..."
                   fi
 
             - name: Upload coverage to Codecov
               if: success() || failure()
               uses: codecov/codecov-action@v3
               with:
-                  file: Backend/${{ matrix.service }}/coverage/lcov.info
+                  file: BACKEND/${{ matrix.service }}/coverage/lcov.info
                   flags: ${{ matrix.service }}
                   name: ${{ matrix.service }}-coverage
                   fail_ci_if_error: false
@@ -112,7 +120,7 @@ jobs:
 
             - name: Run npm audit
               run: |
-                  cd Backend || cd BACKEND
+                  cd BACKEND
                   echo "## Security Audit Results" > audit-results.txt
                   for service in api-gateway user-service customer-service menu-service order-service payment-service inventory-service reservation-service notification-service report-service; do
                     if [ -d "$service" ] && [ -f "$service/package.json" ]; then
@@ -179,7 +187,7 @@ jobs:
             - name: Build and push Docker image
               uses: docker/build-push-action@v5
               with:
-                  context: Backend/${{ matrix.service }}
+                  context: BACKEND/${{ matrix.service }}
                   platforms: linux/amd64,linux/arm64
                   push: true
                   tags: ${{ steps.meta.outputs.tags }}
